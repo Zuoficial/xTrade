@@ -2,6 +2,7 @@ package com.smoowy.xTrade;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +41,7 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
 
             case 0: {
                 holder.textoPosicion.setText("Cazar");
+                holder.textoPosicion.setTextColor(context.getColor(R.color.blanco));
                 break;
             }
             case 1: {

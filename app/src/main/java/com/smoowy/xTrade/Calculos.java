@@ -584,7 +584,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                         if (!botonporcentajeCalculadorAplanado) {
 
                             botonporcentajeCalculadorAplanado = true;
-                            botonPorcentajeCalculador.setBackgroundResource(R.drawable.fondo_botones_presionado);
+                            botonPorcentajeCalculador.setBackgroundResource(R.drawable.fondo_boton_forex);
                             textoPorcentaje.setVisibility(View.GONE);
                             textoPorcentajeMod.setVisibility(View.VISIBLE);
                             textoPorcentajeMod.setText("");
@@ -602,7 +602,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
                         } else {
                             botonporcentajeCalculadorAplanado = false;
-                            botonPorcentajeCalculador.setBackgroundResource(R.drawable.fondo_botones);
+                            botonPorcentajeCalculador.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
                             textoPorcentaje.setVisibility(View.VISIBLE);
                             textoPorcentajeMod.setVisibility(View.GONE);
                             textoPrecio.setVisibility(View.GONE);
@@ -628,8 +628,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
                         if (!botonPorcentajeCalculadorMasAplanado) {
                             botonPorcentajeCalculadorMasAplanado = true;
-                            botonPorcentajeCalculadorMas.setBackgroundResource(R.drawable.fondo_botones_presionado);
-                            botonPorcentajeCalculadorMenos.setBackgroundResource(R.drawable.fondo_botones);
+                            botonPorcentajeCalculadorMas.setBackgroundResource(R.drawable.fondo_boton_forex);
+                            botonPorcentajeCalculadorMenos.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
                             textoPorcentajeMod.setText("");
                             textoPrecio.setText("Precio");
                             textoLiquidez.setText("0.00 " + liquidezNombre);
@@ -649,8 +649,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
                         if (botonPorcentajeCalculadorMasAplanado) {
                             botonPorcentajeCalculadorMasAplanado = false;
-                            botonPorcentajeCalculadorMas.setBackgroundResource(R.drawable.fondo_botones);
-                            botonPorcentajeCalculadorMenos.setBackgroundResource(R.drawable.fondo_botones_presionado);
+                            botonPorcentajeCalculadorMas.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
+                            botonPorcentajeCalculadorMenos.setBackgroundResource(R.drawable.fondo_boton_forex);
                             textoPorcentajeMod.setText("");
                             textoPrecio.setText("Precio");
                             textoLiquidez.setText("0.00 " + liquidezNombre);

@@ -194,10 +194,15 @@ public class MainActivity extends AppCompatActivity
         adapterRecyclerInversiones.notifyDataSetChanged();
         modo = db.getModo();
         cambiarModo();
+        realm.close();
     }
 
 
     public void guardarDB() {
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(config);
+        realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -252,6 +257,8 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+        realm.close();
 
 
     }
