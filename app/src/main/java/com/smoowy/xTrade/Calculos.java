@@ -764,7 +764,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
 
     private void setBotonCazar() {
-        botonCazar.setBackgroundResource(R.drawable.fondo_botones_superior_presionado);
+        botonCazar.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
         botonCorta.setBackgroundResource(R.drawable.fondo_botones_superior);
         botonLarga.setBackgroundResource(R.drawable.fondo_botones_superior);
 
@@ -799,7 +799,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
     private void setBotonCorta() {
         botonCazar.setBackgroundResource(R.drawable.fondo_botones_superior);
-        botonCorta.setBackgroundResource(R.drawable.fondo_botones_superior_presionado);
+        botonCorta.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
         botonLarga.setBackgroundResource(R.drawable.fondo_botones_superior);
         modo = modoCorta;
         adapterRecyclerPorcentajes.cambioModo(modo);
@@ -832,7 +832,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
     private void setBotonLarga() {
         botonCazar.setBackgroundResource(R.drawable.fondo_botones_superior);
         botonCorta.setBackgroundResource(R.drawable.fondo_botones_superior);
-        botonLarga.setBackgroundResource(R.drawable.fondo_botones_superior_presionado);
+        botonLarga.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
         modo = modoLarga;
         adapterRecyclerPorcentajes.cambioModo(modo);
         encabezado.setText("larga " + monedaDestinoNombre + " con " + monedaOrigenNombre);
@@ -867,7 +867,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             recyclerPorcentajes.setVisibility(View.VISIBLE);
             recyclerBotonesPorcentajes.setVisibility(View.VISIBLE);
             botonPorcentajesAplanado = false;
-            botonPorcentajes.setBackgroundResource(R.drawable.fondo_botones_superior_presionado);
+            botonPorcentajes.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
             botonGuardar.setVisibility(View.GONE);
 
         } else {

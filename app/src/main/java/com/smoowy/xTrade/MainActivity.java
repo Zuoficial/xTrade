@@ -424,7 +424,7 @@ public class MainActivity extends AppCompatActivity
         switch (modo) {
 
             case modoCazar: {
-                botonCazar.setBackgroundResource(R.drawable.fondo_botones_superior_presionado);
+                botonCazar.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
                 botonCorta.setBackgroundResource(R.drawable.fondo_botones_superior);
                 botonLarga.setBackgroundResource(R.drawable.fondo_botones_superior);
                 break;
@@ -432,7 +432,7 @@ public class MainActivity extends AppCompatActivity
 
             case modoCorta: {
                 botonCazar.setBackgroundResource(R.drawable.fondo_botones_superior);
-                botonCorta.setBackgroundResource(R.drawable.fondo_botones_superior_presionado);
+                botonCorta.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
                 botonLarga.setBackgroundResource(R.drawable.fondo_botones_superior);
                 break;
 
@@ -442,7 +442,7 @@ public class MainActivity extends AppCompatActivity
 
                 botonCazar.setBackgroundResource(R.drawable.fondo_botones_superior);
                 botonCorta.setBackgroundResource(R.drawable.fondo_botones_superior);
-                botonLarga.setBackgroundResource(R.drawable.fondo_botones_superior_presionado);
+                botonLarga.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
                 break;
 
             }
@@ -500,7 +500,7 @@ public class MainActivity extends AppCompatActivity
     private void setBotonPorcentajes() {
         if (!botonPorcentajesAplanado) {
 
-            botonPorcentajes.setBackgroundResource(R.drawable.fondo_botones_superior_presionado);
+            botonPorcentajes.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
             botonPorcentajesAplanado = true;
         } else {
             botonPorcentajes.setBackgroundResource(R.drawable.fondo_botones_superior);

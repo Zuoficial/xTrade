@@ -15,7 +15,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"
-        tools:listitem="@layout/recycler_view_posiciones"
-        />
+        tools:listitem="@layout/recycler_view_posiciones" />
+
+    <TextView
+        android:id="@+id/textoSinDatos"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:text="xTrade\n\nPara comenzar\npresiona el boton para agregar una posicion"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="30dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.42000002" />
+
 
 </android.support.constraint.ConstraintLayout>

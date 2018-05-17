@@ -53,9 +53,9 @@ public class AdapterRecyclerBotonesPorcentajes extends RecyclerView.Adapter<Adap
     public void onBindViewHolder(Holder holder, int position) {
 
         if (listaBotonesChecador.get(position)) {
-            holder.boton.setBackgroundResource(R.drawable.fondo_botones_presionado);
+            holder.boton.setBackgroundResource(R.drawable.fondo_boton_forex);
         } else
-            holder.boton.setBackgroundResource(R.drawable.fondo_botones);
+            holder.boton.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
 
 
         holder.boton.setText(listaBotones.get(position));
@@ -78,7 +78,7 @@ public class AdapterRecyclerBotonesPorcentajes extends RecyclerView.Adapter<Adap
             boton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    boton.setBackgroundResource(R.drawable.fondo_botones_presionado);
+                    boton.setBackgroundResource(R.drawable.fondo_boton_forex);
                     comunicador.cambioPorcentaje(boton.getText().toString(), listaMultiplicador.get(getAdapterPosition()));
                     for (int i = 0; i < 7; i++) {
                         listaBotonesChecador.put(i, false);

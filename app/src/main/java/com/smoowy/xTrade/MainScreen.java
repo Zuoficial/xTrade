@@ -1,8 +1,11 @@
 package com.smoowy.xTrade;
 
 import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -23,12 +27,13 @@ public class MainScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    //    setTheme(R.style.AppTheme_NoActionBar);
+        //    setTheme(R.style.AppTheme_NoActionBar);
         ActivityManager.TaskDescription taskDesc = new ActivityManager.TaskDescription(null, null, getColor(R.color.colorPrimary));
         setTaskDescription(taskDesc);
         setContentView(R.layout.activity_main_screen);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -44,8 +49,12 @@ public class MainScreen extends AppCompatActivity {
 
     DB db;
     int id;
+    Vibrator vibrator;
 
     void crearOperacion() {
+
+
+        vibrator.vibrate(500);
 
         if (resultadosRealm.size() == 0) {
             id = 0;
@@ -100,8 +109,12 @@ public class MainScreen extends AppCompatActivity {
     LinearLayoutManager layoutManagerPosiciones;
     RecyclerView recyclerPosiciones;
     AdapterRecyclerPosiciones adapterRecyclerPosiciones;
+    TextView textoSinDatos;
 
     private void setRecyclerViewRecyclerBotonesPorcentajes() {
+        textoSinDatos = findViewById(R.id.textoSinDatos);
+        if (resultadosRealm.size() == 0)
+            textoSinDatos.setVisibility(View.VISIBLE);
         recyclerPosiciones = findViewById(R.id.recyclerPosiciones);
         adapterRecyclerPosiciones = new AdapterRecyclerPosiciones(this, listaDatos);
         layoutManagerPosiciones = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -146,6 +159,35 @@ public class MainScreen extends AppCompatActivity {
 
         itemTouchHelper.attachToRecyclerView(recyclerPosiciones);
 
+        adapterRecyclerPosiciones.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                if (adapterRecyclerPosiciones.listaDatos.size() == 0) {
+                    textoSinDatos.setVisibility(View.VISIBLE);
+                    recyclerPosiciones.setVisibility(View.GONE);
+
+                } else {
+                    textoSinDatos.setVisibility(View.GONE);
+                    recyclerPosiciones.setVisibility(View.VISIBLE);
+                }
+                super.onChanged();
+            }
+
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                if (adapterRecyclerPosiciones.listaDatos.size() == 0) {
+                    textoSinDatos.setVisibility(View.VISIBLE);
+                    recyclerPosiciones.setVisibility(View.GONE);
+
+                } else {
+                    textoSinDatos.setVisibility(View.GONE);
+                    recyclerPosiciones.setVisibility(View.VISIBLE);
+                }
+                super.onItemRangeInserted(positionStart, itemCount);
+            }
+
+        });
 
     }
 
@@ -160,6 +202,21 @@ public class MainScreen extends AppCompatActivity {
         Realm.setDefaultConfiguration(config);
         realm = Realm.getDefaultInstance();
 
+        resultadosRealm = realm.where(DB.class).findAll();
+
+        for(final DB db : resultadosRealm) {
+
+            if (db.getPrecioIn()== null) {
+
+
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        db.deleteFromRealm();
+                    }
+                });
+            }
+        }
         resultadosRealm = realm.where(DB.class).findAll();
         listaDatos = new ArrayList<>(resultadosRealm);
 
