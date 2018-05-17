@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fondo"
+    android:layout_width="match_parent"
+    android:layout_height="380dp"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:layout_margin="10dp"
+    android:background="@drawable/fondo_marcador_neutral">
+
+    <TextView
+        android:id="@+id/textoPorcentaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/comforta_bold"
+        android:text="+ 10.25%"
+        android:textColor="@color/ganancia"
+        android:textSize="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/comforta_bold"
+        android:text="Precio"
+        android:textColor="@android:color/white"
+        android:textSize="22dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textoPrecioMod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="60dp"
+        android:fontFamily="@font/comforta_bold"
+        android:maxLines="1"
+        android:text=" 0.00075877"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="42dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textoPrecioMod"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="134dp"
+        android:fontFamily="@font/comforta_regular"
+        android:text="Precio Base"
+        android:textColor="@android:color/white"
+        android:textSize="17dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textoBase"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textoPrecioMod"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="132dp"
+        android:fontFamily="@font/comforta_regular"
+        android:maxLines="1"
+        android:text="0.01024587 BTC"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textoInvertidoLetra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textoPrecioMod"
+        android:layout_below="@+id/textoPrecioMod"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="172dp"
+        android:fontFamily="@font/comforta_regular"
+        android:text="Inversion"
+        android:textColor="@android:color/white"
+        android:textSize="17dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textoInvertidoRV"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textoPrecioMod"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="172dp"
+        android:fontFamily="@font/comforta_regular"
+        android:maxLines="1"
+        android:text="47 Ripples"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textoGanadoLetraRV"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_below="@id/textoPrecioMod"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="212dp"
+        android:fontFamily="@font/comforta_regular"
+        android:text="Ganado"
+        android:textColor="@android:color/white"
+        android:textSize="17dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textoGanancia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textoPrecioMod"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="212dp"
+        android:fontFamily="@font/comforta_regular"
+        android:maxLines="1"
+        android:text="+ 23 Ripples"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textoPrecioMod"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="252dp"
+        android:fontFamily="@font/comforta_regular"
+        android:text="Actual"
+        android:textColor="@android:color/white"
+        android:textSize="17dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textoActualRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textoPrecioMod"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="250dp"
+        android:fontFamily="@font/comforta_regular"
+        android:maxLines="1"
+        android:text="47 Ripples"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textoPrecioMod"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="292dp"
+        android:fontFamily="@font/comforta_regular"
+        android:text="Usando"
+        android:textColor="@android:color/white"
+        android:textSize="17dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textoUsandoRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textoPrecioMod"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="290dp"
+        android:fontFamily="@font/comforta_regular"
+        android:maxLines="1"
+        android:text="0.01024587 BTC"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textoLiquidezLetra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textoPrecioMod"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="332dp"
+        android:fontFamily="@font/comforta_regular"
+        android:text="Liquidez"
+        android:textColor="@android:color/white"
+        android:textSize="17dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textoLiquidez"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textoPrecioMod"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="330dp"
+        android:fontFamily="@font/comforta_regular"
+        android:maxLines="1"
+        android:text="0.01024587 BTC"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

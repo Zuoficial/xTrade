@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <include
+        layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/neutro"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <Button
+                android:id="@+id/botonPorcentajes"
+                android:textColor="@android:color/white"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="180dp"
+                android:fontFamily="@font/comforta_bold"
+                android:text="Porcentajes"
+                android:textSize="25dp" />
+
+            <Button
+                android:layout_below="@id/botonPorcentajes"
+                android:id="@+id/botonCazar"
+                android:textColor="@android:color/white"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/comforta_bold"
+                android:text="Cazar"
+                android:textSize="25dp" />
+
+
+            <Button
+                android:id="@+id/botonCorta"
+                android:textColor="@android:color/white"
+                android:background="@android:color/transparent"
+                android:layout_below="@id/botonCazar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/comforta_bold"
+                android:text="posicion corta"
+                android:textSize="25dp" />
+
+
+            <Button
+                android:id="@+id/botonLarga"
+                android:textColor="@android:color/white"
+                android:background="@android:color/transparent"
+                android:layout_below="@id/botonCorta"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/comforta_bold"
+                android:text="posicion larga"
+                android:textSize="25dp" />
+
+
+            <Button
+                android:id="@+id/botonEmpezar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/botonLarga"
+                android:layout_marginTop="10dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/comforta_bold"
+                android:text="Iniciar"
+                android:textColor="@android:color/white"
+                android:textSize="25dp" />
+        </RelativeLayout>
+
+
+    </android.support.design.widget.NavigationView>
+
+
+</android.support.v4.widget.DrawerLayout>
