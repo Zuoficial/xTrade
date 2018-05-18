@@ -28,6 +28,10 @@ public class MainScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //    setTheme(R.style.AppTheme_NoActionBar);
+        if (getIntent().hasExtra("salida")) {
+            finish();
+        }
+
         ActivityManager.TaskDescription taskDesc = new ActivityManager.TaskDescription(null, null, getColor(R.color.colorPrimary));
         setTaskDescription(taskDesc);
         setContentView(R.layout.activity_main_screen);
@@ -204,9 +208,9 @@ public class MainScreen extends AppCompatActivity {
 
         resultadosRealm = realm.where(DB.class).findAll();
 
-        for(final DB db : resultadosRealm) {
+        for (final DB db : resultadosRealm) {
 
-            if (db.getPrecioIn()== null) {
+            if (db.getPrecioIn() == null) {
 
 
                 realm.executeTransaction(new Realm.Transaction() {

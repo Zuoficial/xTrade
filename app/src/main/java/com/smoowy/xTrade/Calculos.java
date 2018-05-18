@@ -37,8 +37,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             botonGuardar, botonModificar;
     TextView encabezado, textoGanancia, textoInvertido, textoInvertidoActual, textoUsado, textoGananciaLetra,
             textoPorcentaje, textoPrecio, textoBase, textoLiquidez;
-    String monedaOrigenNombre, monedaDestinoNombre,referencia;
-    EditText textoPrecioMod, textoPorcentajeMod,textoReferencia;
+    String monedaOrigenNombre, monedaDestinoNombre, referencia;
+    EditText textoPrecioMod, textoPorcentajeMod, textoReferencia;
     double invertido, precio, invertidoDestino, precioFinal,
             precioIngresado, porcentajeFinal, gananciaFinal, invertidoActual, porcentajeIngresado,
             liquidezOrigen, liquidezDestino, comisionEntrada, comisionSalida, invertidoFinal, liquidez,
@@ -48,7 +48,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
     boolean botonPorcentajesAplanado,
             botonporcentajeCalculadorAplanado, botonPorcentajeCalculadorMasAplanado, enForex;
     Vibrator vibrator;
-    String precisionOrigen, precisionDestino, precisionLiquidez,precisionPrecio,
+    String precisionOrigen, precisionDestino, precisionLiquidez, precisionPrecio,
             liquidezNombre;
     ConstraintLayout calculador;
     DrawerLayout drawer;
@@ -98,7 +98,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoPrecioMod = findViewById(R.id.textoPrecioMod);
         textoPrecioMod.addTextChangedListener(textWatcher);
         textoReferencia = findViewById(R.id.referencia);
-        if(referencia != null)
+        if (referencia != null)
             textoReferencia.setText(referencia);
         textoInvertido = findViewById(R.id.textoInvertido);
         textoInvertido.setOnTouchListener(onTouchListener);
@@ -170,12 +170,12 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         precisionOrigen = db.getPrecisionOrigenFormato().replace(".", ",.");
         precisionDestino = db.getPrecisionDestinoFormato().replace(".", ",.");
         precisionLiquidez = db.getPrecisionLiquidezFormato().replace(".", ",.");
-        precisionPrecio = db.getPrecisionPrecioFormato().replace(".",",.");
+        precisionPrecio = db.getPrecisionPrecioFormato().replace(".", ",.");
         liquidezOrigen = Double.parseDouble(db.getLiquidezOrigen());
         liquidezDestino = Double.parseDouble(db.getLiquidezDestino());
 
-        if(db.getReferencia() != null) {
-           referencia = db.getReferencia();
+        if (db.getReferencia() != null) {
+            referencia = db.getReferencia();
         }
 
         realm.close();
@@ -567,10 +567,11 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                     }
 
                     case R.id.botonCerrar: {
-                        Intent i = getBaseContext().getPackageManager().
-                                getLaunchIntentForPackage(getBaseContext().getPackageName());
+                        Intent i = new Intent(getApplicationContext(),MainScreen.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                     //   i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.putExtra("salida",true);
                         startActivity(i);
                         vibrator.vibrate(500);
                         finish();
@@ -716,7 +717,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                 db.setBotonPorcentajesAplanado(!botonPorcentajesAplanado);
                 db.setModo(modo);
 
-                if(!textoReferencia.getText().toString().isEmpty())
+                if (!textoReferencia.getText().toString().isEmpty())
                     db.setReferencia(textoReferencia.getText().toString().toUpperCase());
                 else {
                     if (db.getReferencia() != null)
@@ -862,7 +863,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
     private void setBotonPorcentajesAplanado() {
         if (botonPorcentajesAplanado) {
-           // TransitionManager.beginDelayedTransition(calculador);
+            // TransitionManager.beginDelayedTransition(calculador);
             calculador.setVisibility(View.GONE);
             recyclerPorcentajes.setVisibility(View.VISIBLE);
             recyclerBotonesPorcentajes.setVisibility(View.VISIBLE);
@@ -871,7 +872,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             botonGuardar.setVisibility(View.GONE);
 
         } else {
-          //  TransitionManager.beginDelayedTransition(calculador);
+            //  TransitionManager.beginDelayedTransition(calculador);
             calculador.setVisibility(View.VISIBLE);
             recyclerPorcentajes.setVisibility(View.GONE);
             recyclerBotonesPorcentajes.setVisibility(View.GONE);
