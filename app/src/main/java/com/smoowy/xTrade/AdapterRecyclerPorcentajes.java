@@ -4,8 +4,10 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
+import android.icu.text.IDNA;
 import android.os.Vibrator;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +118,14 @@ public class AdapterRecyclerPorcentajes extends
     @Override
     public void onBindViewHolder(Holder holder, int position) {
 
-        Informacion info = tablaInformacion.get(position);
+        Integer positionX = position;
+        Informacion info;
+
+        if (tablaInformacion.containsKey(positionX))
+            info = tablaInformacion.get(position);
+        else {
+            info = crearInfoIndividual(positionX);
+        }
 
         holder.textoPorcentaje.setText(info.getPorcentajeFinal());
         holder.textoPrecio.setText(info.getPrecioFinal());
@@ -154,7 +163,7 @@ public class AdapterRecyclerPorcentajes extends
     }
 
 
-    void hacerListas(int modo, double porcentaje) {
+ /*   void hacerListas(int modo, double porcentaje) {
 
         tablaPorcentajes = new ArrayList<>();
         tablaInformacion = new TreeMap<>();
@@ -256,6 +265,112 @@ public class AdapterRecyclerPorcentajes extends
 
 
     }
+
+*/
+
+    void hacerListas(int modo, double porcentaje) {
+
+        tablaPorcentajes = new ArrayList<>();
+        tablaInformacion = new TreeMap<>();
+
+        this.modo = modo;
+
+        for (int i = 0; i < 100 * ajustadorPorcentajes; i++) {
+            tablaPorcentajes.add(porcentaje * i);
+        }
+
+        tablaPorcentajesInvertida = new ArrayList<>(tablaPorcentajes);
+        Collections.sort(tablaPorcentajesInvertida, Collections.<Double>reverseOrder());
+
+    }
+
+
+    Informacion crearInfoIndividual(Integer posicion) {
+
+        Informacion info = new Informacion();
+
+        if (posicion < 100 * ajustadorPorcentajes) {
+
+            porcentajeMostrar = tablaPorcentajesInvertida.get(posicion) * 100;
+            precioFinal = positivo(precio, tablaPorcentajesInvertida.get(posicion));
+            info.setPrecioFinal(String.format(precisionPrecio, precioFinal) + " " + monedaOrigenNombre);
+
+
+            if (modo == modoCazar) {
+
+                invertidoActual = invertidoFinal / precioFinal;
+                ganancia = invertidoActual - invertidoDestino;
+                info.setGananciaFinal("+" + String.format(precisionDestino, ganancia) + " " + monedaDestinoNombre);
+                info.setActualFinal(String.format(precisionDestino, invertidoActual) + " " + monedaDestinoNombre);
+                liquidez = invertidoActual * liquidezDestino;
+                info.setLiquidezFinal(String.format(precisionLiquidez, liquidez) + " " + liquidezNombre);
+
+
+            } else if (modo == modoCorta || modo == modoLarga) {
+
+                invertidoActual = invertido * (1 + tablaPorcentajesInvertida.get(posicion));
+                ganancia = invertidoActual - invertidoFinal;
+                info.setGananciaFinal("+" + String.format(precisionOrigen, ganancia) + " " + monedaOrigenNombre);
+                info.setActualFinal(String.format(precisionOrigen, invertidoActual) + " " + monedaOrigenNombre);
+                liquidez = invertidoActual * liquidezOrigen;
+                info.setLiquidezFinal(String.format(precisionLiquidez, liquidez) + " " + liquidezNombre);
+            }
+
+            info.setPorcentajeFinal("+" + String.format("%.2f", porcentajeMostrar) + "%");
+
+
+        } else {
+
+            iPositivo = posicion - 99 * ajustadorPorcentajes;
+
+            ajustador = 0;
+
+            if (ajustadorPorcentajes == 2)
+                ajustador = 1;
+            else if (ajustadorPorcentajes == 4)
+                ajustador = 3;
+            else if (ajustadorPorcentajes == 10)
+                ajustador = 9;
+            else if (ajustadorPorcentajes == 100)
+                ajustador = 99;
+
+            iPositivo -= ajustador;
+
+
+            porcentajeMostrar = tablaPorcentajes.get(iPositivo) * 100;
+            porcentajeMostrar *= -1;
+            precioFinal = negativo(precio, tablaPorcentajes.get(iPositivo));
+            info.setPrecioFinal(String.format(precisionPrecio, precioFinal) + " " + monedaOrigenNombre);
+
+
+            if (modo == modoCazar) {
+
+                invertidoActual = invertidoFinal / precioFinal;
+                ganancia = invertidoActual - invertidoDestino;
+                info.setGananciaFinal(String.format(precisionDestino, ganancia) + " " + monedaDestinoNombre);
+                info.setActualFinal(String.format(precisionDestino, invertidoActual) + " " + monedaDestinoNombre);
+                liquidez = invertidoActual * liquidezDestino;
+                info.setLiquidezFinal(String.format(precisionLiquidez, liquidez) + " " + liquidezNombre);
+
+            } else if (modo == modoLarga || modo == modoCorta) {
+
+                invertidoActual = invertido * (1 - tablaPorcentajes.get(iPositivo));
+                ganancia = invertidoActual - invertidoFinal;
+                info.setGananciaFinal(String.format(precisionOrigen, ganancia) + " " + monedaOrigenNombre);
+                info.setActualFinal(String.format(precisionOrigen, invertidoActual) + " " + monedaOrigenNombre);
+                liquidez = invertidoActual * liquidezOrigen;
+                info.setLiquidezFinal(String.format(precisionLiquidez, liquidez) + " " + liquidezNombre);
+            }
+
+            info.setPorcentajeFinal(String.format("%.2f", porcentajeMostrar) + "%");
+        }
+
+        tablaInformacion.put(posicion, info);
+
+        return info;
+
+    }
+
 
     double a, b;
 
@@ -440,6 +555,12 @@ public class AdapterRecyclerPorcentajes extends
 
     class Informacion {
 
+        String precioFinal;
+        String porcentajeFinal;
+        String gananciaFinal;
+        String actualFinal;
+        String liquidezFinal;
+
         public String getPrecioFinal() {
             return precioFinal;
         }
@@ -480,12 +601,6 @@ public class AdapterRecyclerPorcentajes extends
             this.liquidezFinal = liquidezFinal;
         }
 
-
-        String precioFinal;
-        String porcentajeFinal;
-        String gananciaFinal;
-        String actualFinal;
-        String liquidezFinal;
 
     }
 

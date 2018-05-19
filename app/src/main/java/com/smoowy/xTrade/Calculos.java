@@ -567,11 +567,11 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                     }
 
                     case R.id.botonCerrar: {
-                        Intent i = new Intent(getApplicationContext(),MainScreen.class);
+                        Intent i = new Intent(getApplicationContext(), MainScreen.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                     //   i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        //   i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        i.putExtra("salida",true);
+                        i.putExtra("salida", true);
                         startActivity(i);
                         vibrator.vibrate(500);
                         finish();
@@ -935,6 +935,10 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             case 10: {
                 layoutManagerPorcentajes.scrollToPositionWithOffset(999, 999);
                 break;
+            }
+
+            case 100: {
+                layoutManagerPorcentajes.scrollToPositionWithOffset(10005, 10005);
             }
         }
     }

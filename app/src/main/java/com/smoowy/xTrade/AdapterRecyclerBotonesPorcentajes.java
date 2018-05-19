@@ -12,6 +12,7 @@ import java.util.TreeMap;
 public class AdapterRecyclerBotonesPorcentajes extends RecyclerView.Adapter<AdapterRecyclerBotonesPorcentajes.Holder> {
     private LayoutInflater mInflater;
     Comunicador comunicador;
+    int cantBotones = 8;
 
 
     public AdapterRecyclerBotonesPorcentajes(Context context) {
@@ -35,12 +36,12 @@ public class AdapterRecyclerBotonesPorcentajes extends RecyclerView.Adapter<Adap
 
     void crearListas() {
 
-        String[] nombres = {"10%", "5%", "2.5%", "1%", "0.50%", "0.25%", "0.10%"};
-        Integer[] multi = {1, 1, 1, 1, 2, 4, 10};
+        String[] nombres = {"10%", "5%", "2.5%", "1%", "0.50%", "0.25%", "0.10%","0.01%"};
+        Integer[] multi = {1, 1, 1, 1, 2, 4, 10,100};
         listaBotones = new TreeMap<>();
         listaBotonesChecador = new TreeMap<>();
         listaMultiplicador = new TreeMap<>();
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < cantBotones; i++) {
             listaBotones.put(i, nombres[i]);
             listaBotonesChecador.put(i, false);
             listaMultiplicador.put(i, multi[i]);
@@ -64,7 +65,7 @@ public class AdapterRecyclerBotonesPorcentajes extends RecyclerView.Adapter<Adap
 
     @Override
     public int getItemCount() {
-        return 7;
+        return cantBotones;
     }
 
 
@@ -80,7 +81,7 @@ public class AdapterRecyclerBotonesPorcentajes extends RecyclerView.Adapter<Adap
                 public void onClick(View view) {
                     boton.setBackgroundResource(R.drawable.fondo_boton_forex);
                     comunicador.cambioPorcentaje(boton.getText().toString(), listaMultiplicador.get(getAdapterPosition()));
-                    for (int i = 0; i < 7; i++) {
+                    for (int i = 0; i < cantBotones; i++) {
                         listaBotonesChecador.put(i, false);
                     }
                     listaBotonesChecador.put(getAdapterPosition(), true);
