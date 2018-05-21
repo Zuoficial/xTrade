@@ -36,14 +36,15 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             botonPorcentajeCalculadorMenos, botonPorcentajeCalculadorMas,
             botonGuardar, botonModificar;
     TextView encabezado, textoGanancia, textoInvertido, textoInvertidoActual, textoUsado, textoGananciaLetra,
-            textoPorcentaje, textoPrecio, textoBase, textoLiquidez;
+            textoPorcentaje, textoPrecio, textoBase, textoInversionLiq,
+            textoGanadoLiq, textoActualLiq, textoGanadoLiqLetra;
     String monedaOrigenNombre, monedaDestinoNombre, referencia;
     EditText textoPrecioMod, textoPorcentajeMod, textoReferencia;
     double invertido, precio, invertidoDestino, precioFinal,
             precioIngresado, porcentajeFinal, gananciaFinal, invertidoActual, porcentajeIngresado,
-            liquidezOrigen, liquidezDestino, comisionEntrada, comisionSalida, invertidoFinal, liquidez,
+            liquidezOrigen, liquidezDestino, comisionEntrada, comisionSalida, invertidoFinal,
             resultadoComisionEntrada, resultadoComisionSalida;
-    int ajustadorPorcentajes, modo, idOperacion;
+    int ajustadorPorcentajes, modo, modoLiquidez, idOperacion;
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     boolean botonPorcentajesAplanado,
             botonporcentajeCalculadorAplanado, botonPorcentajeCalculadorMasAplanado, enForex;
@@ -52,6 +53,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             liquidezNombre;
     ConstraintLayout calculador;
     DrawerLayout drawer;
+    double inversionDestinoActual, gananciaDestino, inversionLiq, ganadoLiq, actualLiq;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,25 +96,27 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoPorcentajeMod.addTextChangedListener(textWatcher);
         textoGanancia = findViewById(R.id.textoGanancia);
         textoPrecio = findViewById(R.id.textoPrecio);
-        textoPrecio.setOnTouchListener(onTouchListener);
         textoPrecioMod = findViewById(R.id.textoPrecioMod);
         textoPrecioMod.addTextChangedListener(textWatcher);
         textoReferencia = findViewById(R.id.referencia);
         if (referencia != null)
             textoReferencia.setText(referencia);
         textoInvertido = findViewById(R.id.textoInvertido);
-        textoInvertido.setOnTouchListener(onTouchListener);
         textoInvertidoActual = findViewById(R.id.textoInvertidoActual);
-        textoInvertidoActual.setOnTouchListener(onTouchListener);
-        textoUsado = findViewById(R.id.textoUsado);
-        textoUsado.setOnTouchListener(onTouchListener);
+        textoUsado = findViewById(R.id.textoUsandoRV2);
         textoGananciaLetra = findViewById(R.id.textoGanadoLetra);
         textoBase = findViewById(R.id.textoBase);
         textoBase.setText(String.format(precisionPrecio, precio) + " " + monedaOrigenNombre);
+        textoGanadoLiq = findViewById(R.id.textoGanadoLiq2);
+        textoGanadoLiqLetra = findViewById(R.id.textoGanadoLiqLetra2);
+        textoInversionLiq = findViewById(R.id.textoInversionLiq2);
+        textoActualLiq = findViewById(R.id.textoActualLiq2);
+        textoPrecio.setOnTouchListener(onTouchListener);
+        textoInvertido.setOnTouchListener(onTouchListener);
+        textoInvertidoActual.setOnTouchListener(onTouchListener);
+        textoUsado.setOnTouchListener(onTouchListener);
         textoBase.setOnTouchListener(onTouchListener);
-        textoLiquidez = findViewById(R.id.textoLiquidez);
-        textoLiquidez.setText("0.00 " + liquidezNombre);
-        textoLiquidez.setOnTouchListener(onTouchListener);
+        textoActualLiq.setOnTouchListener(onTouchListener);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         if (modo == modoCazar) {
@@ -123,7 +127,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             setBotonLarga();
         }
 
-
+        limpiarCalculador();
         setBotonPorcentajesAplanado();
         ajustadorPorcentajes = 1;
         ajustadorPosicion(ajustadorPorcentajes);
@@ -147,7 +151,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         liquidezNombre = db.getLiquidezNombre();
         invertido = Double.parseDouble(db.getInversionInicio());
         precio = Double.parseDouble(db.getPrecioIn());
-        invertidoDestino = Double.parseDouble(db.getUsando());
+        invertidoDestino = invertido/precio;
 
         if (db.getEnForex() != null) {
             if (db.getEnForex()) {
@@ -166,6 +170,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
 
         modo = db.getModo();
+        modoLiquidez = db.getModoLiquidez();
         botonPorcentajesAplanado = db.getBotonPorcentajesAplanado();
         precisionOrigen = db.getPrecisionOrigenFormato().replace(".", ",.");
         precisionDestino = db.getPrecisionDestinoFormato().replace(".", ",.");
@@ -235,7 +240,9 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                 else
                     calculoModoLarga();
 
-                textoLiquidez.setText(String.format(precisionLiquidez, liquidez) + " " + liquidezNombre);
+
+                textoInversionLiq.setText(String.format(precisionLiquidez, inversionLiq) + " " + liquidezNombre);
+                textoActualLiq.setText(String.format(precisionLiquidez, actualLiq) + " " + liquidezNombre);
 
 
                 if (botonporcentajeCalculadorAplanado)
@@ -246,11 +253,15 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                     textoGanancia.setText(textoGanadoGuardar + " " + monedaOrigenNombre);
                     textoPorcentaje.setText("+" + String.format("%.2f", porcentajeFinal) + "%");
                     textoGananciaLetra.setText("Ganado");
+                    textoGanadoLiqLetra.setText("Ganado liq");
                 } else {
                     textoGanadoGuardar = String.format(precisionOrigen, gananciaFinal);
                     textoGanancia.setText(textoGanadoGuardar.substring(1) + " " + monedaOrigenNombre);
+                    if(!textoInversionLiq.getText().toString().equals("0.00"))
+                    textoGanadoLiq.setText(String.format(precisionLiquidez, ganadoLiq).substring(1) + " " + liquidezNombre);
                     textoPorcentaje.setText(String.format("%.2f", porcentajeFinal) + "%");
                     textoGananciaLetra.setText("Perdido");
+                    textoGanadoLiqLetra.setText("Perdido liq");
 
                 }
                 textoActualGuardar = String.format(precisionOrigen, invertidoActual);
@@ -260,8 +271,9 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
                 calculoModoCazar();
 
-                textoLiquidez.setText(String.format(precisionLiquidez, liquidez) + " " + liquidezNombre);
-
+                textoInversionLiq.setText(String.format(precisionLiquidez, inversionLiq) + " " + liquidezNombre);
+                textoGanadoLiq.setText(String.format(precisionLiquidez, ganadoLiq) + " " + liquidezNombre);
+                textoActualLiq.setText(String.format(precisionLiquidez, actualLiq) + " " + liquidezNombre);
 
                 if (botonporcentajeCalculadorAplanado) {
                     textoPrecio.setText(String.format(precisionPrecio, precioIngresado));
@@ -293,6 +305,68 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         public void afterTextChanged(Editable editable) {
         }
     };
+
+
+    private void chequeoLiquidezCazar() {
+
+        inversionDestinoActual = invertidoActual * porcentajeFinal / 100;
+        gananciaDestino = inversionDestinoActual - invertidoDestino;
+
+
+        if (modoLiquidez == 0) {
+
+            inversionLiq = invertidoDestino * liquidezDestino;
+            ganadoLiq = gananciaDestino * liquidezDestino;
+            actualLiq = inversionDestinoActual * liquidezDestino;
+
+        } else if (modoLiquidez == 1) {
+
+            inversionLiq = invertidoDestino / liquidezDestino;
+            ganadoLiq = gananciaDestino / liquidezDestino;
+            actualLiq = inversionDestinoActual / liquidezDestino;
+
+        } else if (modoLiquidez == 2) {
+
+            inversionLiq = invertido * liquidezOrigen;
+            ganadoLiq = gananciaFinal * liquidezOrigen;
+            actualLiq = invertidoActual * liquidezOrigen;
+
+        } else if (modoLiquidez == 3) {
+            inversionLiq = invertido / liquidezOrigen;
+            ganadoLiq = gananciaFinal / liquidezOrigen;
+            actualLiq = invertidoActual / liquidezOrigen;
+        }
+
+
+    }
+
+    private void chequeoLiquidezLargaCorta() {
+
+
+        inversionDestinoActual = invertidoActual * porcentajeFinal / 100;
+        gananciaDestino = inversionDestinoActual - invertidoDestino;
+
+
+        if (modoLiquidez == 0) {
+            inversionLiq = invertido * liquidezOrigen;
+            ganadoLiq = gananciaFinal * liquidezOrigen;
+            actualLiq = invertidoActual * liquidezOrigen;
+        } else if (modoLiquidez == 1) {
+            inversionLiq = invertido / liquidezOrigen;
+            ganadoLiq = gananciaFinal / liquidezOrigen;
+            actualLiq = invertidoActual / liquidezOrigen;
+        } else if (modoLiquidez == 2) {
+            inversionLiq = invertidoDestino * liquidezDestino;
+            ganadoLiq = gananciaDestino * liquidezDestino;
+            actualLiq = inversionDestinoActual * liquidezDestino;
+
+        } else if (modoLiquidez == 3) {
+            inversionLiq = invertidoDestino / liquidezDestino;
+            ganadoLiq = gananciaDestino / liquidezDestino;
+            actualLiq = inversionDestinoActual / liquidezDestino;
+        }
+
+    }
 
 
     private void calculoModoCazar() {
@@ -327,7 +401,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         }
 
 
-        liquidez = invertidoActual * liquidezDestino;
+        chequeoLiquidezCazar();
         positivo = gananciaFinal > 0;
 
 
@@ -397,7 +471,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             positivo = gananciaFinal > 0;
 
         }
-        liquidez = invertidoActual * liquidezOrigen;
+        chequeoLiquidezLargaCorta();
 
     }
 
@@ -462,7 +536,9 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
 
         }
-        liquidez = invertidoActual * liquidezOrigen;
+
+        chequeoLiquidezLargaCorta();
+
 
     }
 
@@ -546,7 +622,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                         break;
                     }
 
-                    case R.id.textoUsado: {
+                    case R.id.textoUsandoRV2: {
                         exportarPrecio(textoUsado);
                         break;
                     }
@@ -561,8 +637,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                         break;
                     }
 
-                    case R.id.textoLiquidez: {
-                        exportarPrecio(textoLiquidez);
+                    case R.id.textoActualLiq2: {
+                        exportarPrecio(textoActualLiq);
                         break;
                     }
 
@@ -619,7 +695,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                                 textoInvertidoActual.setText(String.format(precisionDestino, invertidoDestino) + " " + monedaDestinoNombre);
 
                         }
-                        textoLiquidez.setText("0.00 " + liquidezNombre);
+                        textoActualLiq.setText("0.00 " + liquidezNombre);
 
                         break;
                     }
@@ -633,7 +709,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                             botonPorcentajeCalculadorMenos.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
                             textoPorcentajeMod.setText("");
                             textoPrecio.setText("Precio");
-                            textoLiquidez.setText("0.00 " + liquidezNombre);
+                            textoActualLiq.setText("0.00 " + liquidezNombre);
                             if (modo == modoCorta || modo == modoLarga)
 
                                 textoInvertidoActual.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
@@ -654,7 +730,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                             botonPorcentajeCalculadorMenos.setBackgroundResource(R.drawable.fondo_boton_forex);
                             textoPorcentajeMod.setText("");
                             textoPrecio.setText("Precio");
-                            textoLiquidez.setText("0.00 " + liquidezNombre);
+                            textoActualLiq.setText("0.00 " + liquidezNombre);
                             if (modo == modoCorta || modo == modoLarga)
 
                                 textoInvertidoActual.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
@@ -723,7 +799,9 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                     if (db.getReferencia() != null)
                         db.setReferencia(null);
                 }
-
+                db.setInversionLiqInicio(String.valueOf(inversionLiq));
+                db.setGanadoLiqInicio(String.valueOf(ganadoLiq));
+                db.setActualLiqInicio(String.valueOf(actualLiq));
             }
         });
         realm.close();
@@ -746,7 +824,9 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoPorcentajeMod.setText("");
         textoPorcentaje.setText("+0.00%");
         textoPrecio.setText("Precio");
-        textoLiquidez.setText("0.00 " + liquidezNombre);
+        textoInversionLiq.setText("0.00 " + liquidezNombre);
+        textoGanadoLiq.setText("0.00 " + liquidezNombre);
+        textoActualLiq.setText("0.00 " + liquidezNombre);
 
         if (modo == modoCorta || modo == modoLarga) {
 
@@ -793,7 +873,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoPrecioMod.setText("");
         textoPrecioMod.clearFocus();
         textoPorcentaje.setText("+0.00%");
-        textoLiquidez.setText("0.00 " + liquidezNombre);
+        textoActualLiq.setText("0.00 " + liquidezNombre);
         ajustadorPosicion(ajustadorPorcentajes);
         vibrator.vibrate(50);
     }
@@ -824,7 +904,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoPrecioMod.setText("");
         textoPrecioMod.clearFocus();
         textoPorcentaje.setText("+0.00%");
-        textoLiquidez.setText("0.00 " + liquidezNombre);
+        textoActualLiq.setText("0.00 " + liquidezNombre);
         ajustadorPosicion(ajustadorPorcentajes);
         vibrator.vibrate(50);
     }
@@ -856,7 +936,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoPrecioMod.setText("");
         textoPrecioMod.clearFocus();
         textoPorcentaje.setText("+0.00%");
-        textoLiquidez.setText("0.00 " + liquidezNombre);
+        textoActualLiq.setText("0.00 " + liquidezNombre);
         ajustadorPosicion(ajustadorPorcentajes);
         vibrator.vibrate(50);
     }

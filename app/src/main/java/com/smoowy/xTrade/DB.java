@@ -39,6 +39,16 @@ public class DB extends RealmObject {
     Boolean enForex;
     RealmList<DBOpInversiones> operaciones;
     int modo;
+    int modoLiquidez;
+
+    public int getModoLiquidez() {
+        return modoLiquidez;
+    }
+
+    public void setModoLiquidez(int modoLiquidez) {
+        this.modoLiquidez = modoLiquidez;
+    }
+
 
     public String getReferencia() {
         return referencia;

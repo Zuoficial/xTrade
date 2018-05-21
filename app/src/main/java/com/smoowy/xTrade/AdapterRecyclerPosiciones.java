@@ -138,29 +138,23 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
 
             String precisionLiquidezFormato = db.getPrecisionLiquidezFormato().replace(".", ",.");
 
-            double inversion = Double.parseDouble(db.getInversionInicio());
-            double ganado = Double.parseDouble(db.getGanadoInicio());
-            double actual = Double.parseDouble(db.getActualInicio());
-            double liquidez = Double.parseDouble(db.getLiquidezOrigen());
+            double inversionLiq = Double.parseDouble(db.getInversionLiqInicio());
+            double ganadoLiq = Double.parseDouble(db.getGanadoLiqInicio());
+            double actualLiq = Double.parseDouble(db.getActualLiqInicio());
+
+            holder.textoInversionLiq.setText(String.format(precisionLiquidezFormato, inversionLiq) + " " + db.getLiquidezNombre());
 
 
-            inversion *= liquidez;
-            ganado *= liquidez;
-            actual *= liquidez;
-
-            holder.textoInversionLiq.setText(String.format(precisionLiquidezFormato, inversion) + " " + db.getLiquidezNombre());
-
-
-            if (ganado < 0) {
+            if (ganadoLiq < 0) {
                 holder.textoGanadoLiqLetra.setText("Perdido");
-                ganado *= -1;
+                ganadoLiq *= -1;
 
             } else
                 holder.textoGanadoLiqLetra.setText("Ganado");
 
 
-            holder.textoGanadoLiq.setText(String.format(precisionLiquidezFormato, ganado) + " " + db.getLiquidezNombre());
-            holder.textoActualLiq.setText(String.format(precisionLiquidezFormato, actual) + " " + db.getLiquidezNombre());
+            holder.textoGanadoLiq.setText(String.format(precisionLiquidezFormato, ganadoLiq) + " " + db.getLiquidezNombre());
+            holder.textoActualLiq.setText(String.format(precisionLiquidezFormato, actualLiq) + " " + db.getLiquidezNombre());
 
 
         } else {

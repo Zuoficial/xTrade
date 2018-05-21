@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
     EditText invertido, precio, comisionEntrada, comisionSalida, monedaOrigen, monedaDestino,
             precisionOrigen, precisionDestino, liquidezOrigen, liquidezDestino,
             liquidezNombre, precisionLiquidez, precisionPrecio;
-    TextView encabezadoInversion, comisionEntradaLetra, comisionSalidaLetra;
+    TextView encabezadoInversion, comisionEntradaLetra, comisionSalidaLetra, encabezadoLiquidez;
     int selectorCambioInversion = 0, idOperacion;
     final int cambioInversionOrigen = 0, cambioInversionDestino = 1,
             cambioInversionOrigenLiquidez = 2, cambioInversionDestinoLiquidez = 3;
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
     Vibrator vibrator;
     DrawerLayout drawer;
     RecyclerView recyclerViewInversiones;
-    int modo = 0;
+    int modo = 0, modoLiquidez = 0;
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     Realm realm;
     DB db;
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         botonCambioInversion = findViewById(R.id.botonCambioInversion);
         botonForex = findViewById(R.id.botonForex);
         encabezadoInversion = findViewById(R.id.encabezadoInversion);
+        encabezadoLiquidez = findViewById(R.id.encabezadoLiquidez);
         invertido = findViewById(R.id.inversion);
         precio = findViewById(R.id.precio);
         comisionEntrada = findViewById(R.id.comisionEntrada);
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity
         botonAgregarInversion.setOnTouchListener(onTouchListener);
         botonCambioInversion.setOnTouchListener(onTouchListener);
         botonForex.setOnTouchListener(onTouchListener);
+        encabezadoLiquidez.setOnTouchListener(onTouchListener);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         precisionOrigen.addTextChangedListener(textWatcher);
         precisionDestino.addTextChangedListener(textWatcher);
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity
 
             if (precisionOrigen.getText().toString().isEmpty()) {
 
-                precisionOrigenFormato = "%,.8f";
+                precisionOrigenFormato = "%,.2f";
 
             } else
                 precisionOrigenFormato = "%,." + precisionOrigen.getText().toString() + "f";
@@ -123,7 +125,7 @@ public class MainActivity extends AppCompatActivity
 
             if (precisionDestino.getText().toString().isEmpty()) {
 
-                precisionDestinoFormato = "%,.8f";
+                precisionDestinoFormato = "%,.2f";
 
             } else
                 precisionDestinoFormato = "%,." + precisionDestino.getText().toString() + "f";
@@ -192,7 +194,9 @@ public class MainActivity extends AppCompatActivity
         adapterRecyclerInversiones.datos = adapterRecyclerInversiones.lista.size();
         adapterRecyclerInversiones.notifyDataSetChanged();
         modo = db.getModo();
+        modoLiquidez = db.getModoLiquidez();
         cambiarModo();
+        cambiarModoLiquidez(true);
         realm.close();
     }
 
@@ -238,6 +242,7 @@ public class MainActivity extends AppCompatActivity
                 db.operaciones.clear();
                 db.operaciones.addAll(adapterRecyclerInversiones.lista);
                 db.setModo(modo);
+                db.setModoLiquidez(modoLiquidez);
                 db.setInversionInicio(inversionInicio);
                 db.setActualInicio(inversionInicio);
                 db.setUsando(inversionDestinoInicio);
@@ -399,6 +404,12 @@ public class MainActivity extends AppCompatActivity
                         break;
                     }
 
+                    case R.id.encabezadoLiquidez: {
+
+                        cambiarModoLiquidez(false);
+                        break;
+                    }
+
 
                 }
 
@@ -409,6 +420,47 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
     };
+
+    private void cambiarModoLiquidez(Boolean alInicio) {
+
+        if(!alInicio) {
+
+            modoLiquidez += 1;
+
+            if (modoLiquidez > 3)
+                modoLiquidez = 0;
+        }
+
+        switch (modoLiquidez) {
+
+
+            case 0: {
+                encabezadoLiquidez.setText("Origen a liquidez");
+                break;
+            }
+            case 1: {
+                encabezadoLiquidez.setText("Liquidez a origen");
+                break;
+
+            }
+            case 2: {
+                encabezadoLiquidez.setText("Destino a liquidez");
+                break;
+
+            }
+
+            case 3: {
+                encabezadoLiquidez.setText("Liquidez a destino");
+                break;
+
+
+            }
+
+
+        }
+
+
+    }
 
     private void setBotonForex() {
         if (enForex) {
@@ -531,7 +583,7 @@ public class MainActivity extends AppCompatActivity
 
         if (precisionOrigen.getText().toString().isEmpty()) {
 
-            precisionOrigenFormato = "%.8f";
+            precisionOrigenFormato = "%.2f";
 
 
         } else {
@@ -544,7 +596,7 @@ public class MainActivity extends AppCompatActivity
 
         if (precisionDestino.getText().toString().isEmpty()) {
 
-            precisionDestinoFormato = "%.8f";
+            precisionDestinoFormato = "%.2f";
 
 
         } else {
