@@ -54,9 +54,10 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
                 break;
             }
         }
-        if (db.getReferencia() != null) {
+
+
+        if (db.getReferencia() != null)
             holder.textoReferencia.setText(db.getReferencia());
-        }
         else
             holder.textoReferencia.setVisibility(View.GONE);
 
@@ -64,110 +65,52 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
         holder.textoParidad.setText(db.getMonedaDestino() + " con " + db.getMonedaOrigen());
 
         String precisionOrigenFormato = db.getPrecisionOrigenFormato().replace(".", ",.");
-        String precisionPrecioFormato = db.getPrecisionPrecioFormato().replace(".",",.");
-
-        if (db.getPrecioIn() == null)
-            holder.textoPrecioIn.setText("Pendiente");
-        else {
-
-            double b = Double.parseDouble(db.getPrecioIn());
-            holder.textoPrecioIn.setText(String.format(precisionPrecioFormato, b) + " " + db.getMonedaOrigen());
-
-        }
-
-        if (db.getPrecioOut() == null)
-            holder.textoPrecioOut.setText("Pendiente");
-        else {
-
-            double b = Double.parseDouble(db.getPrecioOut());
-            holder.textoPrecioOut.setText(String.format(precisionPrecioFormato, b) + " " + db.getMonedaOrigen());
+        String precisionPrecioFormato = db.getPrecisionPrecioFormato().replace(".", ",.");
 
 
-        }
+        double precioIn = Double.parseDouble(db.getPrecioIn());
+        holder.textoPrecioIn.setText(String.format(precisionPrecioFormato, precioIn)
+                + " " + db.getMonedaOrigen());
 
 
-        if (db.getInversionInicio() == null)
-            holder.textoInversion.setText("Pendiente");
-        else {
-
-            double a = Double.parseDouble(db.getInversionInicio());
-
-            holder.textoInversion.setText(String.format(precisionOrigenFormato, a) + " " + db.getMonedaOrigen());
+        holder.textoUsando.setText(db.getUsando() + " " + db.getMonedaDestino());
 
 
-        }
-
-
-        if (db.getGanadoInicio() == null)
-            holder.textoGanado.setText("Pendiente");
-        else {
-
-            double a = Double.parseDouble(db.getGanadoInicio());
-
-            if (a < 0) {
-                holder.textoGanadoLetra.setText("Perdido");
-                a *= -1;
-
-            } else
-                holder.textoGanadoLetra.setText("Ganado");
-
-
-            holder.textoGanado.setText(String.format(precisionOrigenFormato, a) + " " + db.getMonedaOrigen());
-
-        }
-
-
-        if (db.getActualInicio() == null)
-            holder.textoActual.setText("Pendiente");
-        else {
-
-            double a = Double.parseDouble(db.getActualInicio());
-
-            holder.textoActual.setText(String.format(precisionOrigenFormato, a) + " " + db.getMonedaOrigen());
-
-        }
-
-
-        if (db.getInversionLiqInicio() == null)
-            holder.textoInversionLiq.setText("Pendiente");
-        else
+        if (db.getPrecioOut() != null) {
+            double precioOut = Double.parseDouble(db.getPrecioOut());
+            holder.textoPrecioOut.setText(String.format(precisionPrecioFormato, precioOut)
+                    + " " + db.getMonedaOrigen());
+            holder.textoInversion.setText(db.getInversionInicioFinal());
+            holder.textoGanado.setText(db.getGanadoInicio());
+            holder.textoActual.setText(db.getActualInicio());
             holder.textoInversionLiq.setText(db.getInversionLiqInicio());
+            holder.textoGanadoLiq.setText(db.getGanadoLiqInicio());
+            holder.textoActualLiq.setText(db.getActualLiqInicio());
 
 
-        if (db.liquidezOrigen != null || db.getInvertido() != null || db.getGanadoInicio() != null) {
-
-            String precisionLiquidezFormato = db.getPrecisionLiquidezFormato().replace(".", ",.");
-
-            double inversionLiq = Double.parseDouble(db.getInversionLiqInicio());
-            double ganadoLiq = Double.parseDouble(db.getGanadoLiqInicio());
-            double actualLiq = Double.parseDouble(db.getActualLiqInicio());
-
-            holder.textoInversionLiq.setText(String.format(precisionLiquidezFormato, inversionLiq) + " " + db.getLiquidezNombre());
-
-
-            if (ganadoLiq < 0) {
+            if (db.getGanadoFinal() < 0) {
+                holder.textoGanadoLetra.setText("Perdido");
                 holder.textoGanadoLiqLetra.setText("Perdido");
-                ganadoLiq *= -1;
 
-            } else
+            } else {
+                holder.textoGanadoLetra.setText("Ganado");
                 holder.textoGanadoLiqLetra.setText("Ganado");
-
-
-            holder.textoGanadoLiq.setText(String.format(precisionLiquidezFormato, ganadoLiq) + " " + db.getLiquidezNombre());
-            holder.textoActualLiq.setText(String.format(precisionLiquidezFormato, actualLiq) + " " + db.getLiquidezNombre());
+            }
 
 
         } else {
 
+            double inversion = Double.parseDouble(db.getInversionInicio());
+            holder.textoInversion.setText(String.format(precisionOrigenFormato, inversion)
+                    + " " + db.getMonedaOrigen());
+
+            holder.textoPrecioOut.setText("Pendiente");
+            holder.textoGanado.setText("Pendiente");
+            holder.textoActual.setText("Pendiente");
             holder.textoInversionLiq.setText("Pendiente");
             holder.textoGanadoLiq.setText("Pendiente");
             holder.textoActualLiq.setText("Pendiente");
-
         }
-        if (db.getUsando() == null)
-            holder.textoUsando.setText("Pendiente");
-        else
-            holder.textoUsando.setText(db.getUsando() + " " + db.getMonedaDestino());
 
 
     }
@@ -210,7 +153,7 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
         TextView textoPosicion, textoParidad, textoPrecioIn, textoPrecioOut,
                 textoInversion, textoGanado, textoGanadoLetra,
                 textoGanadoLiqLetra, textoGanadoLiq,
-                textoActual, textoActualLiq, textoInversionLiq, textoUsando,textoReferencia;
+                textoActual, textoActualLiq, textoInversionLiq, textoUsando, textoReferencia;
         View contenedor;
 
         Holder(final View itemView) {

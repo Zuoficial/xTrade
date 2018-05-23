@@ -144,13 +144,15 @@ public class MainScreen extends AppCompatActivity {
                 adapterRecyclerPosiciones.quitarDatos(viewHolder.getLayoutPosition());
 
 
-                Snackbar.make(findViewById(R.id.fondo), "Inversion borrada!", Snackbar.LENGTH_LONG)
-                        .setAction("Regresar", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                adapterRecyclerPosiciones.recuperarDatos();
-                            }
-                        }).show();
+                Snackbar snackbar =
+                        Snackbar.make(findViewById(R.id.fondo), "Inversion borrada!", Snackbar.LENGTH_LONG);
+                snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
+                snackbar.setAction("Regresar", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        adapterRecyclerPosiciones.recuperarDatos();
+                    }
+                }).show();
 
 
             }

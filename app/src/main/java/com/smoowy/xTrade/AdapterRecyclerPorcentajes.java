@@ -144,7 +144,8 @@ public class AdapterRecyclerPorcentajes extends
             holder.textoPorcentaje.setTextColor(Color.parseColor("#45c042"));
         } else {
             holder.textoGanancia.setText(info.getGananciaFinal().substring(1));
-            holder.textoGanadoLiq.setText(info.getGananciaLiqFinal().substring(1));
+            holder.textoGanadoLiq.setText(!info.getGananciaLiqFinal().equals("Pendiente")
+                    ? info.getGananciaLiqFinal().substring(1) : info.getGananciaLiqFinal());
             holder.textoGanadoLetra.setText("Perdido");
             holder.textoGanadoLiqLetra.setText("Perdido Liq");
             holder.textoPorcentaje.setTextColor(Color.parseColor("#e53935"));
@@ -206,7 +207,7 @@ public class AdapterRecyclerPorcentajes extends
                 gananciaDestino = inversionDestinoActual - invertidoDestino;
                 info.setGananciaFinal(String.format(precisionDestino, ganancia) + " " + monedaDestinoNombre);
                 info.setActualFinal(String.format(precisionDestino, inversionActual) + " " + monedaDestinoNombre);
-                chequeoLiquidezCazar(info);
+                chequeoLiquidez(info);
 
 
             } else if (modo == modoCorta || modo == modoLarga) {
@@ -217,7 +218,7 @@ public class AdapterRecyclerPorcentajes extends
                 gananciaDestino = inversionDestinoActual - invertidoDestino;
                 info.setGananciaFinal(String.format(precisionOrigen, ganancia) + " " + monedaOrigenNombre);
                 info.setActualFinal(String.format(precisionOrigen, inversionActual) + " " + monedaOrigenNombre);
-                chequeoLiquidezLargaCorta(info);
+                chequeoLiquidez(info);
 
             }
 
@@ -267,7 +268,7 @@ public class AdapterRecyclerPorcentajes extends
                 gananciaDestino = inversionDestinoActual - invertidoDestino;
                 info.setGananciaFinal(String.format(precisionDestino, ganancia) + " " + monedaDestinoNombre);
                 info.setActualFinal(String.format(precisionDestino, inversionActual) + " " + monedaDestinoNombre);
-                chequeoLiquidezCazar(info);
+                chequeoLiquidez(info);
 
 
             } else if (modo == modoLarga || modo == modoCorta) {
@@ -278,7 +279,7 @@ public class AdapterRecyclerPorcentajes extends
                 gananciaDestino = inversionDestinoActual - invertidoDestino;
                 info.setGananciaFinal(String.format(precisionOrigen, ganancia) + " " + monedaOrigenNombre);
                 info.setActualFinal(String.format(precisionOrigen, inversionActual) + " " + monedaOrigenNombre);
-                chequeoLiquidezLargaCorta(info);
+                chequeoLiquidez(info);
             }
 
             info.setPorcentajeFinal(String.format("%.2f", porcentajeMostrar) + "%");
@@ -290,38 +291,7 @@ public class AdapterRecyclerPorcentajes extends
 
     }
 
-    private void chequeoLiquidezCazar(Informacion info) {
-        if (modoLiquidez == 0) {
-
-            inversionLiq = invertidoDestino * liquidezDestino;
-            ganadoLiq = gananciaDestino * liquidezDestino;
-            actualLiq = inversionDestinoActual * liquidezDestino;
-
-        } else if (modoLiquidez == 1) {
-
-            inversionLiq = invertidoDestino / liquidezDestino;
-            ganadoLiq = gananciaDestino / liquidezDestino;
-            actualLiq = inversionDestinoActual / liquidezDestino;
-
-        } else if (modoLiquidez == 2) {
-
-            inversionLiq = invertido * liquidezOrigen;
-            ganadoLiq = ganancia * liquidezOrigen;
-            actualLiq = inversionActual * liquidezOrigen;
-
-        } else if (modoLiquidez == 3) {
-            inversionLiq = invertido / liquidezOrigen;
-            ganadoLiq = ganancia / liquidezOrigen;
-            actualLiq = inversionActual / liquidezOrigen;
-        }
-
-
-        info.setInversionLiqFinal(String.format(precisionLiquidez, inversionLiq) + " " + liquidezNombre);
-        info.setGananciaLiqFinal(String.format(precisionLiquidez, ganadoLiq) + " " + liquidezNombre);
-        info.setActualLiqFinal(String.format(precisionLiquidez, actualLiq) + " " + liquidezNombre);
-    }
-
-    private void chequeoLiquidezLargaCorta(Informacion info) {
+    private void chequeoLiquidez(Informacion info) {
         if (modoLiquidez == 0) {
             inversionLiq = invertido * liquidezOrigen;
             ganadoLiq = ganancia * liquidezOrigen;
@@ -341,10 +311,16 @@ public class AdapterRecyclerPorcentajes extends
             actualLiq = inversionDestinoActual / liquidezDestino;
         }
 
+        if (inversionLiq != 0 && inversionLiq != Double.POSITIVE_INFINITY) {
+            info.setInversionLiqFinal(String.format(precisionLiquidez, inversionLiq) + " " + liquidezNombre);
+            info.setGananciaLiqFinal(String.format(precisionLiquidez, ganadoLiq) + " " + liquidezNombre);
+            info.setActualLiqFinal(String.format(precisionLiquidez, actualLiq) + " " + liquidezNombre);
+        } else {
 
-        info.setInversionLiqFinal(String.format(precisionLiquidez, inversionLiq) + " " + liquidezNombre);
-        info.setGananciaLiqFinal(String.format(precisionLiquidez, ganadoLiq) + " " + liquidezNombre);
-        info.setActualLiqFinal(String.format(precisionLiquidez, actualLiq) + " " + liquidezNombre);
+            info.setInversionLiqFinal("Pendiente");
+            info.setGananciaLiqFinal("Pendiente");
+            info.setActualLiqFinal("Pendiente");
+        }
     }
 
 

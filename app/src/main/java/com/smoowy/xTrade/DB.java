@@ -6,6 +6,7 @@ import io.realm.annotations.PrimaryKey;
 
 public class DB extends RealmObject {
 
+
     @PrimaryKey
     int id;
     String monedaOrigen;
@@ -24,6 +25,7 @@ public class DB extends RealmObject {
     String precioIn;
     String precioOut;
     String inversionInicio;
+    String inversionInicioFinal;
     String ganadoInicio;
     String actualInicio;
     String inversionLiqInicio;
@@ -40,73 +42,22 @@ public class DB extends RealmObject {
     RealmList<DBOpInversiones> operaciones;
     int modo;
     int modoLiquidez;
+    double ganadoFinal;
 
-    public int getModoLiquidez() {
-        return modoLiquidez;
+
+    public String getInversionInicioFinal() {
+        return inversionInicioFinal;
     }
 
-    public void setModoLiquidez(int modoLiquidez) {
-        this.modoLiquidez = modoLiquidez;
+    public void setInversionInicioFinal(String inversionInicioFinal) {
+        this.inversionInicioFinal = inversionInicioFinal;
+    }
+    public double getGanadoFinal() {
+        return ganadoFinal;
     }
 
-
-    public String getReferencia() {
-        return referencia;
-    }
-
-    public void setReferencia(String referencia) {
-        this.referencia = referencia;
-    }
-
-
-    public String getPrecisionPrecio() {
-        return precisionPrecio;
-    }
-
-    public void setPrecisionPrecio(String precisionPrecio) {
-        this.precisionPrecio = precisionPrecio;
-    }
-
-    public String getPrecisionPrecioFormato() {
-        return precisionPrecioFormato;
-    }
-
-    public void setPrecisionPrecioFormato(String precisionPrecioFormato) {
-        this.precisionPrecioFormato = precisionPrecioFormato;
-    }
-
-
-    public Boolean getEnForex() {
-        return enForex;
-    }
-
-    public void setEnForex(Boolean enForex) {
-        this.enForex = enForex;
-    }
-
-    public Boolean getBotonPorcentajesAplanado() {
-        return botonPorcentajesAplanado;
-    }
-
-    public void setBotonPorcentajesAplanado(Boolean botonPorcentajesAplanado) {
-        this.botonPorcentajesAplanado = botonPorcentajesAplanado;
-    }
-
-
-    public String getPrecisionLiquidez() {
-        return precisionLiquidez;
-    }
-
-    public void setPrecisionLiquidez(String precisionLiquidez) {
-        this.precisionLiquidez = precisionLiquidez;
-    }
-
-    public String getPrecisionLiquidezFormato() {
-        return precisionLiquidezFormato;
-    }
-
-    public void setPrecisionLiquidezFormato(String precisionLiquidezFormato) {
-        this.precisionLiquidezFormato = precisionLiquidezFormato;
+    public void setGanadoFinal(double ganadoFinal) {
+        this.ganadoFinal = ganadoFinal;
     }
 
 
@@ -180,6 +131,22 @@ public class DB extends RealmObject {
 
     public void setPrecisionDestino(String precisionDestino) {
         this.precisionDestino = precisionDestino;
+    }
+
+    public String getPrecisionLiquidez() {
+        return precisionLiquidez;
+    }
+
+    public void setPrecisionLiquidez(String precisionLiquidez) {
+        this.precisionLiquidez = precisionLiquidez;
+    }
+
+    public String getPrecisionPrecio() {
+        return precisionPrecio;
+    }
+
+    public void setPrecisionPrecio(String precisionPrecio) {
+        this.precisionPrecio = precisionPrecio;
     }
 
     public String getLiquidezOrigen() {
@@ -270,6 +237,70 @@ public class DB extends RealmObject {
         this.actualLiqInicio = actualLiqInicio;
     }
 
+    public String getPrecisionOrigenFormato() {
+        return precisionOrigenFormato;
+    }
+
+    public void setPrecisionOrigenFormato(String precisionOrigenFormato) {
+        this.precisionOrigenFormato = precisionOrigenFormato;
+    }
+
+    public String getPrecisionDestinoFormato() {
+        return precisionDestinoFormato;
+    }
+
+    public void setPrecisionDestinoFormato(String precisionDestinoFormato) {
+        this.precisionDestinoFormato = precisionDestinoFormato;
+    }
+
+    public String getPrecisionLiquidezFormato() {
+        return precisionLiquidezFormato;
+    }
+
+    public void setPrecisionLiquidezFormato(String precisionLiquidezFormato) {
+        this.precisionLiquidezFormato = precisionLiquidezFormato;
+    }
+
+    public String getPrecisionPrecioFormato() {
+        return precisionPrecioFormato;
+    }
+
+    public void setPrecisionPrecioFormato(String precisionPrecioFormato) {
+        this.precisionPrecioFormato = precisionPrecioFormato;
+    }
+
+    public String getUsando() {
+        return usando;
+    }
+
+    public void setUsando(String usando) {
+        this.usando = usando;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
+
+    public Boolean getBotonPorcentajesAplanado() {
+        return botonPorcentajesAplanado;
+    }
+
+    public void setBotonPorcentajesAplanado(Boolean botonPorcentajesAplanado) {
+        this.botonPorcentajesAplanado = botonPorcentajesAplanado;
+    }
+
+    public Boolean getEnForex() {
+        return enForex;
+    }
+
+    public void setEnForex(Boolean enForex) {
+        this.enForex = enForex;
+    }
+
     public RealmList<DBOpInversiones> getOperaciones() {
         return operaciones;
     }
@@ -286,29 +317,12 @@ public class DB extends RealmObject {
         this.modo = modo;
     }
 
-    public String getUsando() {
-        return usando;
+    public int getModoLiquidez() {
+        return modoLiquidez;
     }
 
-    public void setUsando(String usando) {
-        this.usando = usando;
-    }
-
-
-    public String getPrecisionOrigenFormato() {
-        return precisionOrigenFormato;
-    }
-
-    public void setPrecisionOrigenFormato(String precisionOrigenFormato) {
-        this.precisionOrigenFormato = precisionOrigenFormato;
-    }
-
-    public String getPrecisionDestinoFormato() {
-        return precisionDestinoFormato;
-    }
-
-    public void setPrecisionDestinoFormato(String precisionDestinoFormato) {
-        this.precisionDestinoFormato = precisionDestinoFormato;
+    public void setModoLiquidez(int modoLiquidez) {
+        this.modoLiquidez = modoLiquidez;
     }
 
 

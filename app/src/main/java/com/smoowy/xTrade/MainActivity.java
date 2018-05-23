@@ -256,7 +256,6 @@ public class MainActivity extends AppCompatActivity
                 db.setPrecisionPrecio(precisionPrecio.getText().toString());
                 db.setPrecisionPrecioFormato(precisionPrecioFormato);
                 db.setBotonPorcentajesAplanado(botonPorcentajesAplanado);
-                db.setGanadoInicio(String.valueOf(0));
 
 
             }
@@ -292,13 +291,15 @@ public class MainActivity extends AppCompatActivity
                 adapterRecyclerInversiones.quitarDatos(viewHolder.getLayoutPosition());
 
 
-                Snackbar.make(findViewById(R.id.botonEmpezar), "Inversion borrada!", Snackbar.LENGTH_LONG)
-                        .setAction("Regresar", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                adapterRecyclerInversiones.recuperarDatos();
-                            }
-                        }).show();
+                Snackbar snackbar =
+                        Snackbar.make(findViewById(R.id.botonEmpezar), "Inversion borrada!", Snackbar.LENGTH_LONG);
+                snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
+                snackbar.setAction("Regresar", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        adapterRecyclerInversiones.recuperarDatos();
+                    }
+                }).show();
 
 
             }
@@ -423,7 +424,7 @@ public class MainActivity extends AppCompatActivity
 
     private void cambiarModoLiquidez(Boolean alInicio) {
 
-        if(!alInicio) {
+        if (!alInicio) {
 
             modoLiquidez += 1;
 
@@ -654,7 +655,26 @@ public class MainActivity extends AppCompatActivity
         startActivity(mIntent);
     }
 
+
+    void crearSnackBar(String texto) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.botonEmpezar),
+                texto, Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
+        snackbar.show();
+    }
+
     private boolean checarSiFaltanDatos() {
+        if (liquidezNombre.getText().toString().isEmpty()) {
+
+            if (!liquidezDestino.getText().toString().isEmpty() ||
+                    !liquidezOrigen.getText().toString().isEmpty()) {
+
+                crearSnackBar("Falta el nombre en liquidez!");
+                return true;
+            }
+        }
+
+
         ArrayList<EditText> listaDeRevisionArray;
 
         if (adapterRecyclerInversiones.lista.size() > 0) {
@@ -674,14 +694,16 @@ public class MainActivity extends AppCompatActivity
             botonAgregarInversionAplanado = false;
         }
 
+
         for (EditText texto : listaDeRevisionArray) {
 
             if (texto.getText().toString().isEmpty()) {
-                Snackbar.make(findViewById(R.id.botonEmpezar), "Faltan datos por llenar!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                crearSnackBar("Faltan datos por llenar!");
                 return true;
             }
         }
+
 
         return false;
     }
