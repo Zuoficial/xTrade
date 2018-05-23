@@ -55,6 +55,35 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
             }
         }
 
+        if (db.getInversionLiqInicio() != null && !db.getInversionLiqInicio().equals("Pendiente")) {
+
+            switch (db.modoLiquidez) {
+
+                case 0: {
+                    holder.textoIndicadorLiquidez.setText(db.getMonedaOrigen() + " -> " + db.getLiquidezNombre());
+
+                    break;
+                }
+                case 1: {
+
+                    holder.textoIndicadorLiquidez.setText(db.getLiquidezNombre() + " -> " + db.getMonedaOrigen());
+                    break;
+                }
+                case 2: {
+                    holder.textoIndicadorLiquidez.setText(db.getMonedaDestino() + " -> " + db.getLiquidezNombre());
+                    break;
+                }
+                case 3: {
+                    holder.textoIndicadorLiquidez.setText(db.getLiquidezNombre() + " -> " + db.getMonedaDestino());
+                    break;
+                }
+
+
+            }
+        } else {
+            holder.textoIndicadorLiquidez.setVisibility(View.GONE);
+        }
+
 
         if (db.getReferencia() != null)
             holder.textoReferencia.setText(db.getReferencia());
@@ -153,7 +182,8 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
         TextView textoPosicion, textoParidad, textoPrecioIn, textoPrecioOut,
                 textoInversion, textoGanado, textoGanadoLetra,
                 textoGanadoLiqLetra, textoGanadoLiq,
-                textoActual, textoActualLiq, textoInversionLiq, textoUsando, textoReferencia;
+                textoActual, textoActualLiq, textoInversionLiq,
+                textoUsando, textoReferencia, textoIndicadorLiquidez;
         View contenedor;
 
         Holder(final View itemView) {
@@ -172,6 +202,7 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
             textoGanadoLiqLetra = itemView.findViewById(R.id.textoGanadoLiqLetra);
             textoUsando = itemView.findViewById(R.id.textoUsando);
             textoReferencia = itemView.findViewById(R.id.referencia);
+            textoIndicadorLiquidez = itemView.findViewById(R.id.indicadorLiquidez);
             contenedor = itemView.findViewById(R.id.fondo);
             contenedor.setOnClickListener(onClickListener);
         }

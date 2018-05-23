@@ -128,11 +128,41 @@ public class AdapterRecyclerPorcentajes extends
             info = crearInfoIndividual(positionX);
         }
 
+
+        if (!liquidezNombre.isEmpty()) {
+
+            switch (modoLiquidez) {
+
+                case 0: {
+                    holder.textoIndicadorLiquidez.setText(monedaOrigenNombre + " -> " + liquidezNombre);
+
+                    break;
+                }
+                case 1: {
+
+                    holder.textoIndicadorLiquidez.setText(liquidezNombre + " -> " + monedaOrigenNombre);
+                    break;
+                }
+                case 2: {
+                    holder.textoIndicadorLiquidez.setText(monedaDestinoNombre + " -> " + liquidezNombre);
+                    break;
+                }
+                case 3: {
+                    holder.textoIndicadorLiquidez.setText(liquidezNombre + " -> " + monedaDestinoNombre);
+                    break;
+                }
+
+
+            }
+        } else {
+            holder.textoIndicadorLiquidez.setVisibility(View.GONE);
+        }
+
+
         holder.textoPorcentaje.setText(info.getPorcentajeFinal());
         holder.textoPrecio.setText(info.getPrecioFinal());
         holder.textoActual.setText(info.getActualFinal());
         holder.textoInversionLiq.setText(info.getInversionLiqFinal());
-
         holder.textoActualLiq.setText(info.getActualLiqFinal());
 
 
@@ -419,7 +449,7 @@ public class AdapterRecyclerPorcentajes extends
 
         TextView textoPorcentaje, textoGanancia, textoPrecio, textoInvertido, textoInvertidoLetra,
                 textoActual, textoUsando, textoGanadoLetra, textoGanadoLiqLetra,
-                textoBase, textoInversionLiq, textoGanadoLiq, textoActualLiq;
+                textoBase, textoInversionLiq, textoGanadoLiq, textoActualLiq, textoIndicadorLiquidez;
         ImageView fondo;
 
 
@@ -437,6 +467,7 @@ public class AdapterRecyclerPorcentajes extends
             textoGanadoLiqLetra = itemView.findViewById(R.id.textoGanadoLiqLetra);
             textoGanadoLiq = itemView.findViewById(R.id.textoGanadoLiq);
             textoActualLiq = itemView.findViewById(R.id.textoActualLiq);
+            textoIndicadorLiquidez = itemView.findViewById(R.id.indicadorLiquidez);
             textoBase = itemView.findViewById(R.id.textoBase);
             textoPrecio.setOnClickListener(onClickListener);
             textoInvertido.setOnClickListener(onClickListener);
