@@ -354,8 +354,6 @@ public class AdapterRecyclerPorcentajes extends
     }
 
 
-    double a, b;
-
     double positivo(double precio, double porcentaje) {
 
 
@@ -371,10 +369,17 @@ public class AdapterRecyclerPorcentajes extends
                 precio *= (1 - porcentaje);
                 precio -= comisionSalida;
             } else {
-                a = invertidoDestino * (1 + porcentaje);
-                a *= (1 + comisionSalida);
-                a += (invertidoDestino * comisionEntrada);
-                precio = invertidoFinal / a;
+
+                double gF, cS, cE, S, pF;
+
+                gF = invertidoFinal * (1 + porcentaje);
+                cS = gF * comisionSalida;
+                cE = invertidoFinal * comisionEntrada;
+                S = gF + cS + cE;
+                pF = S / invertidoFinal;
+                pF -= 1;
+
+                precio *= (1 - pF);
             }
 
 
@@ -389,10 +394,12 @@ public class AdapterRecyclerPorcentajes extends
 
 
             } else {
-                b = invertido * (1 + porcentaje);
-                b *= (1 + comisionSalida);
-                b += (invertido * comisionEntrada);
-                precio = b / invertidoDestino;
+
+
+                precio *= (1 + porcentaje);
+                precio *= (1 + comisionSalida);
+                precio += (this.precio * comisionEntrada);
+
             }
 
         }
@@ -418,10 +425,16 @@ public class AdapterRecyclerPorcentajes extends
 
             } else {
 
-                a = invertidoDestino * (1 - porcentaje);
-                a *= (1 + comisionSalida);
-                a += (invertidoDestino * comisionEntrada);
-                precio = invertidoFinal / a;
+                double gF, cS, cE, S, pF;
+
+                gF = invertidoFinal * (1 - porcentaje);
+                cS = gF * comisionSalida;
+                cE = invertidoFinal * comisionEntrada;
+                S = gF + cS + cE;
+                pF = S / invertidoFinal;
+                pF -= 1;
+
+                precio *= (1 + pF);
             }
         } else if (modo == modoLarga) {
 
@@ -434,10 +447,10 @@ public class AdapterRecyclerPorcentajes extends
 
             } else {
 
-                b = invertido * (1 - porcentaje);
-                b *= (1 + comisionSalida);
-                b += (invertido * comisionEntrada);
-                precio = b / invertidoDestino;
+                precio *= (1 - porcentaje);
+                precio *= (1 + comisionSalida);
+                precio += (this.precio * comisionEntrada);
+
             }
 
         }
