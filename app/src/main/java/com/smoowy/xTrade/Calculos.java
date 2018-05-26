@@ -34,10 +34,10 @@ public class Calculos extends AppCompatActivity implements Comunicador {
     Button botonCazar, botonCorta, botonLarga, botonClear, botonPorcentajes,
             botonCerrar, botonPorcentajeCalculador,
             botonPorcentajeCalculadorMenos, botonPorcentajeCalculadorMas,
-            botonGuardar, botonModificar;
+            botonGuardar, botonModificar, botonComisiones;
     TextView encabezado, textoGanancia, textoInvertido, textoInvertidoActual, textoUsado, textoGananciaLetra,
             textoPorcentaje, textoPrecio, textoBase, textoInversionLiq,
-            textoGanadoLiq, textoActualLiq, textoGanadoLiqLetra;
+            textoGanadoLiq, textoActualLiq, textoGanadoLiqLetra, textoSinComision, textoIndicadorLiquidez;
     String monedaOrigenNombre, monedaDestinoNombre, referencia;
     EditText textoPrecioMod, textoPorcentajeMod, textoReferencia;
     double invertido, precio, invertidoDestino, precioFinal,
@@ -46,7 +46,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
     int ajustadorPorcentajes, modo, modoLiquidez, idOperacion;
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     boolean botonPorcentajesAplanado,
-            botonporcentajeCalculadorAplanado, botonPorcentajeCalculadorMasAplanado, enForex;
+            botonporcentajeCalculadorAplanado, botonPorcentajeCalculadorMasAplanado, enForex,
+            botonComisionAplanado;
     Vibrator vibrator;
     String precisionOrigen, precisionDestino, precisionLiquidez, precisionPrecio,
             liquidezNombre;
@@ -81,6 +82,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         botonPorcentajeCalculadorMenos = findViewById(R.id.botonPorcentajeCalculadorMenos);
         botonGuardar = findViewById(R.id.botonGuardar);
         botonModificar = findViewById(R.id.botonModificar);
+        botonComisiones = findViewById(R.id.botonComisiones);
         botonCazar.setOnTouchListener(onTouchListener);
         botonCorta.setOnTouchListener(onTouchListener);
         botonLarga.setOnTouchListener(onTouchListener);
@@ -92,6 +94,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         botonPorcentajeCalculadorMenos.setOnTouchListener(onTouchListener);
         botonGuardar.setOnTouchListener(onTouchListener);
         botonModificar.setOnTouchListener(onTouchListener);
+        botonComisiones.setOnTouchListener(onTouchListener);
         textoPorcentaje = findViewById(R.id.textoPorcentaje);
         textoPorcentajeMod = findViewById(R.id.textoPorcentajeMod);
         textoPorcentajeMod.addTextChangedListener(textWatcher);
@@ -112,6 +115,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoGanadoLiqLetra = findViewById(R.id.textoGanadoLiqLetra2);
         textoInversionLiq = findViewById(R.id.textoInversionLiq2);
         textoActualLiq = findViewById(R.id.textoActualLiq2);
+        textoSinComision = findViewById(R.id.textoSinComision);
+        textoIndicadorLiquidez = findViewById(R.id.textoIndicadorLiquidez);
         textoPrecio.setOnTouchListener(onTouchListener);
         textoBase.setOnTouchListener(onTouchListener);
         textoInvertido.setOnTouchListener(onTouchListener);
@@ -132,6 +137,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         }
 
         limpiarCalculador();
+        setindicadorLiquidez();
         setBotonPorcentajesAplanado();
         ajustadorPorcentajes = 1;
         ajustadorPosicion(ajustadorPorcentajes);
@@ -139,6 +145,15 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoPrecioMod.clearFocus();
         textoReferencia.clearFocus();
 
+        if (botonComisionAplanado) {
+            botonComisiones.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
+        } else {
+            botonComisionAplanado = true;
+            setBotonComision();
+        }
+
+        if(!botonPorcentajesAplanado)
+            textoSinComision.setVisibility(View.GONE);
     }
 
     DB db;
@@ -176,6 +191,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         modo = db.getModo();
         modoLiquidez = db.getModoLiquidez();
         botonPorcentajesAplanado = db.getBotonPorcentajesAplanado();
+        botonComisionAplanado = db.getBotonComisionAplanado();
         precisionOrigen = db.getPrecisionOrigenFormato().replace(".", ",.");
         precisionDestino = db.getPrecisionDestinoFormato().replace(".", ",.");
         precisionLiquidez = db.getPrecisionLiquidezFormato().replace(".", ",.");
@@ -355,6 +371,40 @@ public class Calculos extends AppCompatActivity implements Comunicador {
     }
 
 
+    void setindicadorLiquidez() {
+
+        if (!liquidezNombre.isEmpty()) {
+
+            switch (modoLiquidez) {
+
+                case 0: {
+                    textoIndicadorLiquidez.setText(monedaOrigenNombre + " -> " + liquidezNombre);
+
+                    break;
+                }
+                case 1: {
+
+                    textoIndicadorLiquidez.setText(liquidezNombre + " -> " + monedaOrigenNombre);
+                    break;
+                }
+                case 2: {
+                    textoIndicadorLiquidez.setText(monedaDestinoNombre + " -> " + liquidezNombre);
+                    break;
+                }
+                case 3: {
+                    textoIndicadorLiquidez.setText(liquidezNombre + " -> " + monedaDestinoNombre);
+                    break;
+                }
+
+
+            }
+        } else {
+            textoIndicadorLiquidez.setVisibility(View.GONE);
+        }
+
+    }
+
+
     private void calculoModoCazar() {
 
 
@@ -388,7 +438,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
 
         chequeoLiquidez();
-        positivo = gananciaFinal > 0;
+        positivo = gananciaFinal >= 0;
 
 
     }
@@ -428,7 +478,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
             invertidoActual = invertido * (1 + porcentajeIngresado);
             gananciaFinal = invertidoActual - invertidoFinal;
-            positivo = gananciaFinal > 0;
+            positivo = gananciaFinal >= 0;
 
 
         } else {
@@ -460,7 +510,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             invertidoActual = invertido * (1 + porcentajeFinal);
             gananciaFinal = invertidoActual - invertidoFinal;
             porcentajeFinal *= 100;
-            positivo = gananciaFinal > 0;
+            positivo = gananciaFinal >= 0;
 
         }
         chequeoLiquidez();
@@ -500,7 +550,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
             invertidoActual = invertido * (1 + porcentajeIngresado);
             gananciaFinal = invertidoActual - invertidoFinal;
-            positivo = gananciaFinal > 0;
+            positivo = gananciaFinal >= 0;
 
 
         } else {
@@ -527,7 +577,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             invertidoActual = invertido * (1 + (porcentajeFinal));
             gananciaFinal = invertidoActual - invertidoFinal;
             porcentajeFinal *= 100;
-            positivo = gananciaFinal > 0;
+            positivo = gananciaFinal >= 0;
 
 
         }
@@ -727,6 +777,13 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                         break;
                     }
 
+                    case R.id.botonComisiones: {
+                        vibrator.vibrate(500);
+                        drawer.closeDrawer(Gravity.START);
+                        setBotonComision();
+                        break;
+                    }
+
                     case R.id.textoPrecio: {
                         exportarPrecio(textoPrecio);
                         break;
@@ -778,6 +835,51 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         }
     };
 
+    double comisionEntradaRespaldo, comisionSalidaRespaldo;
+    boolean hayComisionCero;
+
+    void setBotonComision() {
+
+        if (botonComisionAplanado) {
+            botonComisiones.setBackgroundResource(R.drawable.fondo_botones_superior);
+            textoSinComision.setVisibility(View.VISIBLE);
+            adapterRecyclerPorcentajes.cambioComisiones(botonComisionAplanado);
+
+            if (comisionEntradaRespaldo == 0 && comisionSalidaRespaldo == 0) {
+
+                if (comisionEntrada == 0 || comisionSalida == 0)
+                    hayComisionCero = true;
+
+                comisionEntradaRespaldo = comisionEntrada;
+                comisionSalidaRespaldo = comisionSalida;
+            }
+            comisionEntrada = 0;
+            comisionSalida = 0;
+            botonComisionAplanado = false;
+
+
+        } else {
+            botonComisiones.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
+            textoSinComision.setVisibility(View.GONE);
+            adapterRecyclerPorcentajes.cambioComisiones(botonComisionAplanado);
+            if (hayComisionCero) {
+
+                comisionEntrada = comisionEntradaRespaldo;
+                comisionSalida = comisionSalidaRespaldo;
+
+            } else {
+
+                if (comisionEntradaRespaldo > 0 && comisionSalidaRespaldo > 0) {
+                    comisionEntrada = comisionEntradaRespaldo;
+                    comisionSalida = comisionSalidaRespaldo;
+                }
+
+            }
+            botonComisionAplanado = true;
+        }
+        ajustadorPosicion(ajustadorPorcentajes);
+        limpiarCalculador();
+    }
 
     Realm realm;
 
@@ -796,6 +898,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
 
                 db.setBotonPorcentajesAplanado(!botonPorcentajesAplanado);
+                db.setBotonComisionAplanado(botonComisionAplanado);
                 db.setModo(modo);
 
                 if (!textoReferencia.getText().toString().isEmpty())
@@ -844,7 +947,9 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
 
         textoPrecioMod.setText("");
+        textoPrecioMod.clearFocus();
         textoPorcentajeMod.setText("");
+        textoPorcentajeMod.clearFocus();
         textoPorcentaje.setText("+0.00%");
         textoPrecio.setText("Precio");
         textoInversionLiq.setText("Pendiente");
@@ -978,11 +1083,13 @@ public class Calculos extends AppCompatActivity implements Comunicador {
     private void setBotonPorcentajesAplanado() {
         if (botonPorcentajesAplanado) {
             calculador.setVisibility(View.GONE);
+            textoSinComision.setVisibility(View.GONE);
+            textoIndicadorLiquidez.setVisibility(View.GONE);
             recyclerPorcentajes.setVisibility(View.VISIBLE);
             recyclerBotonesPorcentajes.setVisibility(View.VISIBLE);
             botonPorcentajesAplanado = false;
             botonPorcentajes.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
-            botonGuardar.setVisibility(View.GONE);
+            //botonGuardar.setVisibility(View.GONE);
 
         } else {
             calculador.setVisibility(View.VISIBLE);
@@ -990,7 +1097,18 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             recyclerBotonesPorcentajes.setVisibility(View.GONE);
             botonPorcentajesAplanado = true;
             botonPorcentajes.setBackgroundResource(R.drawable.fondo_botones_superior);
-            botonGuardar.setVisibility(View.VISIBLE);
+            //  botonGuardar.setVisibility(View.VISIBLE);
+
+            if (!botonComisionAplanado) {
+                textoSinComision.setVisibility(View.VISIBLE);
+            } else {
+                textoSinComision.setVisibility(View.GONE);
+            }
+            if (liquidezNombre != null) {
+
+                if(!liquidezNombre.isEmpty())
+                    textoIndicadorLiquidez.setVisibility(View.VISIBLE);
+            }
         }
         vibrator.vibrate(50);
     }
@@ -1057,12 +1175,17 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
     @Override
     public void onBackPressed() {
-        Intent i = getBaseContext().getPackageManager().
-                getLaunchIntentForPackage(getBaseContext().getPackageName());
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
-        super.onBackPressed();
+
+        if (drawer.isDrawerOpen(Gravity.START)) {
+
+            drawer.closeDrawer(Gravity.START);
+        } else {
+            Intent i = getBaseContext().getPackageManager().
+                    getLaunchIntentForPackage(getBaseContext().getPackageName());
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+        }
     }
 
     @Override

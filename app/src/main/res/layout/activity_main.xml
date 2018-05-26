@@ -22,73 +22,94 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main">
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/constrainlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
 
             <Button
-                android:id="@+id/botonPorcentajes"
-                android:textColor="@android:color/white"
-                android:background="@android:color/transparent"
+                android:id="@+id/botonComisiones"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="@dimen/drawer_button_height"
                 android:layout_marginTop="180dp"
+                android:background="@android:color/transparent"
                 android:fontFamily="@font/comforta_bold"
-                android:text="Porcentajes"
-                android:textSize="25dp" />
+                android:text="Comisiones"
+                android:textColor="@android:color/white"
+                android:textSize="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <Button
-                android:layout_below="@id/botonPorcentajes"
-                android:id="@+id/botonCazar"
-                android:textColor="@android:color/white"
-                android:background="@android:color/transparent"
+                android:id="@+id/botonPorcentajes"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp"
+                android:layout_height="@dimen/drawer_button_height"
+                android:layout_marginTop="@dimen/drawer_space_between"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/comforta_bold"
+                android:text="Porcentajes"
+                android:textColor="@android:color/white"
+                android:textSize="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/botonComisiones" />
+
+            <Button
+                android:id="@+id/botonCazar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/drawer_button_height"
+                android:layout_marginTop="@dimen/drawer_space_between"
+                android:background="@android:color/transparent"
                 android:fontFamily="@font/comforta_bold"
                 android:text="Cazar"
-                android:textSize="25dp" />
+                android:textColor="@android:color/white"
+                android:textSize="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/botonPorcentajes" />
 
 
             <Button
                 android:id="@+id/botonCorta"
-                android:textColor="@android:color/white"
-                android:background="@android:color/transparent"
-                android:layout_below="@id/botonCazar"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="@dimen/drawer_button_height"
+                android:layout_marginTop="@dimen/drawer_space_between"
+                android:background="@android:color/transparent"
                 android:fontFamily="@font/comforta_bold"
-                android:text="posicion corta"
-                android:textSize="25dp" />
+                android:text="Posicion corta"
+                android:textColor="@android:color/white"
+                android:textSize="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/botonCazar" />
 
 
             <Button
                 android:id="@+id/botonLarga"
-                android:textColor="@android:color/white"
-                android:background="@android:color/transparent"
-                android:layout_below="@id/botonCorta"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="@dimen/drawer_button_height"
+                android:layout_marginTop="@dimen/drawer_space_between"
+                android:background="@android:color/transparent"
                 android:fontFamily="@font/comforta_bold"
-                android:text="posicion larga"
-                android:textSize="25dp" />
+                android:text="Posicion larga"
+                android:textColor="@android:color/white"
+                android:textSize="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/botonCorta" />
 
 
             <Button
                 android:id="@+id/botonEmpezar"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/botonLarga"
-                android:layout_marginTop="10dp"
+                android:layout_height="@dimen/drawer_button_height"
+                android:layout_marginTop="@dimen/drawer_space_between"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/comforta_bold"
                 android:text="Iniciar"
                 android:textColor="@android:color/white"
-                android:textSize="25dp" />
-        </RelativeLayout>
+                android:textSize="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/botonLarga" />
+        </android.support.constraint.ConstraintLayout>
 
 
     </android.support.design.widget.NavigationView>

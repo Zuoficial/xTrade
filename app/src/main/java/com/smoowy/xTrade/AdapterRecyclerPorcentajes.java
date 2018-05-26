@@ -105,6 +105,45 @@ public class AdapterRecyclerPorcentajes extends
         notifyDataSetChanged();
     }
 
+    double comisionEntradaRespaldo, comisionSalidaRespaldo;
+    boolean hayComisionCero;
+    boolean botonComisionAplanado;
+
+    public void cambioComisiones(Boolean botonComisionAplanado) {
+        this.botonComisionAplanado= botonComisionAplanado;
+
+        if (botonComisionAplanado) {
+            if (comisionEntradaRespaldo == 0 && comisionSalidaRespaldo == 0) {
+
+                if (comisionEntrada == 0 || comisionSalida == 0)
+                    hayComisionCero = true;
+                comisionEntradaRespaldo = comisionEntrada;
+                comisionSalidaRespaldo = comisionSalida;
+            }
+            comisionEntrada = 0;
+            comisionSalida = 0;
+            hacerListas(modo, porcentaje);
+            notifyDataSetChanged();
+        } else {
+
+            if (hayComisionCero) {
+
+                comisionEntrada = comisionEntradaRespaldo;
+                comisionSalida = comisionSalidaRespaldo;
+
+            } else {
+
+                if (comisionEntradaRespaldo > 0 && comisionSalidaRespaldo > 0) {
+                    comisionEntrada = comisionEntradaRespaldo;
+                    comisionSalida = comisionSalidaRespaldo;
+                }
+
+            }
+            hacerListas(modo, porcentaje);
+            notifyDataSetChanged();
+        }
+    }
+
 
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -127,6 +166,11 @@ public class AdapterRecyclerPorcentajes extends
         else {
             info = crearInfoIndividual(positionX);
         }
+
+        if(botonComisionAplanado)
+            holder.textoSinComision.setVisibility(View.VISIBLE);
+        else
+            holder.textoSinComision.setVisibility(View.GONE);
 
 
         if (!liquidezNombre.isEmpty()) {
@@ -365,21 +409,24 @@ public class AdapterRecyclerPorcentajes extends
 
 
             if (enForex) {
+
                 precio -= comisionEntrada;
                 precio *= (1 - porcentaje);
                 precio -= comisionSalida;
+
             } else {
 
-                double gF, cS, cE, S, pF;
 
-                gF = invertidoFinal * (1 + porcentaje);
-                cS = gF * comisionSalida;
-                cE = invertidoFinal * comisionEntrada;
-                S = gF + cS + cE;
-                pF = S / invertidoFinal;
-                pF -= 1;
+                double a;
 
-                precio *= (1 - pF);
+                a = 1 + porcentaje;
+                a *= (1 + comisionSalida);
+                a += comisionEntrada;
+                a -= 2;
+                a *= -1;
+
+                precio *= a;
+
             }
 
 
@@ -392,18 +439,16 @@ public class AdapterRecyclerPorcentajes extends
                 precio *= (1 + porcentaje);
                 precio += comisionSalida;
 
-
             } else {
 
+                double a;
 
-                precio *= (1 + porcentaje);
-                precio *= (1 + comisionSalida);
-                precio += (this.precio * comisionEntrada);
-
+                a = 1 + porcentaje;
+                a *= 1 + comisionSalida;
+                a += comisionEntrada;
+                precio *= a;
             }
-
         }
-
 
         return precio;
     }
@@ -414,6 +459,7 @@ public class AdapterRecyclerPorcentajes extends
         if (modo == modoCazar) {
             precio = invertidoDestino * (1 - porcentaje);
             precio = invertidoFinal / precio;
+
         } else if (modo == modoCorta) {
 
             if (enForex) {
@@ -425,16 +471,16 @@ public class AdapterRecyclerPorcentajes extends
 
             } else {
 
-                double gF, cS, cE, S, pF;
+                double a;
 
-                gF = invertidoFinal * (1 - porcentaje);
-                cS = gF * comisionSalida;
-                cE = invertidoFinal * comisionEntrada;
-                S = gF + cS + cE;
-                pF = S / invertidoFinal;
-                pF -= 1;
+                a = 1 - porcentaje;
+                a *= (1 + comisionSalida);
+                a += comisionEntrada;
+                a -= 2;
+                a *= -1;
 
-                precio *= (1 + pF);
+                precio *= a;
+
             }
         } else if (modo == modoLarga) {
 
@@ -447,9 +493,12 @@ public class AdapterRecyclerPorcentajes extends
 
             } else {
 
-                precio *= (1 - porcentaje);
-                precio *= (1 + comisionSalida);
-                precio += (this.precio * comisionEntrada);
+                double a;
+
+                a = 1 - porcentaje;
+                a *= 1 + comisionSalida;
+                a += comisionEntrada;
+                precio *= a;
 
             }
 
@@ -460,9 +509,10 @@ public class AdapterRecyclerPorcentajes extends
 
     class Holder extends RecyclerView.ViewHolder {
 
-        TextView textoPorcentaje, textoGanancia, textoPrecio, textoInvertido, textoInvertidoLetra,
+       public TextView textoPorcentaje, textoGanancia, textoPrecio, textoInvertido, textoInvertidoLetra,
                 textoActual, textoUsando, textoGanadoLetra, textoGanadoLiqLetra,
-                textoBase, textoInversionLiq, textoGanadoLiq, textoActualLiq, textoIndicadorLiquidez;
+                textoBase, textoInversionLiq, textoGanadoLiq, textoActualLiq, textoIndicadorLiquidez,
+                textoSinComision;
         ImageView fondo;
 
 
@@ -481,12 +531,17 @@ public class AdapterRecyclerPorcentajes extends
             textoGanadoLiq = itemView.findViewById(R.id.textoGanadoLiq);
             textoActualLiq = itemView.findViewById(R.id.textoActualLiq);
             textoIndicadorLiquidez = itemView.findViewById(R.id.indicadorLiquidez);
+            textoSinComision = itemView.findViewById(R.id.sinComision);
             textoBase = itemView.findViewById(R.id.textoBase);
             textoPrecio.setOnClickListener(onClickListener);
-            textoInvertido.setOnClickListener(onClickListener);
-            textoActual.setOnClickListener(onClickListener);
-            textoUsando.setOnClickListener(onClickListener);
             textoBase.setOnClickListener(onClickListener);
+            textoInvertido.setOnClickListener(onClickListener);
+            textoGanancia.setOnClickListener(onClickListener);
+            textoActual.setOnClickListener(onClickListener);
+            textoInversionLiq.setOnClickListener(onClickListener);
+            textoGanadoLiq.setOnClickListener(onClickListener);
+            textoActualLiq.setOnClickListener(onClickListener);
+            textoUsando.setOnClickListener(onClickListener);
             textoBase.setText(String.format(precisionPrecio, precio) + " " + monedaOrigenNombre);
             // fondo = itemView.findViewById(R.id.fondo);
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -505,48 +560,60 @@ public class AdapterRecyclerPorcentajes extends
                 switch (view.getId()) {
 
                     case R.id.textoPrecioMod: {
-                        ClipData clip = ClipData.newPlainText("Precio", textoPrecio.getText().toString());
-                        clipboard.setPrimaryClip(clip);
-                        Toast.makeText(context, "Precio grabado: " + textoPrecio.getText().toString(), Toast.LENGTH_SHORT).show();
+                        copyToast(clipboard, textoPrecio.getText());
                         break;
                     }
-                    case R.id.textoActualRV: {
-                        ClipData clip = ClipData.newPlainText("Precio", textoActual.getText().toString());
-                        clipboard.setPrimaryClip(clip);
-                        Toast.makeText(context, "Precio grabado: " + textoActual.getText().toString(), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                    case R.id.textoInvertidoRV: {
-                        ClipData clip = ClipData.newPlainText("Precio", textoInvertido.getText().toString());
-                        clipboard.setPrimaryClip(clip);
-                        Toast.makeText(context, "Precio grabado: " + textoInvertido.getText().toString(), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                    case R.id.textoUsandoRV: {
-                        ClipData clip = ClipData.newPlainText("Precio", textoUsando.getText().toString());
-                        clipboard.setPrimaryClip(clip);
-                        Toast.makeText(context, "Precio grabado: " + textoUsando.getText().toString(), Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-/*
-                    case R.id.textoLiquidez: {
-                        ClipData clip = ClipData.newPlainText("Precio", textoLiquidez.getText().toString());
-                        clipboard.setPrimaryClip(clip);
-                        Toast.makeText(context, "Precio grabado: " + textoLiquidez.getText().toString(), Toast.LENGTH_SHORT).show();
-                        break;
-                    }*/
-
                     case R.id.textoBase: {
-                        ClipData clip = ClipData.newPlainText("Precio", textoBase.getText().toString());
-                        clipboard.setPrimaryClip(clip);
-                        Toast.makeText(context, "Precio grabado: " + textoBase.getText().toString(), Toast.LENGTH_SHORT).show();
+                        copyToast(clipboard, textoBase.getText());
                         break;
                     }
+
+                    case R.id.textoInvertidoRV: {
+                        copyToast(clipboard, textoInvertido.getText());
+                        break;
+                    }
+
+                    case R.id.textoGanancia: {
+                        copyToast(clipboard, textoGanancia.getText());
+                    }
+
+                    case R.id.textoActualRV: {
+                        copyToast(clipboard, textoActual.getText());
+                        break;
+                    }
+
+                    case R.id.textoInversionLiq: {
+                        copyToast(clipboard, textoInversionLiq.getText());
+                        break;
+                    }
+
+                    case R.id.textoGanadoLiq: {
+                        copyToast(clipboard, textoGanadoLiq.getText());
+                        break;
+                    }
+
+                    case R.id.textoActualLiq: {
+                        copyToast(clipboard, textoActualLiq.getText());
+                        break;
+                    }
+
+                    case R.id.textoUsandoRV: {
+                        copyToast(clipboard, textoUsando.getText());
+                        break;
+                    }
+
+
                 }
 
 
             }
         };
+
+        private void copyToast(ClipboardManager clipboard, CharSequence text) {
+            ClipData clip = ClipData.newPlainText("Precio", text.toString());
+            clipboard.setPrimaryClip(clip);
+            Toast.makeText(context, "Precio grabado: " + text.toString(), Toast.LENGTH_SHORT).show();
+        }
 
     }
 

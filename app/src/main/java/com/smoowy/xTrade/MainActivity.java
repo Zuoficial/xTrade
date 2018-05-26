@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Button botonCazar, botonCorta, botonLarga, botonEmpezar,
-            botonPorcentajes, botonAgregarInversion, botonCambioInversion, botonForex;
+            botonPorcentajes, botonAgregarInversion, botonCambioInversion, botonForex, botonComisiones;
     EditText invertido, precio, comisionEntrada, comisionSalida, monedaOrigen, monedaDestino,
             precisionOrigen, precisionDestino, liquidezOrigen, liquidezDestino,
             liquidezNombre, precisionLiquidez, precisionPrecio;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
     int selectorCambioInversion = 0, idOperacion;
     final int cambioInversionOrigen = 0, cambioInversionDestino = 1,
             cambioInversionOrigenLiquidez = 2, cambioInversionDestinoLiquidez = 3;
-    boolean botonPorcentajesAplanado, botonAgregarInversionAplanado, enForex;
+    boolean botonPorcentajesAplanado, botonAgregarInversionAplanado, enForex, botonComisionAplanado;
     String precioIn, inversionInicio, inversionDestinoInicio;
     String precisionOrigenFormato, precisionDestinoFormato, precisionLiquidezFormato,
             precisionPrecioFormato;
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity
         botonCorta = findViewById(R.id.botonCorta);
         botonLarga = findViewById(R.id.botonLarga);
         botonEmpezar = findViewById(R.id.botonEmpezar);
+        botonComisiones = findViewById(R.id.botonComisiones);
         botonPorcentajes = findViewById(R.id.botonPorcentajes);
         botonAgregarInversion = findViewById(R.id.botonAgregarInversion);
         botonCambioInversion = findViewById(R.id.botonCambioInversion);
@@ -83,6 +84,8 @@ public class MainActivity extends AppCompatActivity
         precisionDestino = findViewById(R.id.precisionDestino);
         precisionLiquidez = findViewById(R.id.precisionLiquidez);
         precisionPrecio = findViewById(R.id.precisionPrecio);
+        botonComisiones = findViewById(R.id.botonComisiones);
+        botonComisiones.setOnTouchListener(onTouchListener);
         botonCazar.setOnTouchListener(onTouchListener);
         botonCorta.setOnTouchListener(onTouchListener);
         botonLarga.setOnTouchListener(onTouchListener);
@@ -197,6 +200,19 @@ public class MainActivity extends AppCompatActivity
         modoLiquidez = db.getModoLiquidez();
         cambiarModo();
         cambiarModoLiquidez(true);
+
+        if (db.getBotonComisionAplanado() != null) {
+            botonComisionAplanado = db.getBotonPorcentajesAplanado();
+
+            if (botonComisionAplanado) {
+                botonComisionAplanado = false;
+                setBotonComisiones();
+            }
+
+        } else {
+            setBotonComisiones();
+        }
+
         realm.close();
     }
 
@@ -256,6 +272,7 @@ public class MainActivity extends AppCompatActivity
                 db.setPrecisionPrecio(precisionPrecio.getText().toString());
                 db.setPrecisionPrecioFormato(precisionPrecioFormato);
                 db.setBotonPorcentajesAplanado(botonPorcentajesAplanado);
+                db.setBotonComisionAplanado(botonComisionAplanado);
 
 
             }
@@ -342,6 +359,11 @@ public class MainActivity extends AppCompatActivity
                         break;
                     }
 
+                    case R.id.botonComisiones: {
+                        setBotonComisiones();
+                        break;
+                    }
+
                     case R.id.botonPorcentajes: {
                         setBotonPorcentajes();
                         break;
@@ -421,6 +443,18 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
     };
+
+    private void setBotonComisiones() {
+
+        if (botonComisionAplanado) {
+            botonComisiones.setBackgroundResource(R.drawable.fondo_botones_superior);
+            botonComisionAplanado = false;
+        } else {
+            botonComisiones.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
+            botonComisionAplanado = true;
+        }
+
+    }
 
     private void cambiarModoLiquidez(Boolean alInicio) {
 

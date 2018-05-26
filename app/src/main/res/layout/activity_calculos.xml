@@ -11,6 +11,46 @@
 
 
     <TextView
+        android:id="@+id/textoIndicadorLiquidez"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/fondo_boton_forex_claro"
+        android:fontFamily="@font/comforta_bold"
+        android:padding="5dp"
+        android:text="USD -> EUR"
+        android:textColor="@android:color/white"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textoSinComision"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/fondo_boton_forex_claro"
+        android:fontFamily="@font/comforta_bold"
+        android:padding="5dp"
+        android:text="Sin comision"
+        android:textColor="@android:color/white"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.92" />
+
+    <TextView
         android:id="@+id/encabezado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -126,7 +166,7 @@
             android:textColor="@android:color/white"
             android:textSize="25dp"
             android:textStyle="bold"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -142,7 +182,7 @@
             android:textColor="@android:color/white"
             android:textSize="25dp"
             android:textStyle="bold"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -505,7 +545,7 @@
         android:fontFamily="@font/comforta_bold"
         android:text="Guardar "
         android:textSize="20dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -39,26 +39,11 @@ public class DB extends RealmObject {
     String referencia;
     Boolean botonPorcentajesAplanado;
     Boolean enForex;
+    Boolean botonComisionAplanado;
     RealmList<DBOpInversiones> operaciones;
     int modo;
     int modoLiquidez;
     double ganadoFinal;
-
-
-    public String getInversionInicioFinal() {
-        return inversionInicioFinal;
-    }
-
-    public void setInversionInicioFinal(String inversionInicioFinal) {
-        this.inversionInicioFinal = inversionInicioFinal;
-    }
-    public double getGanadoFinal() {
-        return ganadoFinal;
-    }
-
-    public void setGanadoFinal(double ganadoFinal) {
-        this.ganadoFinal = ganadoFinal;
-    }
 
 
     public int getId() {
@@ -197,6 +182,14 @@ public class DB extends RealmObject {
         this.inversionInicio = inversionInicio;
     }
 
+    public String getInversionInicioFinal() {
+        return inversionInicioFinal;
+    }
+
+    public void setInversionInicioFinal(String inversionInicioFinal) {
+        this.inversionInicioFinal = inversionInicioFinal;
+    }
+
     public String getGanadoInicio() {
         return ganadoInicio;
     }
@@ -301,6 +294,14 @@ public class DB extends RealmObject {
         this.enForex = enForex;
     }
 
+    public Boolean getBotonComisionAplanado() {
+        return botonComisionAplanado;
+    }
+
+    public void setBotonComisionAplanado(Boolean botonComisionAplanado) {
+        this.botonComisionAplanado = botonComisionAplanado;
+    }
+
     public RealmList<DBOpInversiones> getOperaciones() {
         return operaciones;
     }
@@ -323,6 +324,14 @@ public class DB extends RealmObject {
 
     public void setModoLiquidez(int modoLiquidez) {
         this.modoLiquidez = modoLiquidez;
+    }
+
+    public double getGanadoFinal() {
+        return ganadoFinal;
+    }
+
+    public void setGanadoFinal(double ganadoFinal) {
+        this.ganadoFinal = ganadoFinal;
     }
 
 
