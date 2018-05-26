@@ -152,7 +152,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             setBotonComision();
         }
 
-        if(!botonPorcentajesAplanado)
+        if (botonPorcentajesAplanado)
             textoSinComision.setVisibility(View.GONE);
     }
 
@@ -842,7 +842,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
         if (botonComisionAplanado) {
             botonComisiones.setBackgroundResource(R.drawable.fondo_botones_superior);
-            textoSinComision.setVisibility(View.VISIBLE);
+            if (botonPorcentajesAplanado)
+                textoSinComision.setVisibility(View.GONE);
             adapterRecyclerPorcentajes.cambioComisiones(botonComisionAplanado);
 
             if (comisionEntradaRespaldo == 0 && comisionSalidaRespaldo == 0) {
@@ -1082,22 +1083,10 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
     private void setBotonPorcentajesAplanado() {
         if (botonPorcentajesAplanado) {
-            calculador.setVisibility(View.GONE);
-            textoSinComision.setVisibility(View.GONE);
-            textoIndicadorLiquidez.setVisibility(View.GONE);
-            recyclerPorcentajes.setVisibility(View.VISIBLE);
-            recyclerBotonesPorcentajes.setVisibility(View.VISIBLE);
-            botonPorcentajesAplanado = false;
-            botonPorcentajes.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
-            //botonGuardar.setVisibility(View.GONE);
-
-        } else {
             calculador.setVisibility(View.VISIBLE);
             recyclerPorcentajes.setVisibility(View.GONE);
             recyclerBotonesPorcentajes.setVisibility(View.GONE);
-            botonPorcentajesAplanado = true;
             botonPorcentajes.setBackgroundResource(R.drawable.fondo_botones_superior);
-            //  botonGuardar.setVisibility(View.VISIBLE);
 
             if (!botonComisionAplanado) {
                 textoSinComision.setVisibility(View.VISIBLE);
@@ -1106,9 +1095,21 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             }
             if (liquidezNombre != null) {
 
-                if(!liquidezNombre.isEmpty())
+                if (!liquidezNombre.isEmpty())
                     textoIndicadorLiquidez.setVisibility(View.VISIBLE);
             }
+            botonPorcentajesAplanado = false;
+
+        } else {
+
+            calculador.setVisibility(View.GONE);
+            textoSinComision.setVisibility(View.GONE);
+            textoIndicadorLiquidez.setVisibility(View.GONE);
+            recyclerPorcentajes.setVisibility(View.VISIBLE);
+            recyclerBotonesPorcentajes.setVisibility(View.VISIBLE);
+            botonPorcentajes.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
+            botonPorcentajesAplanado = true;
+
         }
         vibrator.vibrate(50);
     }
