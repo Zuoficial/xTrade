@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         botonPorcentajesAplanado = false;
-        setBotonPorcentajes();
         setRecyclerViewInversiones();
         acccederDB();
 
@@ -201,17 +200,27 @@ public class MainActivity extends AppCompatActivity
         cambiarModo();
         cambiarModoLiquidez(true);
 
+        if (db.getBotonPorcentajesAplanado() != null) {
+            botonPorcentajesAplanado = db.getBotonPorcentajesAplanado();
+
+            if (botonPorcentajesAplanado) {
+                botonPorcentajesAplanado = false;
+                setBotonPorcentajes();
+            }
+        } else
+            setBotonPorcentajes();
+
+
         if (db.getBotonComisionAplanado() != null) {
-            botonComisionAplanado = db.getBotonPorcentajesAplanado();
+            botonComisionAplanado = db.getBotonComisionAplanado();
 
             if (botonComisionAplanado) {
                 botonComisionAplanado = false;
                 setBotonComisiones();
             }
-
-        } else {
+        } else
             setBotonComisiones();
-        }
+
 
         realm.close();
     }
@@ -591,13 +600,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setBotonPorcentajes() {
-        if (!botonPorcentajesAplanado) {
+        if (botonPorcentajesAplanado) {
 
-            botonPorcentajes.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
-            botonPorcentajesAplanado = true;
-        } else {
             botonPorcentajes.setBackgroundResource(R.drawable.fondo_botones_superior);
             botonPorcentajesAplanado = false;
+        } else {
+            botonPorcentajes.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
+            botonPorcentajesAplanado = true;
         }
     }
 

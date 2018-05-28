@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +23,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -128,32 +132,30 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoUsado.setOnTouchListener(onTouchListener);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        if (modo == modoCazar) {
-            setBotonCazar();
-        } else if (modo == modoCorta) {
-            setBotonCorta();
-        } else if (modo == modoLarga) {
-            setBotonLarga();
+        switch (modo) {
+            case modoCazar:
+                setBotonCazar();
+                break;
+            case modoCorta:
+                setBotonCorta();
+                break;
+            case modoLarga:
+                setBotonLarga();
+                break;
         }
 
         limpiarCalculador();
-        setindicadorLiquidez();
+        setBotonComision();
         setBotonPorcentajesAplanado();
+        setindicadorLiquidez();
         ajustadorPorcentajes = 1;
         ajustadorPosicion(ajustadorPorcentajes);
         textoPrecioMod.setText(db.getPrecioOut());
         textoPrecioMod.clearFocus();
         textoReferencia.clearFocus();
 
-        if (botonComisionAplanado) {
-            botonComisiones.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
-        } else {
-            botonComisionAplanado = true;
-            setBotonComision();
-        }
-
-        if (botonPorcentajesAplanado)
-            textoSinComision.setVisibility(View.GONE);
+        // Ajustando
+        setBotonReducir();
     }
 
     DB db;
@@ -190,8 +192,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
         modo = db.getModo();
         modoLiquidez = db.getModoLiquidez();
-        botonPorcentajesAplanado = db.getBotonPorcentajesAplanado();
-        botonComisionAplanado = db.getBotonComisionAplanado();
+        botonPorcentajesAplanado = !db.getBotonPorcentajesAplanado();
+        botonComisionAplanado = !db.getBotonComisionAplanado();
         precisionOrigen = db.getPrecisionOrigenFormato().replace(".", ",.");
         precisionDestino = db.getPrecisionDestinoFormato().replace(".", ",.");
         precisionLiquidez = db.getPrecisionLiquidezFormato().replace(".", ",.");
@@ -842,8 +844,16 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
         if (botonComisionAplanado) {
             botonComisiones.setBackgroundResource(R.drawable.fondo_botones_superior);
-            if (botonPorcentajesAplanado)
-                textoSinComision.setVisibility(View.GONE);
+            if (!recyclerBotonesPorcentajes.isShown()) {
+
+                if (botonPorcentajesAplanado)
+                    textoSinComision.setVisibility(View.GONE);
+                else
+                    textoSinComision.setVisibility(View.VISIBLE);
+
+            }
+
+
             adapterRecyclerPorcentajes.cambioComisiones(botonComisionAplanado);
 
             if (comisionEntradaRespaldo == 0 && comisionSalidaRespaldo == 0) {
@@ -861,7 +871,12 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
         } else {
             botonComisiones.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
-            textoSinComision.setVisibility(View.GONE);
+            if (!recyclerBotonesPorcentajes.isShown()) {
+                if (botonPorcentajesAplanado)
+                    textoSinComision.setVisibility(View.VISIBLE);
+                else
+                    textoSinComision.setVisibility(View.GONE);
+            }
             adapterRecyclerPorcentajes.cambioComisiones(botonComisionAplanado);
             if (hayComisionCero) {
 
@@ -898,7 +913,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             public void execute(Realm realm) {
 
 
-                db.setBotonPorcentajesAplanado(!botonPorcentajesAplanado);
+                db.setBotonPorcentajesAplanado(botonPorcentajesAplanado);
                 db.setBotonComisionAplanado(botonComisionAplanado);
                 db.setModo(modo);
 
@@ -1088,10 +1103,10 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             recyclerBotonesPorcentajes.setVisibility(View.GONE);
             botonPorcentajes.setBackgroundResource(R.drawable.fondo_botones_superior);
 
-            if (!botonComisionAplanado) {
-                textoSinComision.setVisibility(View.VISIBLE);
-            } else {
+            if (botonComisionAplanado) {
                 textoSinComision.setVisibility(View.GONE);
+            } else {
+                textoSinComision.setVisibility(View.VISIBLE);
             }
             if (liquidezNombre != null) {
 
@@ -1112,6 +1127,148 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
         }
         vibrator.vibrate(50);
+    }
+
+    void setBotonReducir() {
+        calculador.setVisibility(View.GONE);
+        textoSinComision.setVisibility(View.GONE);
+        textoIndicadorLiquidez.setVisibility(View.GONE);
+        recyclerPorcentajes.setVisibility(View.GONE);
+        recyclerBotonesPorcentajes.setVisibility(View.GONE);
+        botonPorcentajes.setBackgroundResource(R.drawable.fondo_botones_superior);
+        setRecyclerViewRecyclerReducir();
+    }
+
+    LinearLayoutManager layoutManagerReducir;
+    RecyclerView recyclerPosicionReducida;
+    AdapterRecyclerReducirPosicion adapterRecyclerReducirPosicion;
+    EditText inversionReducir, precioReducir;
+    Button botonReducir;
+
+    private void setRecyclerViewRecyclerReducir() {
+        recyclerPosicionReducida = findViewById(R.id.recyclerPosicionReducida);
+        adapterRecyclerReducirPosicion = new AdapterRecyclerReducirPosicion(this);
+        recyclerPosicionReducida.setAdapter(adapterRecyclerReducirPosicion);
+        layoutManagerReducir = new LinearLayoutManager(this);
+        recyclerPosicionReducida.setLayoutManager(layoutManagerReducir);
+        inversionReducir = findViewById(R.id.inversionRed);
+        precioReducir = findViewById(R.id.precioRed);
+        botonReducir = findViewById(R.id.botonRed);
+        botonReducir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                double inversionRed = Double.parseDouble(inversionReducir.getText().toString());
+                double precioRed = Double.parseDouble(precioReducir.getText().toString());
+                double porcentajeFinalRed = precioRed / precio;
+                porcentajeFinalRed -= 1;
+
+
+                if (modo == modoCorta) {
+
+                    if (enForex) {
+
+                        double b = precioRed + comisionSalida;
+                        double a = precio - comisionEntrada;
+                        porcentajeFinal = b / a;
+                        porcentajeFinal -= 1;
+                        porcentajeFinal *= -1;
+
+
+                    } else {
+
+                        double b;
+
+                        b = precioRed / precio;
+                        b += -2;
+                        b *= -1;
+                        b -= comisionEntrada;
+                        b /= (1 + comisionSalida);
+
+                        porcentajeFinal = b - 1;
+
+                    }
+
+                    invertidoActual = invertido * (1 + porcentajeFinal);
+                    gananciaFinal = invertidoActual - invertidoFinal;
+                    porcentajeFinal *= 100;
+                    positivo = gananciaFinal >= 0;
+                } else if (modo == modoLarga) {
+
+                    if (enForex) {
+
+                        double b = precioRed - comisionSalida;
+                        double a = precio + comisionEntrada;
+                        porcentajeFinal = b / a;
+                        porcentajeFinal -= 1;
+
+
+                    } else {
+
+                        double b;
+                        b = precioRed / precio;
+                        b -= comisionEntrada;
+                        b /= (1 + comisionSalida);
+                        porcentajeFinal = b - 1;
+
+
+                    }
+
+                    invertidoActual = invertido * (1 + (porcentajeFinal));
+                    gananciaFinal = invertidoActual - invertidoFinal;
+                    porcentajeFinal *= 100;
+                    positivo = gananciaFinal >= 0;
+                }
+
+                chequeoLiquidez();
+
+
+                String inversionRedImportar, precioRedImportar, precioBaseImportar,
+                        textoGanadoRedImportar, textoGanandoLiqRedImportar, ganadoRedImportar,
+                        ganadoLiqImportar, textoUsandoImportar;
+
+
+                inversionRedImportar = String.format(precisionOrigen, inversionRed);
+
+                precioRedImportar = String.format(precisionOrigen, precioRed);
+
+                precioBaseImportar = String.format(precisionOrigen, precio);
+
+
+                if (inversionLiq != 0 && inversionLiq != Double.POSITIVE_INFINITY) {
+                    ganadoLiqImportar = (positivo ? String.format(precisionLiquidez, ganadoLiq * porcentajeFinalRed) + " " + liquidezNombre :
+                            String.format(precisionLiquidez, ganadoLiq * porcentajeFinalRed).substring(1) + " " + liquidezNombre);
+
+                } else {
+
+                    ganadoLiqImportar = "Pendiente";
+                }
+
+
+                if (positivo) {
+                    textoGanadoGuardar = String.format(precisionOrigen, gananciaFinal * porcentajeFinalRed);
+                    ganadoRedImportar = (textoGanadoGuardar + " " + monedaOrigenNombre);
+                    textoGanadoRedImportar = ("Ganado");
+                    textoGanandoLiqRedImportar = ("Ganado liq");
+                } else {
+                    textoGanadoGuardar = String.format(precisionOrigen, gananciaFinal * porcentajeFinalRed);
+                    ganadoRedImportar = (textoGanadoGuardar.substring(1) + " " + monedaOrigenNombre);
+                    textoGanadoRedImportar = ("Perdido");
+                    textoGanandoLiqRedImportar = ("Perdido liq");
+
+                }
+
+                textoUsandoImportar = (String.format(precisionDestino, invertidoDestino * porcentajeFinalRed) + " " + monedaDestinoNombre);
+
+                String[] listaImportar = {inversionRedImportar, precioRedImportar, precioBaseImportar,
+                        textoGanadoRedImportar, textoGanandoLiqRedImportar, ganadoRedImportar,
+                        ganadoLiqImportar, textoUsandoImportar};
+
+                ArrayList<String> listaImportarRed = new ArrayList<>(Arrays.asList(listaImportar));
+
+                Log.d("registro", String.valueOf(listaImportarRed));
+            }
+        });
     }
 
 
