@@ -31,7 +31,7 @@ public class AdapterRecyclerPorcentajes extends
     double invertido, invertidoFinal, ganancia, invertidoDestino,
             precio, precioFinal, porcentajeMostrar, inversionActual,
             porcentaje, liquidezOrigen, liquidezDestino, liquidez,
-            comisionEntrada, comisionSalida, inversionLiq, ganadoLiq, actualLiq;
+            comisionEntrada, comisionSalida, inversionLiq, ganadoLiq, actualLiq,gananciaRedFinal;
     boolean enForex;
     String monedaOrigenNombre, monedaDestinoNombre;
     Context context;
@@ -55,11 +55,25 @@ public class AdapterRecyclerPorcentajes extends
     Realm realm;
     DB db;
 
+
+    //TODO FALTA AJUSTAR LA GANANCIA CUANDO HUBO REDUCCION
     private void accederDB(DB db) {
         monedaOrigenNombre = db.getMonedaOrigen();
         monedaDestinoNombre = db.getMonedaDestino();
         liquidezNombre = db.getLiquidezNombre();
-        invertido = Double.parseDouble(db.getInversionInicio());
+
+        if (db.getExisteReduccion() != null) {
+            if (db.getExisteReduccion()) {
+                invertido = db.getInvertidoRedFinal();
+                gananciaRedFinal = db.getGananciaRedFinal();
+
+            } else {
+                invertido = Double.parseDouble(db.getInversionInicio());
+            }
+        } else
+            invertido = Double.parseDouble(db.getInversionInicio());
+
+
         precio = Double.parseDouble(db.getPrecioIn());
         if (db.getEnForex() != null) {
             if (db.getEnForex()) {

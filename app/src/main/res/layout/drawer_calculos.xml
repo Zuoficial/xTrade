@@ -110,6 +110,19 @@
 
 
             <Button
+                android:id="@+id/botonReducir"
+                android:textColor="@android:color/white"
+                android:background="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/drawer_button_height"
+                android:layout_marginTop="@dimen/drawer_space_between"
+                android:fontFamily="@font/comforta_bold"
+                android:text="Reducir"
+                android:textSize="22dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/botonLarga" />
+
+            <Button
                 android:id="@+id/botonCerrar"
                 android:textColor="@android:color/white"
                 android:background="@android:color/transparent"
@@ -120,7 +133,7 @@
                 android:text="Cerrar"
                 android:textSize="22dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/botonLarga" />
+                app:layout_constraintTop_toBottomOf="@+id/botonReducir" />
         </android.support.constraint.ConstraintLayout>
 
 

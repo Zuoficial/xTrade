@@ -13,9 +13,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,9 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -38,7 +35,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
     Button botonCazar, botonCorta, botonLarga, botonClear, botonPorcentajes,
             botonCerrar, botonPorcentajeCalculador,
             botonPorcentajeCalculadorMenos, botonPorcentajeCalculadorMas,
-            botonGuardar, botonModificar, botonComisiones;
+            botonGuardar, botonModificar, botonComisiones, botonReducir;
     TextView encabezado, textoGanancia, textoInvertido, textoInvertidoActual, textoUsado, textoGananciaLetra,
             textoPorcentaje, textoPrecio, textoBase, textoInversionLiq,
             textoGanadoLiq, textoActualLiq, textoGanadoLiqLetra, textoSinComision, textoIndicadorLiquidez;
@@ -46,12 +43,12 @@ public class Calculos extends AppCompatActivity implements Comunicador {
     EditText textoPrecioMod, textoPorcentajeMod, textoReferencia;
     double invertido, precio, invertidoDestino, precioFinal,
             precioIngresado, porcentajeFinal, gananciaFinal, invertidoActual, porcentajeIngresado,
-            liquidezOrigen, liquidezDestino, comisionEntrada, comisionSalida, invertidoFinal;
+            liquidezOrigen, liquidezDestino, comisionEntrada, comisionSalida, invertidoFinal, gananciaRedFinal;
     int ajustadorPorcentajes, modo, modoLiquidez, idOperacion;
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     boolean botonPorcentajesAplanado,
             botonporcentajeCalculadorAplanado, botonPorcentajeCalculadorMasAplanado, enForex,
-            botonComisionAplanado;
+            botonComisionAplanado, botonReducirAplanado;
     Vibrator vibrator;
     String precisionOrigen, precisionDestino, precisionLiquidez, precisionPrecio,
             liquidezNombre;
@@ -87,6 +84,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         botonGuardar = findViewById(R.id.botonGuardar);
         botonModificar = findViewById(R.id.botonModificar);
         botonComisiones = findViewById(R.id.botonComisiones);
+        botonReducir = findViewById(R.id.botonReducir);
         botonCazar.setOnTouchListener(onTouchListener);
         botonCorta.setOnTouchListener(onTouchListener);
         botonLarga.setOnTouchListener(onTouchListener);
@@ -99,6 +97,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         botonGuardar.setOnTouchListener(onTouchListener);
         botonModificar.setOnTouchListener(onTouchListener);
         botonComisiones.setOnTouchListener(onTouchListener);
+        botonReducir.setOnTouchListener(onTouchListener);
         textoPorcentaje = findViewById(R.id.textoPorcentaje);
         textoPorcentajeMod = findViewById(R.id.textoPorcentajeMod);
         textoPorcentajeMod.addTextChangedListener(textWatcher);
@@ -154,12 +153,10 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoPrecioMod.clearFocus();
         textoReferencia.clearFocus();
 
-        // Ajustando
-        setBotonReducir();
     }
 
     DB db;
-
+    //TODO FALTA AJUSTAR LA GANANCIA CUANDO HUBO REDUCCION
     private void accederDB() {
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
@@ -170,9 +167,22 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         monedaOrigenNombre = db.getMonedaOrigen();
         monedaDestinoNombre = db.getMonedaDestino();
         liquidezNombre = db.getLiquidezNombre();
-        invertido = Double.parseDouble(db.getInversionInicio());
+
+
+        if (db.getExisteReduccion() != null) {
+            if (db.getExisteReduccion()) {
+                invertido = db.getInvertidoRedFinal();
+                gananciaRedFinal = db.getGananciaRedFinal();
+
+            } else {
+                invertido = Double.parseDouble(db.getInversionInicio());
+            }
+        } else
+            invertido = Double.parseDouble(db.getInversionInicio());
+
         precio = Double.parseDouble(db.getPrecioIn());
         invertidoDestino = invertido / precio;
+
 
         if (db.getEnForex() != null) {
             if (db.getEnForex()) {
@@ -786,6 +796,28 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                         break;
                     }
 
+                    case R.id.botonReducir: {
+
+                        if (!botonReducirAplanado) {
+
+                            botonReducir.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
+                            vibrator.vibrate(500);
+                            drawer.closeDrawer(Gravity.START);
+                            botonReducirAplanado = true;
+                            setBotonReducir();
+
+                        } else {
+
+                            Intent i = getIntent();
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            i.putExtra("idOperacion", idOperacion);
+                            startActivity(i);
+                        }
+
+                        break;
+                    }
+
                     case R.id.textoPrecio: {
                         exportarPrecio(textoPrecio);
                         break;
@@ -941,6 +973,18 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
                     db.setPrecioOut(null);
 
+                }
+
+                if (botonReducirAplanado) {
+                    db.reducciones.clear();
+
+                    if (adapterRecyclerReducirPosicion.lista.size() > 0) {
+                        db.reducciones.addAll(adapterRecyclerReducirPosicion.lista);
+                        db.setExisteReduccion(true);
+                    } else
+                        db.setExisteReduccion(false);
+
+                    db.setInvertidoRedFinal(invertido);
                 }
 
 
@@ -1129,7 +1173,14 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         vibrator.vibrate(50);
     }
 
+    View seccionReduccion;
     void setBotonReducir() {
+
+        seccionReduccion = findViewById(R.id.seccionReduccion);
+
+        seccionReduccion.setVisibility(View.VISIBLE);
+
+        botonReducirAplanado = true;
         calculador.setVisibility(View.GONE);
         textoSinComision.setVisibility(View.GONE);
         textoIndicadorLiquidez.setVisibility(View.GONE);
@@ -1143,7 +1194,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
     RecyclerView recyclerPosicionReducida;
     AdapterRecyclerReducirPosicion adapterRecyclerReducirPosicion;
     EditText inversionReducir, precioReducir;
-    Button botonReducir;
+    TextView inversionDisponibleRed;
+    Button botonReducirR;
 
     private void setRecyclerViewRecyclerReducir() {
         recyclerPosicionReducida = findViewById(R.id.recyclerPosicionReducida);
@@ -1151,17 +1203,25 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         recyclerPosicionReducida.setAdapter(adapterRecyclerReducirPosicion);
         layoutManagerReducir = new LinearLayoutManager(this);
         recyclerPosicionReducida.setLayoutManager(layoutManagerReducir);
+        adapterRecyclerReducirPosicion.lista.addAll(db.reducciones);
+        adapterRecyclerReducirPosicion.notifyDataSetChanged();
         inversionReducir = findViewById(R.id.inversionRed);
         precioReducir = findViewById(R.id.precioRed);
-        botonReducir = findViewById(R.id.botonRed);
-        botonReducir.setOnClickListener(new View.OnClickListener() {
+        botonReducirR = findViewById(R.id.botonRed);
+        inversionDisponibleRed = findViewById(R.id.inversionDisponibleRed);
+        inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
+        botonReducirR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 double inversionRed = Double.parseDouble(inversionReducir.getText().toString());
                 double precioRed = Double.parseDouble(precioReducir.getText().toString());
-                double porcentajeFinalRed = precioRed / precio;
-                porcentajeFinalRed -= 1;
+                double porcentajeFinalRed = inversionRed / invertido;
+
+                if (inversionRed > invertido) {
+                    crearSnackBar("No es posible reducir mas de lo disponible");
+                    return;
+                }
 
 
                 if (modo == modoCorta) {
@@ -1190,7 +1250,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                     }
 
                     invertidoActual = invertido * (1 + porcentajeFinal);
-                    gananciaFinal = invertidoActual - invertidoFinal;
+                    gananciaFinal = invertidoActual - invertido;
                     porcentajeFinal *= 100;
                     positivo = gananciaFinal >= 0;
                 } else if (modo == modoLarga) {
@@ -1215,7 +1275,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                     }
 
                     invertidoActual = invertido * (1 + (porcentajeFinal));
-                    gananciaFinal = invertidoActual - invertidoFinal;
+                    gananciaFinal = invertidoActual - invertido;
                     porcentajeFinal *= 100;
                     positivo = gananciaFinal >= 0;
                 }
@@ -1223,52 +1283,123 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                 chequeoLiquidez();
 
 
-                String inversionRedImportar, precioRedImportar, precioBaseImportar,
-                        textoGanadoRedImportar, textoGanandoLiqRedImportar, ganadoRedImportar,
-                        ganadoLiqImportar, textoUsandoImportar;
+                DBReductor reductorDB = new DBReductor();
 
 
-                inversionRedImportar = String.format(precisionOrigen, inversionRed);
+                reductorDB.setInversionRed(String.format(precisionOrigen, inversionRed) + " " + monedaOrigenNombre);
 
-                precioRedImportar = String.format(precisionOrigen, precioRed);
+                reductorDB.setPrecioRed(String.format(precisionPrecio, precioRed) + " " + monedaOrigenNombre);
 
-                precioBaseImportar = String.format(precisionOrigen, precio);
+                reductorDB.setPrecioBase(String.format(precisionPrecio, precio) + " " + monedaOrigenNombre);
 
 
                 if (inversionLiq != 0 && inversionLiq != Double.POSITIVE_INFINITY) {
-                    ganadoLiqImportar = (positivo ? String.format(precisionLiquidez, ganadoLiq * porcentajeFinalRed) + " " + liquidezNombre :
+                    reductorDB.setGanadoLiqRed(positivo ? String.format(precisionLiquidez, ganadoLiq * porcentajeFinalRed) + " " + liquidezNombre :
                             String.format(precisionLiquidez, ganadoLiq * porcentajeFinalRed).substring(1) + " " + liquidezNombre);
 
                 } else {
 
-                    ganadoLiqImportar = "Pendiente";
+                    reductorDB.setGanadoLiqRed("Pendiente");
                 }
-
 
                 if (positivo) {
                     textoGanadoGuardar = String.format(precisionOrigen, gananciaFinal * porcentajeFinalRed);
-                    ganadoRedImportar = (textoGanadoGuardar + " " + monedaOrigenNombre);
-                    textoGanadoRedImportar = ("Ganado");
-                    textoGanandoLiqRedImportar = ("Ganado liq");
+                    reductorDB.setGanadoRed(textoGanadoGuardar + " " + monedaOrigenNombre);
+                    reductorDB.setTextoGanadoRed("Ganado");
+                    reductorDB.setTextoGanandoLiqRed("Ganado liq");
                 } else {
                     textoGanadoGuardar = String.format(precisionOrigen, gananciaFinal * porcentajeFinalRed);
-                    ganadoRedImportar = (textoGanadoGuardar.substring(1) + " " + monedaOrigenNombre);
-                    textoGanadoRedImportar = ("Perdido");
-                    textoGanandoLiqRedImportar = ("Perdido liq");
+                    reductorDB.setGanadoRed(textoGanadoGuardar.substring(1) + " " + monedaOrigenNombre);
+                    reductorDB.setTextoGanadoRed("Perdido");
+                    reductorDB.setTextoGanandoLiqRed("Perdido liq");
 
                 }
 
-                textoUsandoImportar = (String.format(precisionDestino, invertidoDestino * porcentajeFinalRed) + " " + monedaDestinoNombre);
+                reductorDB.setInversionRedNumero(inversionRed);
+                reductorDB.setGanadoRedNumero(gananciaFinal);
+                reductorDB.setTextoUsando(String.format(precisionDestino, invertidoDestino * porcentajeFinalRed) + " " + monedaDestinoNombre);
 
-                String[] listaImportar = {inversionRedImportar, precioRedImportar, precioBaseImportar,
-                        textoGanadoRedImportar, textoGanandoLiqRedImportar, ganadoRedImportar,
-                        ganadoLiqImportar, textoUsandoImportar};
 
-                ArrayList<String> listaImportarRed = new ArrayList<>(Arrays.asList(listaImportar));
+                invertido -= inversionRed;
+                invertidoDestino -= invertidoDestino * porcentajeFinalRed;
+                gananciaRedFinal += gananciaFinal;
 
-                Log.d("registro", String.valueOf(listaImportarRed));
+                inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
+                inversionReducir.getText().clear();
+                precioReducir.getText().clear();
+
+                adapterRecyclerReducirPosicion.agregarReduccion(reductorDB);
+
             }
         });
+
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                return makeMovementFlags(ItemTouchHelper.UP, ItemTouchHelper.START | ItemTouchHelper.END);
+            }
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+                int posicion = viewHolder.getLayoutPosition();
+                final double invertidoRespaldo, invertidoDestinoRespaldo, gananciaRedFinalRespaldo;
+
+
+                invertidoRespaldo = invertido;
+                invertidoDestinoRespaldo = invertidoDestino;
+                gananciaRedFinalRespaldo = gananciaRedFinal;
+
+                invertido += adapterRecyclerReducirPosicion.lista.get(posicion).getInversionRedNumero();
+                invertidoDestino = invertido / precio;
+                gananciaRedFinal -= adapterRecyclerReducirPosicion.lista.get(posicion).getGanadoRedNumero();
+                inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
+                adapterRecyclerReducirPosicion.removerReduccion(posicion);
+
+
+                Snackbar snackbar =
+                        Snackbar.make(findViewById(R.id.encabezado), "Reduccion borrada!", Snackbar.LENGTH_LONG);
+                snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
+                snackbar.setAction("Regresar", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        invertido = invertidoRespaldo;
+                        invertidoDestino = invertidoDestinoRespaldo;
+                        gananciaRedFinal = gananciaRedFinalRespaldo;
+                        inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
+                        adapterRecyclerReducirPosicion.recuperarReduccion();
+
+
+                    }
+                }).show();
+
+
+            }
+
+            @Override
+            public boolean isItemViewSwipeEnabled() {
+                return true;
+            }
+        });
+
+
+        itemTouchHelper.attachToRecyclerView(recyclerPosicionReducida);
+
+
+    }
+
+    void crearSnackBar(String texto) {
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.encabezado),
+                texto, Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
+        snackbar.show();
     }
 
 
