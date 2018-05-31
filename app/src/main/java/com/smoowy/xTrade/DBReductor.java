@@ -4,7 +4,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class DBReductor extends RealmObject {
-    @PrimaryKey
+
     int id;
     String inversionRed;
     String precioRed;
@@ -12,7 +12,6 @@ public class DBReductor extends RealmObject {
     String textoGanadoRed;
     String textoGanandoLiqRed;
     String ganadoRed;
-    String ganadoLiqRed;
     String textoUsando;
     Double inversionRedNumero;
     Double ganadoRedNumero;
@@ -72,14 +71,6 @@ public class DBReductor extends RealmObject {
 
     public void setGanadoRed(String ganadoRed) {
         this.ganadoRed = ganadoRed;
-    }
-
-    public String getGanadoLiqRed() {
-        return ganadoLiqRed;
-    }
-
-    public void setGanadoLiqRed(String ganadoLiqRed) {
-        this.ganadoLiqRed = ganadoLiqRed;
     }
 
     public String getTextoUsando() {

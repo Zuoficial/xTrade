@@ -395,6 +395,8 @@ public class MainActivity extends AppCompatActivity
 
                     case R.id.botonCambioInversion: {
 
+                        //TODO FALTA AJUSTAR ESTO
+
                         selectorCambioInversion += 1;
 
                         if (selectorCambioInversion > 3)

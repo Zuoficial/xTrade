@@ -11,50 +11,6 @@
 
 
     <TextView
-        android:id="@+id/textoIndicadorLiquidez"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/fondo_boton_forex_claro"
-        android:fontFamily="@font/comforta_bold"
-        android:padding="5dp"
-        android:text="USD -> EUR"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.93"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.92" />
-
-    <TextView
-        android:id="@+id/textoSinComision"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/fondo_boton_forex_claro"
-        android:fontFamily="@font/comforta_bold"
-        android:padding="5dp"
-        android:text="Sin comision"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.04"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.92" />
-
-    <TextView
         android:id="@+id/encabezado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,7 +35,7 @@
         android:layout_below="@+id/encabezado"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -94,12 +50,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/recyclerBotonesPorcentaje"
         android:layout_marginTop="8dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerBotonesPorcentaje"
-        tools:listitem="@layout/recycler_view_porcentaje" />
+        tools:listitem="@layout/recycler_view_porcentaje">
+
+    </android.support.v7.widget.RecyclerView>
 
 
     <android.support.constraint.ConstraintLayout
@@ -535,27 +493,78 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <Button
-        android:id="@+id/botonGuardar"
-        style="@style/boton"
-        android:layout_width="142dp"
-        android:layout_height="53dp"
-        android:layout_alignParentBottom="true"
+
+    <TextView
+        android:id="@+id/textoIndicadorLiquidez"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/fondo_boton_forex"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/fondo_boton_forex_claro"
         android:fontFamily="@font/comforta_bold"
-        android:text="Guardar "
-        android:textSize="20dp"
+        android:padding="5dp"
+        android:text="USD -> EUR"
+        android:textColor="@android:color/white"
+        android:textSize="15dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.92" />
+
+    <TextView
+        android:id="@+id/textoSinComision"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/fondo_boton_forex_claro"
+        android:fontFamily="@font/comforta_bold"
+        android:padding="5dp"
+        android:text="Sin comision"
+        android:textColor="@android:color/white"
+        android:textSize="15dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.92" />
+
+    <TextView
+        android:id="@+id/textoReduccion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/fondo_boton_forex_claro"
+        android:fontFamily="@font/comforta_bold"
+        android:padding="5dp"
+        android:text="Reducida"
+        android:textColor="@android:color/white"
+        android:textSize="15dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.954" />
+        app:layout_constraintVertical_bias="0.92" />
 
+    <android.support.constraint.Group
+        android:id="@+id/seccionReduccion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="inversionDisponibleRed,guideline,encabezado2Red,botonRed,encabezadoRed,inversionRed,recyclerPosicionReducida,precioRed,encabezadoRed2,botonCambioInversionRed" />
 
     <TextView
         android:id="@+id/encabezadoRed"
@@ -650,17 +659,30 @@
     <Button
         android:id="@+id/botonRed"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginBottom="190dp"
-        android:background="@drawable/fondo_marcador_neutral"
+        android:layout_height="35dp"
+        android:layout_marginBottom="185dp"
+        android:background="@drawable/fondo_boton_forex_claro"
         android:fontFamily="@font/comforta_bold"
         android:text="Reducir"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+    <Button
+        android:id="@+id/botonCambioInversionRed"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginBottom="185dp"
+        android:background="@drawable/fondo_boton_forex_claro"
+        android:fontFamily="@font/comforta_bold"
+        android:text="I/C"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.11"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -683,12 +705,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/recycler_view_reducir_posicion" />
 
-    <android.support.constraint.Group
-        android:id="@+id/seccionReduccion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="encabezadoRed2,encabezadoRed,inversionRed,encabezado2Red,precioRed,botonRed,recyclerPosicionReducida,inversionDisponibleRed" />
+
 
 
 </android.support.constraint.ConstraintLayout>

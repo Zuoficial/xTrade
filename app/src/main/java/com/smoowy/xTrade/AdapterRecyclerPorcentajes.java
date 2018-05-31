@@ -31,8 +31,8 @@ public class AdapterRecyclerPorcentajes extends
     double invertido, invertidoFinal, ganancia, invertidoDestino,
             precio, precioFinal, porcentajeMostrar, inversionActual,
             porcentaje, liquidezOrigen, liquidezDestino, liquidez,
-            comisionEntrada, comisionSalida, inversionLiq, ganadoLiq, actualLiq,gananciaRedFinal;
-    boolean enForex;
+            comisionEntrada, comisionSalida, inversionLiq, ganadoLiq, actualLiq, gananciaRedFinal;
+    boolean enForex, existeReduccion;
     String monedaOrigenNombre, monedaDestinoNombre;
     Context context;
     String precisionOrigen, precisionDestino, liquidezNombre, precisionLiquidez, precisionPrecio;
@@ -63,7 +63,9 @@ public class AdapterRecyclerPorcentajes extends
         liquidezNombre = db.getLiquidezNombre();
 
         if (db.getExisteReduccion() != null) {
-            if (db.getExisteReduccion()) {
+            existeReduccion = db.getExisteReduccion();
+            if (existeReduccion) {
+
                 invertido = db.getInvertidoRedFinal();
                 gananciaRedFinal = db.getGananciaRedFinal();
 
@@ -124,7 +126,7 @@ public class AdapterRecyclerPorcentajes extends
     boolean botonComisionAplanado;
 
     public void cambioComisiones(Boolean botonComisionAplanado) {
-        this.botonComisionAplanado= botonComisionAplanado;
+        this.botonComisionAplanado = botonComisionAplanado;
 
         if (botonComisionAplanado) {
             if (comisionEntradaRespaldo == 0 && comisionSalidaRespaldo == 0) {
@@ -181,7 +183,7 @@ public class AdapterRecyclerPorcentajes extends
             info = crearInfoIndividual(positionX);
         }
 
-        if(botonComisionAplanado)
+        if (botonComisionAplanado)
             holder.textoSinComision.setVisibility(View.VISIBLE);
         else
             holder.textoSinComision.setVisibility(View.GONE);
@@ -304,6 +306,16 @@ public class AdapterRecyclerPorcentajes extends
                 ganancia = inversionActual - invertidoFinal;
                 inversionDestinoActual = invertidoDestino * (1 + tablaPorcentajesInvertida.get(posicion));
                 gananciaDestino = inversionDestinoActual - invertidoDestino;
+
+                if (existeReduccion) {
+                    inversionActual += gananciaRedFinal;
+                    ganancia += gananciaRedFinal;
+                    double gananciaDestinoRed = gananciaRedFinal / precio;
+                    inversionDestinoActual += gananciaDestinoRed;
+                    gananciaDestino += gananciaDestinoRed;
+                }
+
+
                 info.setGananciaFinal(String.format(precisionOrigen, ganancia) + " " + monedaOrigenNombre);
                 info.setActualFinal(String.format(precisionOrigen, inversionActual) + " " + monedaOrigenNombre);
                 chequeoLiquidez(info);
@@ -365,6 +377,14 @@ public class AdapterRecyclerPorcentajes extends
                 ganancia = inversionActual - invertidoFinal;
                 inversionDestinoActual = invertidoDestino * (1 - tablaPorcentajes.get(iPositivo));
                 gananciaDestino = inversionDestinoActual - invertidoDestino;
+
+                if (existeReduccion) {
+                    inversionActual += gananciaRedFinal;
+                    ganancia += gananciaRedFinal;
+                    double gananciaDestinoRed = gananciaRedFinal / precio;
+                    inversionDestinoActual += gananciaDestinoRed;
+                    gananciaDestino += gananciaDestinoRed;
+                }
                 info.setGananciaFinal(String.format(precisionOrigen, ganancia) + " " + monedaOrigenNombre);
                 info.setActualFinal(String.format(precisionOrigen, inversionActual) + " " + monedaOrigenNombre);
                 chequeoLiquidez(info);
@@ -523,7 +543,7 @@ public class AdapterRecyclerPorcentajes extends
 
     class Holder extends RecyclerView.ViewHolder {
 
-       public TextView textoPorcentaje, textoGanancia, textoPrecio, textoInvertido, textoInvertidoLetra,
+        public TextView textoPorcentaje, textoGanancia, textoPrecio, textoInvertido, textoInvertidoLetra,
                 textoActual, textoUsando, textoGanadoLetra, textoGanadoLiqLetra,
                 textoBase, textoInversionLiq, textoGanadoLiq, textoActualLiq, textoIndicadorLiquidez,
                 textoSinComision;
