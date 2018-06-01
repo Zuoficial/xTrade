@@ -15,6 +15,8 @@ public class DBReductor extends RealmObject {
     String textoUsando;
     Double inversionRedNumero;
     Double ganadoRedNumero;
+    Double precioNumero;
+    int tipo;
 
 
     public int getId() {
@@ -97,6 +99,20 @@ public class DBReductor extends RealmObject {
         this.ganadoRedNumero = ganadoRedNumero;
     }
 
+    public int getTipo() {
+        return tipo;
+    }
 
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+
+    public Double getPrecioNumero() {
+        return precioNumero;
+    }
+
+    public void setPrecioNumero(Double precioNumero) {
+        this.precioNumero = precioNumero;
+    }
 
 }

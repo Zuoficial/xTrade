@@ -4,9 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="320dp"
-    android:background="@drawable/fondo_marcador_neutral"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/fondo_marcador_neutral">
 
+
+    <android.support.constraint.Group
+        android:id="@+id/tipoInversion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="textoGanadoLiq3,textoBase2,textoGanadoLiqLetra3,textoGanadoLetra2,textoUsandoRV3,textoPrecio,textView8,textoInversion,textoGanancia2,guideline4,textView10,textView11,guideline5,textView6" />
 
     <TextView
         android:id="@+id/textView8"
@@ -103,7 +110,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:fontFamily="@font/comforta_regular"
-        android:text="Usando"
+        android:text="Usado"
         android:textColor="@android:color/white"
         android:textSize="17dp"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
@@ -206,5 +213,107 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_expand_less" />
+
+    <android.support.constraint.Group
+        android:id="@+id/tipoGanancia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="cantidadOrigenO,encabezadoDestinoO,cantidadLiquidezO,encabezadoOrigenO,precioO,encabezadoLiquidezO,encabezadoPrecioO,cantidadDestinoO" />
+
+
+    <TextView
+        android:id="@+id/encabezadoOrigenO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Ganancia en origen"
+        android:textColor="@android:color/white"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/cantidadOrigenO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1000.00 MXN"
+        android:textColor="@android:color/white"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/encabezadoOrigenO" />
+
+    <TextView
+        android:id="@+id/encabezadoDestinoO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="5dp"
+        android:text="Ganancia en destino"
+        android:textColor="@android:color/white"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cantidadOrigenO" />
+
+    <TextView
+        android:id="@+id/cantidadDestinoO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="500.00 USD"
+        android:textColor="@android:color/white"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/encabezadoDestinoO" />
+
+    <TextView
+        android:id="@+id/encabezadoLiquidezO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="5dp"
+        android:text="Ganancia en liquidez"
+        android:textColor="@android:color/white"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cantidadDestinoO" />
+
+    <TextView
+        android:id="@+id/cantidadLiquidezO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="435.00 EUR"
+        android:textColor="@android:color/white"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/encabezadoLiquidezO" />
+
+    <TextView
+        android:id="@+id/encabezadoPrecioO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="5dp"
+        android:text="Precio del momento"
+        android:textColor="@android:color/white"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cantidadLiquidezO" />
+
+    <TextView
+        android:id="@+id/precioO"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="40.00 MXN"
+        android:textColor="@android:color/white"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/encabezadoPrecioO" />
 
 </android.support.constraint.ConstraintLayout>

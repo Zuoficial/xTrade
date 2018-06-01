@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -21,7 +22,6 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
     double modoLiquidez;
     double precio;
     Context context;
-
 
     public AdapterRecyclerReducirPosicion(Context context, Bundle bundle) {
         this.context = context;
@@ -80,11 +80,6 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
 
         DBReductor dB = lista.get(position);
 
-        holder.textoInversion.setText(dB.getInversionRed());
-        holder.textoPrecio.setText(dB.getPrecioRed());
-        holder.textoBase2.setText(dB.getPrecioBase());
-        holder.textoGanancia2.setText(dB.getGanadoRed());
-
         if (dB.ganadoRedNumero > 0) {
             holder.indicadorGanancia.setImageResource(R.drawable.ic_expand_less);
             holder.indicadorGanancia.setBackgroundResource(R.drawable.fondo_boton_reduccion_positivo);
@@ -93,44 +88,125 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
             holder.indicadorGanancia.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
         }
 
-        if (liquidezNombre != null) {
 
-            double ganadoLiq = dB.getGanadoRedNumero();
-            double ganadoDestinoLiq = ganadoLiq / precio;
+        if (dB.getTipo() == 0) {
 
-            if (modoLiquidez == 0) {
-
-                ganadoLiq *= liquidezOrigen;
-
-            } else if (modoLiquidez == 1) {
-
-                ganadoLiq /= liquidezOrigen;
-
-            } else if (modoLiquidez == 2) {
-
-                ganadoLiq = ganadoDestinoLiq * liquidezDestino;
+            holder.tipoInversion.setVisibility(View.VISIBLE);
+            holder.tipoGanancia.setVisibility(View.GONE);
 
 
-            } else if (modoLiquidez == 3) {
+            holder.textoInversion.setText(dB.getInversionRed());
+            holder.textoPrecio.setText(dB.getPrecioRed());
+            holder.textoBase2.setText(dB.getPrecioBase());
+            holder.textoGanancia2.setText(dB.getGanadoRed());
 
-                ganadoLiq = ganadoDestinoLiq / liquidezDestino;
 
-            }
+            if (liquidezNombre != null) {
+
+                double ganadoLiq = dB.getGanadoRedNumero();
+                double ganadoDestinoLiq = ganadoLiq / precio;
+
+                if (modoLiquidez == 0) {
+
+                    ganadoLiq *= liquidezOrigen;
+
+                } else if (modoLiquidez == 1) {
+
+                    ganadoLiq /= liquidezOrigen;
+
+                } else if (modoLiquidez == 2) {
+
+                    ganadoLiq = ganadoDestinoLiq * liquidezDestino;
 
 
-            if (ganadoLiq != 0 && ganadoLiq != Double.POSITIVE_INFINITY) {
-                holder.textoGanadoLiq3.setText(String.format(precisionLiquidez, ganadoLiq) + " " + liquidezNombre);
-            } else {
+                } else if (modoLiquidez == 3) {
 
+                    ganadoLiq = ganadoDestinoLiq / liquidezDestino;
+
+                }
+
+
+                if (ganadoLiq != 0 && ganadoLiq != Double.POSITIVE_INFINITY) {
+
+                    if (dB.ganadoRedNumero > 0)
+                        holder.textoGanadoLiq3.setText(String.format(precisionLiquidez, ganadoLiq) + " " + liquidezNombre);
+                    else
+                        holder.textoGanadoLiq3.setText(String.format(precisionLiquidez, ganadoLiq).substring(1) + " " + liquidezNombre);
+
+                } else {
+
+                    holder.textoGanadoLiq3.setText("Pendiente");
+                }
+
+
+            } else
                 holder.textoGanadoLiq3.setText("Pendiente");
+            holder.textoUsandoRV3.setText(dB.getTextoUsando());
+            holder.textoGanadoLetra2.setText(dB.getTextoGanadoRed());
+            holder.textoGanadoLiqLetra3.setText(dB.getTextoGanandoLiqRed());
+        } else {
+
+
+            holder.tipoInversion.setVisibility(View.GONE);
+            holder.tipoGanancia.setVisibility(View.VISIBLE);
+
+
+            holder.cantidadOrigenO.setText(dB.getGanadoRed());
+            holder.cantidadDestinoO.setText(dB.getTextoUsando());
+            holder.precioO.setText(dB.getPrecioRed());
+
+            if (dB.getGanadoRedNumero() > 0) {
+                holder.encabezadoOrigenO.setText("Ganancia en origen");
+                holder.encabezadoDestinoO.setText("Ganancia en destino");
+                holder.encabezadoLiquidezO.setText("Ganancia en liquidez");
+            } else {
+                holder.encabezadoOrigenO.setText("Gasto en origen");
+                holder.encabezadoDestinoO.setText("Gasto en destino");
+                holder.encabezadoLiquidezO.setText("Gasto en liquidez");
             }
 
 
-        } else
-            holder.textoGanadoLiq3.setText("Pendiente");
-        holder.textoUsandoRV3.setText(dB.getTextoUsando());
-        holder.textoGanadoLetra2.setText(dB.getTextoGanadoRed());
-        holder.textoGanadoLiqLetra3.setText(dB.getTextoGanandoLiqRed());
+            if (liquidezNombre != null) {
+
+                double ganadoLiq = dB.getGanadoRedNumero();
+                double ganadoDestinoLiq = ganadoLiq / dB.getPrecioNumero();
+
+                if (modoLiquidez == 0) {
+
+                    ganadoLiq *= liquidezOrigen;
+
+                } else if (modoLiquidez == 1) {
+
+                    ganadoLiq /= liquidezOrigen;
+
+                } else if (modoLiquidez == 2) {
+
+                    ganadoLiq = ganadoDestinoLiq * liquidezDestino;
+
+
+                } else if (modoLiquidez == 3) {
+
+                    ganadoLiq = ganadoDestinoLiq / liquidezDestino;
+
+                }
+
+
+                if (ganadoLiq != 0 && ganadoLiq != Double.POSITIVE_INFINITY) {
+
+                    if (dB.ganadoRedNumero > 0)
+                        holder.cantidadLiquidezO.setText(String.format(precisionLiquidez, ganadoLiq) + " " + liquidezNombre);
+                    else
+                        holder.cantidadLiquidezO.setText(String.format(precisionLiquidez, ganadoLiq).substring(1) + " " + liquidezNombre);
+
+                } else {
+
+                    holder.cantidadLiquidezO.setText("Pendiente");
+                }
+
+
+            }
+
+        }
 
     }
 
@@ -146,6 +222,10 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
                 textoGanadoLiq3, textoUsandoRV3, textoGanadoLetra2,
                 textoGanadoLiqLetra3;
         ImageView indicadorGanancia;
+        android.support.constraint.Group tipoInversion, tipoGanancia;
+        TextView encabezadoOrigenO, cantidadOrigenO, encabezadoDestinoO,
+                cantidadDestinoO, encabezadoLiquidezO, cantidadLiquidezO,
+                encabezadoPrecioO, precioO;
 
         Holder(final View itemView) {
             super(itemView);
@@ -158,6 +238,16 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
             textoGanadoLetra2 = itemView.findViewById(R.id.textoGanadoLetra2);
             textoGanadoLiqLetra3 = itemView.findViewById(R.id.textoGanadoLiqLetra3);
             indicadorGanancia = itemView.findViewById(R.id.indicadorGanancia);
+            tipoInversion = itemView.findViewById(R.id.tipoInversion);
+            tipoGanancia = itemView.findViewById(R.id.tipoGanancia);
+            encabezadoOrigenO = itemView.findViewById(R.id.encabezadoOrigenO);
+            cantidadOrigenO = itemView.findViewById(R.id.cantidadOrigenO);
+            encabezadoDestinoO = itemView.findViewById(R.id.encabezadoDestinoO);
+            cantidadDestinoO = itemView.findViewById(R.id.cantidadDestinoO);
+            encabezadoLiquidezO = itemView.findViewById(R.id.encabezadoLiquidezO);
+            cantidadLiquidezO = itemView.findViewById(R.id.cantidadLiquidezO);
+            encabezadoPrecioO = itemView.findViewById(R.id.encabezadoPrecioO);
+            precioO = itemView.findViewById(R.id.precioO);
 
         }
     }

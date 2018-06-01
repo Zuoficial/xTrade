@@ -139,6 +139,16 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
             holder.textoInversionLiq.setText("Pendiente");
             holder.textoGanadoLiq.setText("Pendiente");
             holder.textoActualLiq.setText("Pendiente");
+
+
+            if (db.getExisteReduccion() != null) {
+                if (db.getExisteReduccion()) {
+
+                    holder.textoInversion.setText(String.format(precisionOrigenFormato, db.getInvertidoRedFinal())
+                            + " " + db.getMonedaOrigen());
+                }
+
+            }
         }
 
 

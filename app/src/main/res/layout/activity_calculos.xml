@@ -70,7 +70,7 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/fondo_marcador_neutral"
         android:focusableInTouchMode="true"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -216,7 +216,7 @@
             android:id="@+id/textoPrecioMod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9550dp"
+            android:layout_marginTop="95dp"
             android:fontFamily="@font/comforta_bold"
             android:hint="Precio"
             android:inputType="numberDecimal"
@@ -225,6 +225,7 @@
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white"
             android:textSize="50dp"
+            android:visibility="visible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -242,7 +243,7 @@
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white"
             android:textSize="50dp"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -508,7 +509,7 @@
         android:text="USD -> EUR"
         android:textColor="@android:color/white"
         android:textSize="15dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.93"
@@ -530,7 +531,7 @@
         android:text="Sin comision"
         android:textColor="@android:color/white"
         android:textSize="15dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
@@ -549,10 +550,10 @@
         android:background="@drawable/fondo_boton_forex_claro"
         android:fontFamily="@font/comforta_bold"
         android:padding="5dp"
-        android:text="Reducida"
+        android:text="Modificada"
         android:textColor="@android:color/white"
         android:textSize="15dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -560,26 +561,14 @@
         app:layout_constraintVertical_bias="0.92" />
 
     <android.support.constraint.Group
-        android:id="@+id/seccionReduccion"
+        android:id="@+id/seccionReduccionSuperior"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="inversionDisponibleRed,guideline,encabezado2Red,botonRed,encabezadoRed,inversionRed,recyclerPosicionReducida,precioRed,encabezadoRed2,botonCambioInversionRed" />
+        app:constraint_referenced_ids="inversionDisponibleRed,precioRed,inversionRed,encabezadoInversionRed,encabezadoRed,encabezadoPrecioRed" />
 
     <TextView
-        android:id="@+id/encabezadoRed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="336dp"
-        android:layout_marginStart="35dp"
-        android:text="Inversion a reducir"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/encabezadoRed2"
+        android:id="@+id/encabezadoInversionRed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -589,24 +578,6 @@
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/inversionRed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="290dp"
-        android:hint="Inversion a reducir"
-        android:inputType="numberDecimal"
-        android:selectAllOnFocus="true"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
 
     <TextView
         android:id="@+id/inversionDisponibleRed"
@@ -628,7 +599,37 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/encabezado2Red"
+        android:id="@+id/encabezadoRed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="331dp"
+        android:layout_marginStart="35dp"
+        android:text="Inversion a reducir"
+        android:textColor="@android:color/white"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/inversionRed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="285dp"
+        android:hint="Inversion a reducir"
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="true"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <TextView
+        android:id="@+id/encabezadoPrecioRed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="270dp"
@@ -656,19 +657,120 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="463dp" />
+
+    <android.support.constraint.Group
+        android:id="@+id/seccionReduccionSuperiorOtros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="botonGastoRed,botonGananciaRed,cantidadReducirRed,precioRedOtros,encabezadoCantidadRed2" />
+
+
     <Button
-        android:id="@+id/botonRed"
+        android:id="@+id/botonGastoRed"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
-        android:layout_marginBottom="185dp"
-        android:background="@drawable/fondo_boton_forex_claro"
+        android:layout_marginBottom="235dp"
+        android:background="@drawable/fondo_boton_forex"
         android:fontFamily="@font/comforta_bold"
-        android:text="Reducir"
+        android:text="Gasto"
         android:textColor="@android:color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.26"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+    <Button
+        android:id="@+id/botonGananciaRed"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginBottom="235dp"
+        android:background="@drawable/fondo_boton_forex_claro"
+        android:fontFamily="@font/comforta_bold"
+        android:text="Ganancia"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.71"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/encabezadoCantidadRed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="390dp"
+        android:layout_marginStart="35dp"
+        android:text="Cantidad en"
+        android:textColor="@android:color/white"
+        android:textSize="15dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/cantidadReducirRed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="340dp"
+        android:hint="Cantidad"
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="true"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:textSize="25dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/encabezadoCantidadRed2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="320dp"
+        android:layout_marginStart="35dp"
+        android:text="Precio al momento"
+        android:textColor="@android:color/white"
+        android:textSize="18dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/precioRedOtros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="270dp"
+        android:hint="Precio"
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="true"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        android:textSize="25dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.constraint.Group
+        android:id="@+id/seccionReduccionInferior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="botonRed,botonCambioInversionRed,botonOtrosRed,recyclerPosicionReducida" />
 
     <Button
         android:id="@+id/botonCambioInversionRed"
@@ -677,19 +779,43 @@
         android:layout_marginBottom="185dp"
         android:background="@drawable/fondo_boton_forex_claro"
         android:fontFamily="@font/comforta_bold"
-        android:text="I/C"
+        android:text="cambio"
         android:textColor="@android:color/white"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
+    <Button
+        android:id="@+id/botonRed"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="463dp" />
+        android:layout_height="35dp"
+        android:layout_marginBottom="185dp"
+        android:background="@drawable/fondo_boton_forex_claro"
+        android:fontFamily="@font/comforta_bold"
+        android:text="Agregar"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <Button
+        android:id="@+id/botonOtrosRed"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginBottom="185dp"
+        android:background="@drawable/fondo_boton_forex_claro"
+        android:fontFamily="@font/comforta_bold"
+        android:text="Otros"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.88"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerPosicionReducida"
@@ -698,14 +824,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="290dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/recycler_view_reducir_posicion" />
-
-
 
 
 </android.support.constraint.ConstraintLayout>
