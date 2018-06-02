@@ -37,6 +37,15 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
         DB db = listaDatos.get(position);
 
 
+        if (db.getExisteReduccion() != null) {
+
+            if (db.getExisteReduccion())
+                holder.indicadorReduccion.setVisibility(View.VISIBLE);
+            else
+                holder.indicadorReduccion.setVisibility(View.GONE);
+        }
+
+
         switch (db.modo) {
 
             case 0: {
@@ -102,19 +111,27 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
                 + " " + db.getMonedaOrigen());
 
 
-        holder.textoUsando.setText(db.getUsando() + " " + db.getMonedaDestino());
+        boolean existeReduccion = false;
+
+        if (db.getExisteReduccion() != null)
+            existeReduccion = db.getExisteReduccion();
 
 
-        if (db.getPrecioOut() != null) {
-            double precioOut = Double.parseDouble(db.getPrecioOut());
-            holder.textoPrecioOut.setText(String.format(precisionPrecioFormato, precioOut)
-                    + " " + db.getMonedaOrigen());
+        if (db.getPrecioOut() != null || existeReduccion) {
+            if (db.getPrecioOut() != null) {
+
+                double precioOut = Double.parseDouble(db.getPrecioOut());
+                holder.textoPrecioOut.setText(String.format(precisionPrecioFormato, precioOut)
+                        + " " + db.getMonedaOrigen());
+            } else
+                holder.textoPrecioOut.setText("Pendiente");
             holder.textoInversion.setText(db.getInversionInicioFinal());
             holder.textoGanado.setText(db.getGanadoInicio());
             holder.textoActual.setText(db.getActualInicio());
             holder.textoInversionLiq.setText(db.getInversionLiqInicio());
             holder.textoGanadoLiq.setText(db.getGanadoLiqInicio());
             holder.textoActualLiq.setText(db.getActualLiqInicio());
+            holder.textoUsando.setText(db.getUsandoInicio());
 
 
             if (db.getGanadoFinal() < 0) {
@@ -139,16 +156,8 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
             holder.textoInversionLiq.setText("Pendiente");
             holder.textoGanadoLiq.setText("Pendiente");
             holder.textoActualLiq.setText("Pendiente");
+            holder.textoUsando.setText(db.getUsando() + " " + db.getMonedaDestino());
 
-
-            if (db.getExisteReduccion() != null) {
-                if (db.getExisteReduccion()) {
-
-                    holder.textoInversion.setText(String.format(precisionOrigenFormato, db.getInvertidoRedFinal())
-                            + " " + db.getMonedaOrigen());
-                }
-
-            }
         }
 
 
@@ -193,7 +202,7 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
                 textoInversion, textoGanado, textoGanadoLetra,
                 textoGanadoLiqLetra, textoGanadoLiq,
                 textoActual, textoActualLiq, textoInversionLiq,
-                textoUsando, textoReferencia, textoIndicadorLiquidez;
+                textoUsando, textoReferencia, textoIndicadorLiquidez, indicadorReduccion;
         View contenedor;
 
         Holder(final View itemView) {
@@ -215,6 +224,8 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
             textoIndicadorLiquidez = itemView.findViewById(R.id.indicadorLiquidez);
             contenedor = itemView.findViewById(R.id.fondo);
             contenedor.setOnClickListener(onClickListener);
+            indicadorReduccion = itemView.findViewById(R.id.indicadorReduccion);
+
         }
 
         View.OnClickListener onClickListener = new View.OnClickListener() {

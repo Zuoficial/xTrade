@@ -982,20 +982,21 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                 if (!textoPrecioMod.getText().toString().isEmpty()) {
 
                     db.setPrecioOut(textoPrecioMod.getText().toString());
-                    db.setInversionInicioFinal(textoInvertido.getText().toString());
-                    db.setGanadoInicio(textoGanancia.getText().toString());
-                    db.setActualInicio(textoInvertidoActual.getText().toString());
-                    db.setInversionLiqInicio(textoInversionLiq.getText().toString());
-                    db.setGanadoLiqInicio(textoGanadoLiq.getText().toString());
-                    db.setActualLiqInicio(textoActualLiq.getText().toString());
-                    db.setGanadoFinal(gananciaFinal);
-
 
                 } else {
 
                     db.setPrecioOut(null);
 
                 }
+
+                db.setInversionInicioFinal(textoInvertido.getText().toString());
+                db.setGanadoInicio(textoGanancia.getText().toString());
+                db.setActualInicio(textoInvertidoActual.getText().toString());
+                db.setInversionLiqInicio(textoInversionLiq.getText().toString());
+                db.setGanadoLiqInicio(textoGanadoLiq.getText().toString());
+                db.setActualLiqInicio(textoActualLiq.getText().toString());
+                db.setGanadoFinal(gananciaFinal);
+                db.setUsandoInicio(String.format(precisionDestino, (invertido / precio)) + " " + monedaDestinoNombre);
 
                 if (botonReducirAplanado) {
                     db.reducciones.clear();

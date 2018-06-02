@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity
         realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm -> {
 
-            
+
 
             double inversionOrig = 0, inversionNuev, precioOrig = 0, precioNuev;
 

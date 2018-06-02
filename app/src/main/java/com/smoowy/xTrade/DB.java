@@ -35,6 +35,7 @@ public class DB extends RealmObject {
     String precisionDestinoFormato;
     String precisionLiquidezFormato;
     String precisionPrecioFormato;
+    String usandoInicio;
     String usando;
     String referencia;
     Boolean botonPorcentajesAplanado;
@@ -366,5 +367,11 @@ public class DB extends RealmObject {
         this.ganadoFinal = ganadoFinal;
     }
 
+    public String getUsandoInicio() {
+        return usandoInicio;
+    }
 
+    public void setUsandoInicio(String usandoInicio) {
+        this.usandoInicio = usandoInicio;
+    }
 }
