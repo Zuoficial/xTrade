@@ -7,42 +7,27 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@android:color/white</item>
         <item name="android:fontFamily">@font/comfortaa_light</item>
-        <!--<item name="android:windowBackground">@color/colorPrimary</item> -->
-   </style>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <!-- -->
+    </style>
 
-   <style name="splashScreenTheme" parent="AppTheme">
+    <style name="splashScreenTheme" parent="AppTheme">
 
-       <item name="android:windowBackground">@drawable/fondo_like_it</item>
-       <item name="windowActionBar">false</item>
-       <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/fondo_like_it</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
 
-   </style>
-
-
-
-   <style name="AppTheme.NoActionBar">
-       <item name="windowActionBar">false</item>
-       <item name="windowNoTitle">true</item>
-   </style>
-
-   <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-   <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    </style>
 
 
-   <style name="boton_superior">
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
-       <item name="android:background">@drawable/fondo_botones_superior</item>
-       <item name="android:textColor">@color/texto_boton_superior</item>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-   </style>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-   <style name="boton">
-
-       <item name="android:background">@drawable/fondo_botones</item>
-       <item name="android:textColor">@android:color/white</item>
-       <item name="android:fontFamily">@font/poetsenone_regular</item>
-
-   </style>
 
 </resources>

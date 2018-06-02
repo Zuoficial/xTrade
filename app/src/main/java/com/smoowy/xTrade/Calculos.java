@@ -768,7 +768,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                             botonPorcentajeCalculadorMenos.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
                             textoPorcentajeMod.setText("");
                             textoPrecio.setText("Precio");
-                            textoActualLiq.setText("0.00 " + liquidezNombre);
+                            textoActualLiq.setText("Pendiente");
                             if (modo == modoCorta || modo == modoLarga)
 
                                 textoInvertidoActual.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
@@ -789,7 +789,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                             botonPorcentajeCalculadorMenos.setBackgroundResource(R.drawable.fondo_boton_forex);
                             textoPorcentajeMod.setText("");
                             textoPrecio.setText("Precio");
-                            textoActualLiq.setText("0.00 " + liquidezNombre);
+                            textoActualLiq.setText("Pendiente");
                             if (modo == modoCorta || modo == modoLarga)
 
                                 textoInvertidoActual.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
@@ -1042,6 +1042,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoPrecioMod.clearFocus();
         textoPorcentajeMod.setText("");
         textoPorcentajeMod.clearFocus();
+        textoReferencia.clearFocus();
         textoPorcentaje.setText("+0.00%");
         textoPrecio.setText("Precio");
         textoInversionLiq.setText("Pendiente");
@@ -1092,13 +1093,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         }
 
 
-        textoPrecioMod.setText("");
-        textoPrecioMod.clearFocus();
-        textoReferencia.clearFocus();
-        textoPorcentaje.setText("+0.00%");
-        textoInversionLiq.setText("Pendiente");
-        textoGanadoLiq.setText("Pendiente");
-        textoActualLiq.setText("Pendiente");
+        limpiarCalculador();
         ajustadorPosicion(ajustadorPorcentajes);
         vibrator.vibrate(50);
     }
@@ -1126,13 +1121,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
         }
 
-        textoPrecioMod.setText("");
-        textoPrecioMod.clearFocus();
-        textoReferencia.clearFocus();
-        textoPorcentaje.setText("+0.00%");
-        textoInversionLiq.setText("Pendiente");
-        textoGanadoLiq.setText("Pendiente");
-        textoActualLiq.setText("Pendiente");
+        limpiarCalculador();
         ajustadorPosicion(ajustadorPorcentajes);
         vibrator.vibrate(50);
     }
@@ -1161,13 +1150,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
         }
 
-        textoPrecioMod.setText("");
-        textoPrecioMod.clearFocus();
-        textoReferencia.clearFocus();
-        textoPorcentaje.setText("+0.00%");
-        textoInversionLiq.setText("Pendiente");
-        textoGanadoLiq.setText("Pendiente");
-        textoActualLiq.setText("Pendiente");
+
+        limpiarCalculador();
         ajustadorPosicion(ajustadorPorcentajes);
         vibrator.vibrate(50);
     }
@@ -1363,29 +1347,13 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             DBReductor reductorDB = new DBReductor();
 
 
-            reductorDB.setInversionRed(String.format(precisionOrigen, inversionRed) + " " + monedaOrigenNombre);
-
-            reductorDB.setPrecioRed(String.format(precisionPrecio, precioRed) + " " + monedaOrigenNombre);
-
-            reductorDB.setPrecioBase(String.format(precisionPrecio, precio) + " " + monedaOrigenNombre);
-
-
-            if (positivo) {
-                textoGanadoGuardar = String.format(precisionOrigen, gananciaFinal * porcentajeFinalRed);
-                reductorDB.setGanadoRed(textoGanadoGuardar + " " + monedaOrigenNombre);
-                reductorDB.setTextoGanadoRed("Ganado");
-                reductorDB.setTextoGanandoLiqRed("Ganado liq");
-            } else {
-                textoGanadoGuardar = String.format(precisionOrigen, gananciaFinal * porcentajeFinalRed);
-                reductorDB.setGanadoRed(textoGanadoGuardar.substring(1) + " " + monedaOrigenNombre);
-                reductorDB.setTextoGanadoRed("Perdido");
-                reductorDB.setTextoGanandoLiqRed("Perdido liq");
-
-            }
-
+            reductorDB.setInversionR(inversionRed);
+            reductorDB.setPrecioRedR(precioRed);
+            reductorDB.setPrecioBaseR(precio);
+            reductorDB.setGanadoRedR(gananciaFinal * porcentajeFinalRed);
             reductorDB.setInversionRedNumero(inversionRed);
             reductorDB.setGanadoRedNumero(gananciaFinal * porcentajeFinalRed);
-            reductorDB.setTextoUsando(String.format(precisionDestino, invertidoDestino * porcentajeFinalRed) + " " + monedaDestinoNombre);
+            reductorDB.setUsandoR(invertidoDestino * porcentajeFinalRed);
             reductorDB.setTipo(0);
 
 
@@ -1393,10 +1361,15 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             invertidoDestino -= invertidoDestino * porcentajeFinalRed;
 
 
-            if (!cambioInversionRedAplanado)
+            if (!cambioInversionRedAplanado) {
                 inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
-            else
+                reductorDB.setInversionDisponibleRedR(invertido);
+            } else {
                 inversionDisponibleRed.setText(String.format(precisionDestino, invertido / precio) + " " + monedaDestinoNombre);
+                reductorDB.setInversionDisponibleRedR(invertido);
+            }
+
+
             inversionReducir.getText().clear();
             precioReducir.getText().clear();
 
@@ -1438,18 +1411,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
 
         dbReductor.setGanadoRedNumero(ganadoOrigen);
-
-        if (ganadoOrigen > 0) {
-            dbReductor.setGanadoRed(String.format(precisionOrigen, ganadoOrigen) + " " + monedaOrigenNombre);
-            dbReductor.setTextoUsando(String.format(precisionDestino, ganadoDestino) + " " + monedaDestinoNombre);
-
-        } else {
-            dbReductor.setGanadoRed(String.format(precisionOrigen, ganadoOrigen).substring(1) + " " + monedaOrigenNombre);
-            dbReductor.setTextoUsando(String.format(precisionDestino, ganadoDestino).substring(1) + " " + monedaDestinoNombre);
-        }
-
-
-        dbReductor.setPrecioRed(String.format(precisionPrecio, precioExtraido) + " " + monedaOrigenNombre);
+        dbReductor.setUsandoR(ganadoDestino);
         dbReductor.setPrecioNumero(precioExtraido);
 
         adapterRecyclerReducirPosicion.agregarReduccion(dbReductor);
@@ -1468,6 +1430,11 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             bundle.putString("liquidezNombre", liquidezNombre);
             bundle.putDouble("precio", precio);
             bundle.putString("precisionLiquidez", precisionLiquidez);
+            bundle.putString("precisionOrigen", precisionOrigen);
+            bundle.putString("precisionPrecio", precisionPrecio);
+            bundle.putString("precisionDestino", precisionDestino);
+            bundle.putString("monedaDestinoNombre", monedaDestinoNombre);
+            bundle.putString("monedaOrigenNombre", monedaOrigenNombre);
             adapterRecyclerReducirPosicion = new AdapterRecyclerReducirPosicion(this, bundle);
 
 

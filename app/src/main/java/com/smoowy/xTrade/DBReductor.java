@@ -1,7 +1,6 @@
 package com.smoowy.xTrade;
 
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 public class DBReductor extends RealmObject {
 
@@ -13,11 +12,16 @@ public class DBReductor extends RealmObject {
     String textoGanandoLiqRed;
     String ganadoRed;
     String textoUsando;
-    Double inversionRedNumero;
-    Double ganadoRedNumero;
-    Double precioNumero;
+    double inversionRedNumero;
+    double ganadoRedNumero;
+    double precioNumero;
     int tipo;
-
+    double inversionR;
+    double precioRedR;
+    double precioBaseR;
+    double ganadoRedR;
+    double usandoR;
+    double inversionDisponibleRedR;
 
     public int getId() {
         return id;
@@ -83,20 +87,28 @@ public class DBReductor extends RealmObject {
         this.textoUsando = textoUsando;
     }
 
-    public Double getInversionRedNumero() {
+    public double getInversionRedNumero() {
         return inversionRedNumero;
     }
 
-    public void setInversionRedNumero(Double inversionRedNumero) {
+    public void setInversionRedNumero(double inversionRedNumero) {
         this.inversionRedNumero = inversionRedNumero;
     }
 
-    public Double getGanadoRedNumero() {
+    public double getGanadoRedNumero() {
         return ganadoRedNumero;
     }
 
-    public void setGanadoRedNumero(Double ganadoRedNumero) {
+    public void setGanadoRedNumero(double ganadoRedNumero) {
         this.ganadoRedNumero = ganadoRedNumero;
+    }
+
+    public double getPrecioNumero() {
+        return precioNumero;
+    }
+
+    public void setPrecioNumero(double precioNumero) {
+        this.precioNumero = precioNumero;
     }
 
     public int getTipo() {
@@ -107,12 +119,51 @@ public class DBReductor extends RealmObject {
         this.tipo = tipo;
     }
 
-    public Double getPrecioNumero() {
-        return precioNumero;
+    public double getInversionR() {
+        return inversionR;
     }
 
-    public void setPrecioNumero(Double precioNumero) {
-        this.precioNumero = precioNumero;
+    public void setInversionR(double inversionR) {
+        this.inversionR = inversionR;
     }
 
+    public double getPrecioRedR() {
+        return precioRedR;
+    }
+
+    public void setPrecioRedR(double precioRedR) {
+        this.precioRedR = precioRedR;
+    }
+
+    public double getPrecioBaseR() {
+        return precioBaseR;
+    }
+
+    public void setPrecioBaseR(double precioBaseR) {
+        this.precioBaseR = precioBaseR;
+    }
+
+    public double getGanadoRedR() {
+        return ganadoRedR;
+    }
+
+    public void setGanadoRedR(double ganadoRedR) {
+        this.ganadoRedR = ganadoRedR;
+    }
+
+    public double getUsandoR() {
+        return usandoR;
+    }
+
+    public void setUsandoR(double usandoR) {
+        this.usandoR = usandoR;
+    }
+
+    public double getInversionDisponibleRedR() {
+        return inversionDisponibleRedR;
+    }
+
+    public void setInversionDisponibleRedR(double inversionDisponibleRedR) {
+        this.inversionDisponibleRedR = inversionDisponibleRedR;
+    }
 }

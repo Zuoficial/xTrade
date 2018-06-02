@@ -12,7 +12,7 @@
         android:id="@+id/tipoInversion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:constraint_referenced_ids="textoGanadoLiq3,textoBase2,textoGanadoLiqLetra3,textoGanadoLetra2,textoUsandoRV3,textoPrecio,textView8,textoInversion,textoGanancia2,guideline4,textView10,textView11,guideline5,textView6" />
 
     <TextView
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="14dp"
         android:fontFamily="@font/comforta_regular"
         android:maxLines="1"
         android:text="Ganado"
@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textoPrecioMod"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="13dp"
         android:fontFamily="@font/comforta_regular"
         android:text="Ganado liq"
         android:textColor="@android:color/white"
@@ -108,7 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textoPrecioMod"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="13dp"
         android:fontFamily="@font/comforta_regular"
         android:text="Usado"
         android:textColor="@android:color/white"
@@ -137,11 +137,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:fontFamily="@font/comforta_bold"
         android:text="Inversion reducida"
         android:textColor="@android:color/white"
-        android:textSize="15dp"
+        android:textSize="17dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -149,7 +149,7 @@
         android:id="@+id/textoInversion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/comforta_bold"
         android:maxLines="1"
         android:text="Inversion"
@@ -169,7 +169,7 @@
         android:fontFamily="@font/comforta_bold"
         android:text="Precio de salida"
         android:textColor="@android:color/white"
-        android:textSize="15dp"
+        android:textSize="17dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -218,7 +218,7 @@
         android:id="@+id/tipoGanancia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:constraint_referenced_ids="cantidadOrigenO,encabezadoDestinoO,cantidadLiquidezO,encabezadoOrigenO,precioO,encabezadoLiquidezO,encabezadoPrecioO,cantidadDestinoO" />
 
 

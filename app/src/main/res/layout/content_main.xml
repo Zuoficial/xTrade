@@ -392,6 +392,7 @@
         android:background="@android:color/transparent"
         android:gravity="center_horizontal"
         android:hint="NOM"
+        android:inputType="textCapCharacters"
         android:selectAllOnFocus="true"
         android:textAlignment="center"
         android:textColor="@android:color/white"

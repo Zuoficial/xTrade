@@ -16,7 +16,8 @@ import java.util.TreeMap;
 
 public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<AdapterRecyclerReducirPosicion.Holder> {
     private LayoutInflater mInflater;
-    String liquidezNombre, precisionLiquidez;
+    String liquidezNombre, precisionLiquidez, precisionOrigen, precisionPrecio, precisionDestino,
+            monedaDestinoNombre, monedaOrigenNombre;
     double liquidezOrigen;
     double liquidezDestino;
     double modoLiquidez;
@@ -34,6 +35,13 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
             modoLiquidez = bundle.getInt("modoLiquidez");
             precio = bundle.getDouble("precio");
             precisionLiquidez = bundle.getString("precisionLiquidez");
+            precisionOrigen = bundle.getString("precisionOrigen");
+            precisionPrecio = bundle.getString("precisionPrecio");
+            precisionDestino = bundle.getString("precisionDestino");
+            monedaDestinoNombre = bundle.getString("monedaDestinoNombre");
+            monedaOrigenNombre = bundle.getString("monedaOrigenNombre");
+
+
         }
 
     }
@@ -95,10 +103,21 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
             holder.tipoGanancia.setVisibility(View.GONE);
 
 
-            holder.textoInversion.setText(dB.getInversionRed());
-            holder.textoPrecio.setText(dB.getPrecioRed());
-            holder.textoBase2.setText(dB.getPrecioBase());
-            holder.textoGanancia2.setText(dB.getGanadoRed());
+            holder.textoInversion.setText(String.format(precisionOrigen, dB.getInversionR()) + " " + monedaOrigenNombre);
+            holder.textoPrecio.setText(String.format(precisionPrecio, dB.getPrecioRedR()) + " " + monedaOrigenNombre);
+            holder.textoBase2.setText(String.format(precisionPrecio, dB.getPrecioBaseR()) + " " + monedaOrigenNombre);
+
+
+            if (dB.getGanadoRedR() >= 0) {
+                holder.textoGanancia2.setText(String.format(precisionOrigen, dB.getGanadoRedR()) + " " + monedaOrigenNombre);
+                holder.textoGanadoLetra2.setText("Ganado");
+                holder.textoGanadoLiqLetra3.setText("Ganado liq");
+            } else {
+
+                holder.textoGanancia2.setText(String.format(precisionOrigen, dB.getGanadoRedR()).substring(1) + " " + monedaOrigenNombre);
+                holder.textoGanadoLetra2.setText("Perdido");
+                holder.textoGanadoLiqLetra3.setText("Perdido liq");
+            }
 
 
             if (liquidezNombre != null) {
@@ -141,9 +160,10 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
 
             } else
                 holder.textoGanadoLiq3.setText("Pendiente");
-            holder.textoUsandoRV3.setText(dB.getTextoUsando());
-            holder.textoGanadoLetra2.setText(dB.getTextoGanadoRed());
-            holder.textoGanadoLiqLetra3.setText(dB.getTextoGanandoLiqRed());
+
+
+            holder.textoUsandoRV3.setText(String.format(precisionDestino, dB.getUsandoR()) + " " + monedaDestinoNombre);
+
         } else {
 
 
@@ -153,13 +173,19 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
 
             holder.cantidadOrigenO.setText(dB.getGanadoRed());
             holder.cantidadDestinoO.setText(dB.getTextoUsando());
-            holder.precioO.setText(dB.getPrecioRed());
+            holder.precioO.setText(String.format(precisionPrecio, dB.getPrecioNumero()) + " " + monedaOrigenNombre);
 
-            if (dB.getGanadoRedNumero() > 0) {
+            if (dB.getGanadoRedNumero() >= 0) {
                 holder.encabezadoOrigenO.setText("Ganancia en origen");
                 holder.encabezadoDestinoO.setText("Ganancia en destino");
                 holder.encabezadoLiquidezO.setText("Ganancia en liquidez");
+                holder.cantidadOrigenO.setText(String.format(precisionOrigen, dB.getGanadoRedNumero()) + " " + monedaOrigenNombre);
+                holder.cantidadDestinoO.setText(String.format(precisionDestino, dB.getUsandoR()) + " " + monedaDestinoNombre);
+
+
             } else {
+                holder.cantidadOrigenO.setText(String.format(precisionOrigen, dB.getGanadoRedNumero()).substring(1) + " " + monedaOrigenNombre);
+                holder.cantidadDestinoO.setText(String.format(precisionDestino, dB.getUsandoR()).substring(1) + " " + monedaDestinoNombre);
                 holder.encabezadoOrigenO.setText("Gasto en origen");
                 holder.encabezadoDestinoO.setText("Gasto en destino");
                 holder.encabezadoLiquidezO.setText("Gasto en liquidez");

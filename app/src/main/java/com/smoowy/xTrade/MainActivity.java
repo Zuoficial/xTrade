@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     TextView encabezadoInversion, comisionEntradaLetra, comisionSalidaLetra, encabezadoLiquidez;
     int selectorCambioInversion = 0, idOperacion;
     final int cambioInversionOrigen = 0, cambioInversionDestino = 1,
-            cambioInversionOrigenLiquidez = 2, cambioInversionDestinoLiquidez = 3;
+            cambioInversionALiquidez = 2;
     boolean botonPorcentajesAplanado, botonAgregarInversionAplanado, enForex, botonComisionAplanado;
     String precioIn, inversionInicio, inversionDestinoInicio;
     String precisionOrigenFormato, precisionDestinoFormato, precisionLiquidezFormato,
@@ -231,60 +231,68 @@ public class MainActivity extends AppCompatActivity
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
         realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
+        realm.executeTransaction(realm -> {
 
-                if (!inversionInicio.equals(db.getInversionInicio()) || !precioIn.equals(db.getPrecioIn())) {
+            
 
-                    db.deleteFromRealm();
-                    db = realm.createObject(DB.class, idOperacion);
-                }
+            double inversionOrig = 0, inversionNuev, precioOrig = 0, precioNuev;
 
+            if (db.getInversionLiqInicio() != null)
+                inversionOrig = Double.parseDouble(db.getInversionInicio());
+            inversionNuev = Double.parseDouble(inversionInicio);
+            if (db.getPrecioIn() != null)
+                precioOrig = Double.parseDouble(db.getPrecioIn());
+            precioNuev = Double.parseDouble(precioIn);
 
-                db.setMonedaOrigen(monedaOrigen.getText().toString().toUpperCase());
-                db.setMonedaDestino(monedaDestino.getText().toString().toUpperCase());
-                db.setInvertido(invertido.getText().toString());
-                db.setPrecio(precio.getText().toString());
-                if (enForex) {
+            if (inversionOrig != inversionNuev || precioOrig != precioNuev) {
 
-                    db.setComisionEntrada(comisionEntrada.getText().toString().isEmpty() ? "0" :
-                            comisionEntrada.getText().toString());
-                    db.setComisionSalida(comisionSalida.getText().toString().isEmpty() ? "0" :
-                            comisionSalida.getText().toString());
+                db.deleteFromRealm();
+                db = realm.createObject(DB.class, idOperacion);
+            }
 
 
-                } else {
+            db.setMonedaOrigen(monedaOrigen.getText().toString().toUpperCase());
+            db.setMonedaDestino(monedaDestino.getText().toString().toUpperCase());
+            db.setInvertido(invertido.getText().toString());
+            db.setPrecio(precio.getText().toString());
+            if (enForex) {
 
-                    db.setComisionEntrada(comisionEntrada.getText().toString().isEmpty() ? "0" : comisionEntrada.getText().toString());
-                    db.setComisionSalida(comisionSalida.getText().toString().isEmpty() ? "0" : comisionSalida.getText().toString());
+                db.setComisionEntrada(comisionEntrada.getText().toString().isEmpty() ? "0" :
+                        comisionEntrada.getText().toString());
+                db.setComisionSalida(comisionSalida.getText().toString().isEmpty() ? "0" :
+                        comisionSalida.getText().toString());
 
-                }
-                db.setEnForex(enForex);
-                db.setLiquidezOrigen(liquidezOrigen.getText().toString().isEmpty() ? "0" : liquidezOrigen.getText().toString());
-                db.setLiquidezDestino(liquidezDestino.getText().toString().isEmpty() ? "0" : liquidezDestino.getText().toString());
-                db.setLiquidezNombre(liquidezNombre.getText().toString().toUpperCase());
-                db.operaciones.clear();
-                db.operaciones.addAll(adapterRecyclerInversiones.lista);
-                db.setModo(modo);
-                db.setModoLiquidez(modoLiquidez);
-                db.setInversionInicio(inversionInicio);
-                db.setActualInicio(inversionInicio);
-                db.setUsando(inversionDestinoInicio);
-                db.setPrecioIn(precioIn);
-                db.setPrecisionOrigen(precisionOrigen.getText().toString());
-                db.setPrecisionDestino(precisionDestino.getText().toString());
-                db.setPrecisionOrigenFormato(precisionOrigenFormato);
-                db.setPrecisionDestinoFormato(precisionDestinoFormato);
-                db.setPrecisionLiquidez(precisionLiquidez.getText().toString());
-                db.setPrecisionLiquidezFormato(precisionLiquidezFormato);
-                db.setPrecisionPrecio(precisionPrecio.getText().toString());
-                db.setPrecisionPrecioFormato(precisionPrecioFormato);
-                db.setBotonPorcentajesAplanado(botonPorcentajesAplanado);
-                db.setBotonComisionAplanado(botonComisionAplanado);
 
+            } else {
+
+                db.setComisionEntrada(comisionEntrada.getText().toString().isEmpty() ? "0" : comisionEntrada.getText().toString());
+                db.setComisionSalida(comisionSalida.getText().toString().isEmpty() ? "0" : comisionSalida.getText().toString());
 
             }
+            db.setEnForex(enForex);
+            db.setLiquidezOrigen(liquidezOrigen.getText().toString().isEmpty() ? "0" : liquidezOrigen.getText().toString());
+            db.setLiquidezDestino(liquidezDestino.getText().toString().isEmpty() ? "0" : liquidezDestino.getText().toString());
+            db.setLiquidezNombre(liquidezNombre.getText().toString().toUpperCase());
+            db.operaciones.clear();
+            db.operaciones.addAll(adapterRecyclerInversiones.lista);
+            db.setModo(modo);
+            db.setModoLiquidez(modoLiquidez);
+            db.setInversionInicio(inversionInicio);
+            db.setActualInicio(inversionInicio);
+            db.setUsando(inversionDestinoInicio);
+            db.setPrecioIn(precioIn);
+            db.setPrecisionOrigen(precisionOrigen.getText().toString());
+            db.setPrecisionDestino(precisionDestino.getText().toString());
+            db.setPrecisionOrigenFormato(precisionOrigenFormato);
+            db.setPrecisionDestinoFormato(precisionDestinoFormato);
+            db.setPrecisionLiquidez(precisionLiquidez.getText().toString());
+            db.setPrecisionLiquidezFormato(precisionLiquidezFormato);
+            db.setPrecisionPrecio(precisionPrecio.getText().toString());
+            db.setPrecisionPrecioFormato(precisionPrecioFormato);
+            db.setBotonPorcentajesAplanado(botonPorcentajesAplanado);
+            db.setBotonComisionAplanado(botonComisionAplanado);
+
+
         });
 
         realm.close();
@@ -395,11 +403,10 @@ public class MainActivity extends AppCompatActivity
 
                     case R.id.botonCambioInversion: {
 
-                        //TODO FALTA AJUSTAR ESTO
 
                         selectorCambioInversion += 1;
 
-                        if (selectorCambioInversion > 3)
+                        if (selectorCambioInversion > 2)
                             selectorCambioInversion = 0;
 
 
@@ -416,15 +423,10 @@ public class MainActivity extends AppCompatActivity
                                 break;
 
                             }
-                            case cambioInversionOrigenLiquidez: {
-                                encabezadoInversion.setText("Inversion origen con liquidez");
+                            case cambioInversionALiquidez: {
+                                encabezadoInversion.setText("Inversion a liquidez");
                                 break;
 
-                            }
-
-                            case cambioInversionDestinoLiquidez: {
-                                encabezadoInversion.setText("Inversion destino con liquidez");
-                                break;
                             }
 
                         }
@@ -575,19 +577,58 @@ public class MainActivity extends AppCompatActivity
                 break;
 
             }
-            case cambioInversionOrigenLiquidez: {
-                invertidoImportar = Double.parseDouble(invertido.getText().toString());
-                invertidoImportar /= Double.parseDouble(liquidezOrigen.getText().toString());
+            case cambioInversionALiquidez: {
+
+                double inversionX, liqOrigenX, liqDestinoX;
+
+
+                switch (modoLiquidez) {
+
+                    case 0:
+                        if (invertido.getText().toString().isEmpty() ||
+                                liquidezOrigen.toString().isEmpty()) {
+                            crearSnackBar("Faltan datos de liquidez");
+                            return;
+                        }
+
+                        inversionX = Double.parseDouble(invertido.getText().toString());
+                        liqOrigenX = Double.parseDouble(liquidezOrigen.getText().toString());
+                        invertidoImportar = inversionX / liqOrigenX;
+                        break;
+                    case 1:
+
+                        if (invertido.getText().toString().isEmpty() ||
+                                liquidezOrigen.toString().isEmpty()) {
+                            crearSnackBar("Faltan datos de liquidez");
+                            return;
+                        }
+                        inversionX = Double.parseDouble(invertido.getText().toString());
+                        liqOrigenX = Double.parseDouble(liquidezOrigen.getText().toString());
+                        invertidoImportar = inversionX * liqOrigenX;
+                        break;
+                    case 2:
+                        if (invertido.getText().toString().isEmpty() ||
+                                liquidezDestino.toString().isEmpty()) {
+                            crearSnackBar("Faltan datos de liquidez");
+                            return;
+                        }
+                        inversionX = Double.parseDouble(invertido.getText().toString());
+                        liqDestinoX = Double.parseDouble(liquidezDestino.getText().toString());
+                        invertidoImportar = inversionX / liqDestinoX;
+                        break;
+                    case 3:
+                        if (invertido.getText().toString().isEmpty() ||
+                                liquidezDestino.toString().isEmpty()) {
+                            crearSnackBar("Faltan datos de liquidez");
+                            return;
+                        }
+                        inversionX = Double.parseDouble(invertido.getText().toString());
+                        liqDestinoX = Double.parseDouble(liquidezDestino.getText().toString());
+                        invertidoImportar = inversionX * liqDestinoX;
+                        break;
+                }
                 cantidadImportar = invertidoImportar / precioImportar;
                 break;
-            }
-
-            case cambioInversionDestinoLiquidez: {
-                cantidadImportar = Double.parseDouble(invertido.getText().toString());
-                cantidadImportar /= Double.parseDouble(liquidezDestino.getText().toString());
-                invertidoImportar = cantidadImportar * precioImportar;
-                break;
-
             }
         }
 
@@ -597,8 +638,8 @@ public class MainActivity extends AppCompatActivity
 
         adapterRecyclerInversiones.agregarDatos(precioImportar,
                 invertidoImportar, cantidadImportar);
-        adapterRecyclerInversiones.monedaOrigen = monedaOrigen.getText().toString();
-        adapterRecyclerInversiones.monedaDestino = monedaDestino.getText().toString();
+        adapterRecyclerInversiones.monedaOrigen = monedaOrigen.getText().toString().toUpperCase();
+        adapterRecyclerInversiones.monedaDestino = monedaDestino.getText().toString().toUpperCase();
     }
 
     private void setBotonPorcentajes() {
@@ -697,6 +738,8 @@ public class MainActivity extends AppCompatActivity
         guardarDB();
 
         mIntent.putExtra("idOperacion", idOperacion);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mIntent);
     }
 

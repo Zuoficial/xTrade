@@ -580,6 +580,12 @@ public class AdapterRecyclerPorcentajes extends
             // fondo = itemView.findViewById(R.id.fondo);
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 
+            if (existeReduccion)
+                itemView.findViewById(R.id.indicadorReduccion).setVisibility(View.VISIBLE);
+            else
+                itemView.findViewById(R.id.indicadorReduccion).setVisibility(View.GONE);
+
+
         }
 
 
