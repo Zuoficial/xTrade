@@ -857,7 +857,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                     }
 
                     case R.id.textoBase: {
-                        exportarPrecio(textoBase);
+                       exportarPrecio(textoBase);
                         break;
                     }
 
@@ -1028,7 +1028,11 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
     private void exportarPrecio(TextView text) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Precio", text.getText().toString());
+        ClipData clip = ClipData.newPlainText("Precio", text.getText().toString()
+                .replace(monedaOrigenNombre, "")
+                .replace(monedaDestinoNombre,"")
+                .replace(",", "")
+                .replace(" ", ""));
         clipboard.setPrimaryClip(clip);
         Toast.makeText(getApplicationContext(), "Precio grabado: " + text.getText().toString(), Toast.LENGTH_SHORT).show();
         vibrator.vibrate(500);
@@ -1301,7 +1305,6 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                 return;
             } else
                 crearSnackBar("Inversion reduccida con exito!");
-
 
 
             double inversionRed, precioRed, porcentajeFinalRed;

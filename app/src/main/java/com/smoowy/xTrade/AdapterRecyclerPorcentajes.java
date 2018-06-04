@@ -670,7 +670,12 @@ public class AdapterRecyclerPorcentajes extends
         };
 
         private void copyToast(ClipboardManager clipboard, CharSequence text) {
-            ClipData clip = ClipData.newPlainText("Precio", text.toString());
+
+            ClipData clip = ClipData.newPlainText("Precio", text.toString()
+                    .replace(monedaOrigenNombre, "")
+                    .replace(monedaDestinoNombre, "")
+                    .replace(",", "")
+                    .replace(" ", ""));
             clipboard.setPrimaryClip(clip);
             Toast.makeText(context, "Precio grabado: " + text.toString(), Toast.LENGTH_SHORT).show();
         }
