@@ -512,7 +512,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintHorizontal_bias="0.96"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.92" />
@@ -534,7 +534,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintHorizontal_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.92" />
@@ -574,6 +574,7 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="50dp"
         android:text="Inversion disponible"
+        android:fontFamily="@font/comforta_regular"
         android:textColor="@android:color/white"
         android:textSize="15dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -586,6 +587,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="70dp"
+        android:fontFamily="@font/comforta_regular"
         android:hint="Inversion a reducir"
         android:inputType="numberDecimal"
         android:text="5000.00 MXN"
@@ -605,6 +607,7 @@
         android:layout_marginBottom="331dp"
         android:layout_marginStart="35dp"
         android:text="Inversion a reducir"
+        android:fontFamily="@font/comforta_regular"
         android:textColor="@android:color/white"
         android:textSize="15dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -613,8 +616,9 @@
     <EditText
         android:id="@+id/inversionRed"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:layout_marginBottom="285dp"
+        android:fontFamily="@font/comforta_regular"
         android:hint="Inversion a reducir"
         android:inputType="numberDecimal"
         android:selectAllOnFocus="true"
@@ -636,6 +640,7 @@
         android:layout_marginStart="35dp"
         android:selectAllOnFocus="true"
         android:text="Precio de cierre"
+        android:fontFamily="@font/comforta_regular"
         android:textColor="@android:color/white"
         android:textSize="15dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -650,6 +655,7 @@
         android:inputType="numberDecimal"
         android:selectAllOnFocus="true"
         android:textAlignment="center"
+        android:fontFamily="@font/comforta_regular"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         android:textSize="24dp"
@@ -684,7 +690,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.26"
+        app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toStartOf="parent" />
 
 
@@ -700,7 +706,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.71"
+        app:layout_constraintHorizontal_bias="0.7"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -723,6 +729,7 @@
         android:layout_marginBottom="340dp"
         android:hint="Cantidad"
         android:inputType="numberDecimal"
+        android:fontFamily="@font/comforta_regular"
         android:selectAllOnFocus="true"
         android:textAlignment="center"
         android:textColor="@android:color/white"
@@ -741,6 +748,7 @@
         android:layout_marginBottom="320dp"
         android:layout_marginStart="35dp"
         android:text="Precio al momento"
+        android:fontFamily="@font/comforta_regular"
         android:textColor="@android:color/white"
         android:textSize="18dp"
         android:visibility="gone"
@@ -754,6 +762,7 @@
         android:layout_marginBottom="270dp"
         android:hint="Precio"
         android:inputType="numberDecimal"
+        android:fontFamily="@font/comforta_regular"
         android:selectAllOnFocus="true"
         android:textAlignment="center"
         android:textColor="@android:color/white"

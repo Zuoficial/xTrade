@@ -56,7 +56,6 @@ public class AdapterRecyclerPorcentajes extends
     DB db;
 
 
-    //TODO FALTA AJUSTAR LA GANANCIA CUANDO HUBO REDUCCION
     private void accederDB(DB db) {
         monedaOrigenNombre = db.getMonedaOrigen();
         monedaDestinoNombre = db.getMonedaDestino();
@@ -400,23 +399,36 @@ public class AdapterRecyclerPorcentajes extends
     }
 
     private void chequeoLiquidez(Informacion info) {
-        if (modoLiquidez == 0) {
-            inversionLiq = invertido * liquidezOrigen;
-            ganadoLiq = ganancia * liquidezOrigen;
-            actualLiq = inversionActual * liquidezOrigen;
-        } else if (modoLiquidez == 1) {
-            inversionLiq = invertido / liquidezOrigen;
-            ganadoLiq = ganancia / liquidezOrigen;
-            actualLiq = inversionActual / liquidezOrigen;
-        } else if (modoLiquidez == 2) {
-            inversionLiq = invertidoDestino * liquidezDestino;
-            ganadoLiq = gananciaDestino * liquidezDestino;
-            actualLiq = inversionDestinoActual * liquidezDestino;
 
-        } else if (modoLiquidez == 3) {
-            inversionLiq = invertidoDestino / liquidezDestino;
-            ganadoLiq = gananciaDestino / liquidezDestino;
-            actualLiq = inversionDestinoActual / liquidezDestino;
+        if (modo == modoCazar) {
+
+            inversionActual *= precio;
+            ganancia *= precio;
+        }
+
+
+        switch (modoLiquidez) {
+            case 0:
+                inversionLiq = invertido * liquidezOrigen;
+                ganadoLiq = ganancia * liquidezOrigen;
+                actualLiq = inversionActual * liquidezOrigen;
+                break;
+            case 1:
+                inversionLiq = invertido / liquidezOrigen;
+                ganadoLiq = ganancia / liquidezOrigen;
+                actualLiq = inversionActual / liquidezOrigen;
+                break;
+            case 2:
+                inversionLiq = invertidoDestino * liquidezDestino;
+                ganadoLiq = gananciaDestino * liquidezDestino;
+                actualLiq = inversionDestinoActual * liquidezDestino;
+
+                break;
+            case 3:
+                inversionLiq = invertidoDestino / liquidezDestino;
+                ganadoLiq = gananciaDestino / liquidezDestino;
+                actualLiq = inversionDestinoActual / liquidezDestino;
+                break;
         }
 
         if (inversionLiq != 0 && inversionLiq != Double.POSITIVE_INFINITY) {
@@ -435,53 +447,57 @@ public class AdapterRecyclerPorcentajes extends
     double positivo(double precio, double porcentaje) {
 
 
-        if (modo == modoCazar) {
-            precio = invertidoDestino * (1 + porcentaje);
-            precio = invertidoFinal / precio;
+        switch (modo) {
+            case modoCazar:
+                precio = invertidoDestino * (1 + porcentaje);
+                precio = invertidoFinal / precio;
 
-        } else if (modo == modoCorta) {
-
-
-            if (enForex) {
-
-                precio -= comisionEntrada;
-                precio *= (1 - porcentaje);
-                precio -= comisionSalida;
-
-            } else {
+                break;
+            case modoCorta:
 
 
-                double a;
+                if (enForex) {
 
-                a = 1 + porcentaje;
-                a *= (1 + comisionSalida);
-                a += comisionEntrada;
-                a -= 2;
-                a *= -1;
+                    precio -= comisionEntrada;
+                    precio *= (1 - porcentaje);
+                    precio -= comisionSalida;
 
-                precio *= a;
-
-            }
+                } else {
 
 
-        } else if (modo == modoLarga) {
+                    double a;
+
+                    a = 1 + porcentaje;
+                    a *= (1 + comisionSalida);
+                    a += comisionEntrada;
+                    a -= 2;
+                    a *= -1;
+
+                    precio *= a;
+
+                }
 
 
-            if (enForex) {
+                break;
+            case modoLarga:
 
-                precio += comisionEntrada;
-                precio *= (1 + porcentaje);
-                precio += comisionSalida;
 
-            } else {
+                if (enForex) {
 
-                double a;
+                    precio += comisionEntrada;
+                    precio *= (1 + porcentaje);
+                    precio += comisionSalida;
 
-                a = 1 + porcentaje;
-                a *= 1 + comisionSalida;
-                a += comisionEntrada;
-                precio *= a;
-            }
+                } else {
+
+                    double a;
+
+                    a = 1 + porcentaje;
+                    a *= 1 + comisionSalida;
+                    a += comisionEntrada;
+                    precio *= a;
+                }
+                break;
         }
 
         return precio;
@@ -490,52 +506,56 @@ public class AdapterRecyclerPorcentajes extends
     double negativo(double precio, double porcentaje) {
 
 
-        if (modo == modoCazar) {
-            precio = invertidoDestino * (1 - porcentaje);
-            precio = invertidoFinal / precio;
+        switch (modo) {
+            case modoCazar:
+                precio = invertidoDestino * (1 - porcentaje);
+                precio = invertidoFinal / precio;
 
-        } else if (modo == modoCorta) {
+                break;
+            case modoCorta:
 
-            if (enForex) {
+                if (enForex) {
 
-                precio -= comisionEntrada;
-                precio *= (1 + porcentaje);
-                precio -= comisionSalida;
-
-
-            } else {
-
-                double a;
-
-                a = 1 - porcentaje;
-                a *= (1 + comisionSalida);
-                a += comisionEntrada;
-                a -= 2;
-                a *= -1;
-
-                precio *= a;
-
-            }
-        } else if (modo == modoLarga) {
-
-            if (enForex) {
-
-                precio += comisionEntrada;
-                precio *= (1 - porcentaje);
-                precio += comisionSalida;
+                    precio -= comisionEntrada;
+                    precio *= (1 + porcentaje);
+                    precio -= comisionSalida;
 
 
-            } else {
+                } else {
 
-                double a;
+                    double a;
 
-                a = 1 - porcentaje;
-                a *= 1 + comisionSalida;
-                a += comisionEntrada;
-                precio *= a;
+                    a = 1 - porcentaje;
+                    a *= (1 + comisionSalida);
+                    a += comisionEntrada;
+                    a -= 2;
+                    a *= -1;
 
-            }
+                    precio *= a;
 
+                }
+                break;
+            case modoLarga:
+
+                if (enForex) {
+
+                    precio += comisionEntrada;
+                    precio *= (1 - porcentaje);
+                    precio += comisionSalida;
+
+
+                } else {
+
+                    double a;
+
+                    a = 1 - porcentaje;
+                    a *= 1 + comisionSalida;
+                    a += comisionEntrada;
+                    precio *= a;
+
+                }
+
+                break;
         }
 
         return precio;

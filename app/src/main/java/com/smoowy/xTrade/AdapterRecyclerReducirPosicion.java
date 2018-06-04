@@ -88,7 +88,7 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
 
         DBReductor dB = lista.get(position);
 
-        if (dB.ganadoRedNumero > 0) {
+        if (dB.ganadoRedNumero >= 0) {
             holder.indicadorGanancia.setImageResource(R.drawable.ic_expand_less);
             holder.indicadorGanancia.setBackgroundResource(R.drawable.fondo_boton_reduccion_positivo);
         } else {

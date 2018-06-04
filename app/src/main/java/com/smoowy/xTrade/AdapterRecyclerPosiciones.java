@@ -134,13 +134,13 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
             holder.textoUsando.setText(db.getUsandoInicio());
 
 
-            if (db.getGanadoFinal() < 0) {
+            if (db.getGanadoFinal() < 0 || db.getGananciaRedFinal() < 0) {
                 holder.textoGanadoLetra.setText("Perdido");
-                holder.textoGanadoLiqLetra.setText("Perdido");
+                holder.textoGanadoLiqLetra.setText("Perdido liq");
 
             } else {
                 holder.textoGanadoLetra.setText("Ganado");
-                holder.textoGanadoLiqLetra.setText("Ganado");
+                holder.textoGanadoLiqLetra.setText("Ganado liq");
             }
 
 
@@ -149,7 +149,6 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
             double inversion = Double.parseDouble(db.getInversionInicio());
             holder.textoInversion.setText(String.format(precisionOrigenFormato, inversion)
                     + " " + db.getMonedaOrigen());
-
             holder.textoPrecioOut.setText("Pendiente");
             holder.textoGanado.setText("Pendiente");
             holder.textoActual.setText("Pendiente");
