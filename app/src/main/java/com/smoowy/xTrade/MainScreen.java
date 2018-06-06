@@ -147,15 +147,14 @@ public class MainScreen extends AppCompatActivity {
                 Snackbar snackbar =
                         Snackbar.make(findViewById(R.id.fondo), "Inversion borrada!", Snackbar.LENGTH_LONG);
                 snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
-                snackbar.setAction("Regresar", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        adapterRecyclerPosiciones.recuperarDatos();
-                    }
+                snackbar.setAction("Regresar", view -> {
+                    vibrator.vibrate(500);
+                    adapterRecyclerPosiciones.recuperarDatos();
+
+
                 }).show();
-
-
             }
+
 
             @Override
             public boolean isItemViewSwipeEnabled() {
