@@ -9,6 +9,7 @@ import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.Group;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -56,10 +57,12 @@ public class Calculos extends AppCompatActivity implements Comunicador {
     String precisionOrigen, precisionDestino, precisionLiquidez, precisionPrecio,
             liquidezNombre;
     ConstraintLayout calculador;
+    View header;
     DrawerLayout drawer;
     double inversionLiq;
     double ganadoLiq;
     double actualLiq;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +72,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         encabezado = findViewById(R.id.encabezado);
         encabezado.setOnTouchListener(onTouchListener);
         calculador = findViewById(R.id.calculador);
+        navigationView = findViewById(R.id.navigation);
+        header = navigationView.getHeaderView(0);
         accederDB();
         invertidoFinal = invertido;
         botonporcentajeCalculadorAplanado = false;
@@ -131,6 +136,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         textoGanadoLiq.setOnTouchListener(onTouchListener);
         textoInversionLiq.setOnTouchListener(onTouchListener);
         textoUsado.setOnTouchListener(onTouchListener);
+        header.setOnTouchListener(onTouchListener);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         switch (modo) {
@@ -709,6 +715,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                         break;
                     }
 
+                    case R.id.header:
                     case R.id.botonCerrar: {
 
 
@@ -857,7 +864,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                     }
 
                     case R.id.textoBase: {
-                       exportarPrecio(textoBase);
+                        exportarPrecio(textoBase);
                         break;
                     }
 
@@ -1030,7 +1037,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("Precio", text.getText().toString()
                 .replace(monedaOrigenNombre, "")
-                .replace(monedaDestinoNombre,"")
+                .replace(monedaDestinoNombre, "")
                 .replace(",", "")
                 .replace(" ", ""));
         clipboard.setPrimaryClip(clip);
