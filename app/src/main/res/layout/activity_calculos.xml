@@ -717,6 +717,7 @@
         android:layout_marginStart="35dp"
         android:text="Cantidad en"
         android:textColor="@android:color/white"
+        android:fontFamily="@font/comforta_regular"
         android:textSize="18dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline"

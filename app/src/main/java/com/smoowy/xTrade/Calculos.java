@@ -877,6 +877,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
                     case R.id.textoGanancia: {
                         exportarPrecio(textoGanancia);
+                        break;
                     }
 
                     case R.id.textoInvertidoActual: {
@@ -1443,7 +1444,13 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             }
             existeReduccion = adapterRecyclerReducirPosicion.lista.size() > 0;
 
+            if(textoPrecioMod.getText().toString().isEmpty())
             limpiarCalculador();
+            else {
+                String precioT = textoPrecioMod.getText().toString();
+                limpiarCalculador();
+                textoPrecioMod.setText(precioT);
+            }
 
         }
 
@@ -1498,7 +1505,14 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         }
 
         existeReduccion = adapterRecyclerReducirPosicion.lista.size() > 0;
-        limpiarCalculador();
+
+        if(textoPrecioMod.getText().toString().isEmpty())
+            limpiarCalculador();
+        else {
+            String precioT = textoPrecioMod.getText().toString();
+            limpiarCalculador();
+            textoPrecioMod.setText(precioT);
+        }
 
 
     };
