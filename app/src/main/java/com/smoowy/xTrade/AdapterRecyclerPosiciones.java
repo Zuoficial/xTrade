@@ -135,28 +135,47 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
 
 
             if (db.getGanadoFinal() < 0 || db.getGananciaRedFinal() < 0) {
-                holder.textoGanadoLetra.setText("Perdido");
-                holder.textoGanadoLiqLetra.setText("Perdido liq");
+
+
+                if (db.getGanadoFinal() == 0) {
+
+                    if (db.getGananciaRedFinal() < 0) {
+                        holder.textoGanadoLetra.setText("Perdido");
+                        holder.textoGanadoLiqLetra.setText("Perdido liq");
+
+                    } else {
+                        holder.textoGanadoLetra.setText("Ganado");
+                        holder.textoGanadoLiqLetra.setText("Ganado liq");
+                    }
+
+
+                } else {
+
+                    if (db.getGanadoFinal() < 0) {
+                        holder.textoGanadoLetra.setText("Perdido");
+                        holder.textoGanadoLiqLetra.setText("Perdido liq");
+
+                    } else {
+                        holder.textoGanadoLetra.setText("Ganado");
+                        holder.textoGanadoLiqLetra.setText("Ganado liq");
+                    }
+                }
+
 
             } else {
-                holder.textoGanadoLetra.setText("Ganado");
-                holder.textoGanadoLiqLetra.setText("Ganado liq");
+
+                double inversion = Double.parseDouble(db.getInversionInicio());
+                holder.textoInversion.setText(String.format(precisionOrigenFormato, inversion)
+                        + " " + db.getMonedaOrigen());
+                holder.textoPrecioOut.setText("Pendiente");
+                holder.textoGanado.setText("Pendiente");
+                holder.textoActual.setText("Pendiente");
+                holder.textoInversionLiq.setText("Pendiente");
+                holder.textoGanadoLiq.setText("Pendiente");
+                holder.textoActualLiq.setText("Pendiente");
+                holder.textoUsando.setText(db.getUsando() + " " + db.getMonedaDestino());
+
             }
-
-
-        } else {
-
-            double inversion = Double.parseDouble(db.getInversionInicio());
-            holder.textoInversion.setText(String.format(precisionOrigenFormato, inversion)
-                    + " " + db.getMonedaOrigen());
-            holder.textoPrecioOut.setText("Pendiente");
-            holder.textoGanado.setText("Pendiente");
-            holder.textoActual.setText("Pendiente");
-            holder.textoInversionLiq.setText("Pendiente");
-            holder.textoGanadoLiq.setText("Pendiente");
-            holder.textoActualLiq.setText("Pendiente");
-            holder.textoUsando.setText(db.getUsando() + " " + db.getMonedaDestino());
-
         }
 
 
