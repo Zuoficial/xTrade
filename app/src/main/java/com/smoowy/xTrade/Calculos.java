@@ -740,7 +740,6 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                             botonPorcentajeCalculador.setBackgroundResource(R.drawable.fondo_boton_forex);
                             textoPorcentaje.setVisibility(View.GONE);
                             textoPorcentajeMod.setVisibility(View.VISIBLE);
-                            textoPorcentajeMod.setText("");
                             textoPrecio.setText("Precio");
                             textoPrecio.setVisibility(View.VISIBLE);
                             textoPrecioMod.setVisibility(View.GONE);
@@ -751,6 +750,9 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
                             else
                                 textoInvertidoActual.setText(String.format(precisionDestino, invertidoDestino) + " " + monedaDestinoNombre);
+
+                            textoPorcentajeMod.setText("0");
+
 
 
                         } else {
