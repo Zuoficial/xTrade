@@ -18,7 +18,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -754,7 +753,6 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                             textoPorcentajeMod.setText("0");
 
 
-
                         } else {
                             botonporcentajeCalculadorAplanado = false;
                             botonPorcentajeCalculador.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
@@ -1254,7 +1252,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
     TextView inversionDisponibleRed, encabezadoInversionRed,
             encabezadoPrecioRed, encabezadoRed, encabezadoCantidadRed;
     Button botonReducirR, botonCambioInversiones, botonOtrosRed, botonGastoRed, botonGananciaRed;
-    boolean cambioInversionRedAplanado, botonOtrosAplanado, botonGananciaRedAplanado;
+    boolean cambioInversionRedAplanado, botonOtrosAplanado,
+            botonGananciaRedAplanado, cambioInversionReducirAPorcenajeActivado;
 
     void setBotonReducir() {
 
@@ -1288,6 +1287,21 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             vibrator.vibrate(100);
             cantidadReducir.getText().clear();
         });
+        encabezadoRed = findViewById(R.id.encabezadoRed);
+        encabezadoRed.setOnClickListener(view -> {
+            if (!cambioInversionReducirAPorcenajeActivado) {
+                vibrator.vibrate(100);
+                cambioInversionReducirAPorcenajeActivado = true;
+                encabezadoRed.setText("Inversion a reducir %");
+
+            } else {
+                vibrator.vibrate(100);
+                cambioInversionReducirAPorcenajeActivado = false;
+                encabezadoRed.setText("Inversion a reducir");
+            }
+
+
+        });
         botonGananciaRed = findViewById(R.id.botonGananciaRed);
         botonGastoRed = findViewById(R.id.botonGastoRed);
         inversionDisponibleRed = findViewById(R.id.inversionDisponibleRed);
@@ -1318,8 +1332,27 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
 
             double inversionRed, precioRed, porcentajeFinalRed;
+            double porcentaje;
 
-            inversionRed = Double.parseDouble(inversionReducir.getText().toString());
+            if (!cambioInversionReducirAPorcenajeActivado) {
+                inversionRed = Double.parseDouble(inversionReducir.getText().toString());
+
+
+            } else {
+                porcentaje = Double.parseDouble(inversionReducir.getText().toString()) / 100;
+
+                if (!cambioInversionRedAplanado) {
+
+                    inversionRed = invertido * porcentaje;
+
+
+                } else {
+                    inversionRed = invertidoDestino * porcentaje;
+
+                }
+            }
+
+
             precioRed = Double.parseDouble(precioReducir.getText().toString());
 
             if (!cambioInversionRedAplanado) {
@@ -1444,8 +1477,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
             }
             existeReduccion = adapterRecyclerReducirPosicion.lista.size() > 0;
 
-            if(textoPrecioMod.getText().toString().isEmpty())
-            limpiarCalculador();
+            if (textoPrecioMod.getText().toString().isEmpty())
+                limpiarCalculador();
             else {
                 String precioT = textoPrecioMod.getText().toString();
                 limpiarCalculador();
@@ -1506,7 +1539,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
         existeReduccion = adapterRecyclerReducirPosicion.lista.size() > 0;
 
-        if(textoPrecioMod.getText().toString().isEmpty())
+        if (textoPrecioMod.getText().toString().isEmpty())
             limpiarCalculador();
         else {
             String precioT = textoPrecioMod.getText().toString();
