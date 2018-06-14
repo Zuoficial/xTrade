@@ -11,13 +11,13 @@ import java.util.TreeMap;
 
 public class AdapterRecyclerBotonesPorcentajes extends RecyclerView.Adapter<AdapterRecyclerBotonesPorcentajes.Holder> {
     private LayoutInflater mInflater;
-    Comunicador comunicador;
+    ComunicadorBotonPorcentajes comunicador;
     int cantBotones = 8;
 
 
     public AdapterRecyclerBotonesPorcentajes(Context context) {
         mInflater = LayoutInflater.from(context);
-        comunicador = (Comunicador) context;
+        comunicador = (ComunicadorBotonPorcentajes) context;
         crearListas();
     }
 

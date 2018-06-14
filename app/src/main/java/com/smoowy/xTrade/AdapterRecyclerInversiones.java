@@ -18,6 +18,7 @@ public class AdapterRecyclerInversiones extends RecyclerView.Adapter<AdapterRecy
     ArrayList<DBOpInversiones> listaRespaldo;
     String monedaOrigen, monedaDestino;
     String precisionOrigenFormato, precisionDestinoFormato;
+    ComunicadorInversiones comunicador;
 
     public AdapterRecyclerInversiones(Context context) {
 
@@ -25,6 +26,7 @@ public class AdapterRecyclerInversiones extends RecyclerView.Adapter<AdapterRecy
         datos = 0;
         lista = new ArrayList<>();
         listaRespaldo = new ArrayList<>();
+        comunicador = (ComunicadorInversiones) context;
 
     }
 
@@ -82,12 +84,17 @@ public class AdapterRecyclerInversiones extends RecyclerView.Adapter<AdapterRecy
 
     class Holder extends RecyclerView.ViewHolder {
         TextView precio, inversion, cantidad;
+        View view;
 
-        public Holder(View itemView) {
+        Holder(View itemView) {
             super(itemView);
             precio = itemView.findViewById(R.id.precioRV);
             inversion = itemView.findViewById(R.id.inversionRV);
             cantidad = itemView.findViewById(R.id.cantidadRV);
+            itemView.setOnClickListener(view1 -> {
+
+                comunicador.recuperarDatosRecycler(inversion.getText().toString(), precio.getText().toString());
+            });
         }
     }
 

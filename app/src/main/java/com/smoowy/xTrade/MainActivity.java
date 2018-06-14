@@ -31,7 +31,7 @@ import io.realm.RealmConfiguration;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ComunicadorInversiones {
 
     Button botonCazar, botonCorta, botonLarga, botonEmpezar,
             botonPorcentajes, botonAgregarInversion, botonCambioInversion, botonForex, botonComisiones;
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     Realm realm;
     DB db;
+    boolean esDuplicado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,6 +152,7 @@ public class MainActivity extends AppCompatActivity
         Realm.setDefaultConfiguration(config);
         realm = Realm.getDefaultInstance();
         idOperacion = getIntent().getExtras().getInt("idOperacion");
+        esDuplicado = getIntent().getExtras().getBoolean("esDuplicado");
         db = realm.where(DB.class).equalTo("id", idOperacion).findFirst();
         monedaOrigen.setText(db.getMonedaOrigen());
         monedaDestino.setText(db.getMonedaDestino());
@@ -222,6 +224,18 @@ public class MainActivity extends AppCompatActivity
             setBotonComisiones();
 
 
+        if (esDuplicado) {
+
+            realm.executeTransaction(realm -> {
+                int id = realm.where(DB.class).findAll().max("id").intValue();
+                id += 1;
+                db = realm.createObject(DB.class, id);
+                idOperacion = id;
+
+            });
+        }
+
+
         realm.close();
     }
 
@@ -232,7 +246,6 @@ public class MainActivity extends AppCompatActivity
         Realm.setDefaultConfiguration(config);
         realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm -> {
-
 
 
             double inversionOrig = 0, inversionNuev, precioOrig = 0, precioNuev;
@@ -845,24 +858,21 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-
-        if (checarSiFaltanDatos()) {
-
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    db.deleteFromRealm();
-                }
-            });
-
-
-        }
-
         super.onDestroy();
+
+    }
+
+    @Override
+    public void recuperarDatosRecycler(String inversion, String precio) {
+        vibrator.vibrate(200);
+        invertido.setText(inversion
+                .replace(",", "")
+                .replace(monedaOrigen.getText().toString().toUpperCase(), ""));
+        this.precio.setText(precio
+                .replace(",", "")
+                .replace(monedaOrigen.getText().toString().toUpperCase(), ""));
     }
 }
-
-
 /*
 
 InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);

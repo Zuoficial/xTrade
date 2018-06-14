@@ -29,13 +29,13 @@ import android.widget.Toast;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class Calculos extends AppCompatActivity implements Comunicador {
+public class Calculos extends AppCompatActivity implements ComunicadorBotonPorcentajes {
 
     RecyclerView recyclerBotonesPorcentajes, recyclerPorcentajes;
     AdapterRecyclerBotonesPorcentajes adapterRecyclerBotonesPorcentajes;
     AdapterRecyclerPorcentajes adapterRecyclerPorcentajes;
     Button botonCazar, botonCorta, botonLarga, botonClear, botonPorcentajes,
-            botonCerrar, botonPorcentajeCalculador,
+            botonDuplicar, botonPorcentajeCalculador,
             botonPorcentajeCalculadorMenos, botonPorcentajeCalculadorMas,
             botonModificar, botonComisiones, botonReducir;
     TextView encabezado, textoGanancia, textoInvertido, textoInvertidoActual, textoUsado, textoGananciaLetra,
@@ -84,7 +84,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         botonLarga = findViewById(R.id.botonLarga);
         botonClear = findViewById(R.id.botonClear);
         botonPorcentajes = findViewById(R.id.botonPorcentajes);
-        botonCerrar = findViewById(R.id.botonCerrar);
+        botonDuplicar = findViewById(R.id.botonDuplicar);
         botonPorcentajeCalculador = findViewById(R.id.botonPorcentajeCalculador);
         botonPorcentajeCalculadorMas = findViewById(R.id.botonPorcentajeCalculadorMas);
         botonPorcentajeCalculadorMenos = findViewById(R.id.botonPorcentajeCalculadorMenos);
@@ -94,7 +94,7 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         botonCazar.setOnTouchListener(onTouchListener);
         botonCorta.setOnTouchListener(onTouchListener);
         botonLarga.setOnTouchListener(onTouchListener);
-        botonCerrar.setOnTouchListener(onTouchListener);
+        botonDuplicar.setOnTouchListener(onTouchListener);
         botonPorcentajes.setOnTouchListener(onTouchListener);
         botonClear.setOnTouchListener(onTouchListener);
         botonPorcentajeCalculador.setOnTouchListener(onTouchListener);
@@ -714,8 +714,20 @@ public class Calculos extends AppCompatActivity implements Comunicador {
                         break;
                     }
 
-                    case R.id.header:
-                    case R.id.botonCerrar: {
+                    case R.id.botonDuplicar: {
+                        vibrator.vibrate(50);
+                        drawer.closeDrawer(Gravity.START);
+                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.putExtra("idOperacion", idOperacion);
+                        i.putExtra("esDuplicado", true);
+                        startActivity(i);
+                        break;
+                    }
+
+
+                    case R.id.header: {
 
 
                         Intent i = new Intent(getApplicationContext(), MainScreen.class);
@@ -1120,7 +1132,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
 
         modo = modoCazar;
         adapterRecyclerPorcentajes.cambioModo(modo);
-        encabezado.setText("cazar " + monedaDestinoNombre + " con " + monedaOrigenNombre);
+        encabezado.setText("CZ " + monedaDestinoNombre + " con " +
+                monedaOrigenNombre + " " + textoReferencia.getText().toString().toUpperCase());
 
 
         if (modo == modoCorta || modo == modoLarga) {
@@ -1152,7 +1165,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         botonLarga.setBackgroundResource(R.drawable.fondo_botones_superior);
         modo = modoCorta;
         adapterRecyclerPorcentajes.cambioModo(modo);
-        encabezado.setText("corta " + monedaDestinoNombre + " con " + monedaOrigenNombre);
+        encabezado.setText("CR " + monedaDestinoNombre + " con " +
+                monedaOrigenNombre + " " + textoReferencia.getText().toString().toUpperCase());
         if (modo == modoCorta || modo == modoLarga) {
 
             textoGanancia.setText("0.00 " + monedaOrigenNombre);
@@ -1181,7 +1195,8 @@ public class Calculos extends AppCompatActivity implements Comunicador {
         botonLarga.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
         modo = modoLarga;
         adapterRecyclerPorcentajes.cambioModo(modo);
-        encabezado.setText("larga " + monedaDestinoNombre + " con " + monedaOrigenNombre);
+        encabezado.setText("LR " + monedaDestinoNombre + " con " +
+                monedaOrigenNombre + " " + textoReferencia.getText().toString().toUpperCase());
         if (modo == modoCorta || modo == modoLarga) {
 
             textoGanancia.setText("0.00 " + monedaOrigenNombre);

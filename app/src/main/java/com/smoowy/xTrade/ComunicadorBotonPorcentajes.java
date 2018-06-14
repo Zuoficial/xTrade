@@ -1,6 +1,6 @@
 package com.smoowy.xTrade;
 
-interface Comunicador {
+interface ComunicadorBotonPorcentajes {
 
     void cambioPorcentaje(String porcentaje,Integer ajustadorPorcentajes);
 }

@@ -40,12 +40,7 @@ public class MainScreen extends AppCompatActivity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                crearOperacion();
-            }
-        });
+        fab.setOnClickListener(view -> crearOperacion());
         accederDB();
         setRecyclerViewRecyclerBotonesPorcentajes();
 
@@ -63,41 +58,15 @@ public class MainScreen extends AppCompatActivity {
         if (resultadosRealm.size() == 0) {
             id = 0;
 
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-
-                    db = realm.createObject(DB.class, id);
-                }
-            });
+            realm.executeTransaction(realm -> db = realm.createObject(DB.class, id));
 
         } else {
 
-            id = resultadosRealm.get(resultadosRealm.size() - 1).getId();
+
+            id = resultadosRealm.max("id").intValue();
             id += 1;
 
-            DB check = realm.where(DB.class).equalTo("id", id).findFirst();
-
-            if (check == null) {
-
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-
-                        db = realm.createObject(DB.class, id);
-                    }
-                });
-            } else {
-                id += 10;
-
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-
-                        db = realm.createObject(DB.class, id);
-                    }
-                });
-            }
+                realm.executeTransaction(realm -> db = realm.createObject(DB.class, id));
 
 
         }
@@ -106,7 +75,7 @@ public class MainScreen extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("idOperacion", id);
         startActivity(intent);
-
+        borrarPosicionesDB();
     }
 
 
@@ -150,7 +119,6 @@ public class MainScreen extends AppCompatActivity {
                 snackbar.setAction("Regresar", view -> {
                     vibrator.vibrate(500);
                     adapterRecyclerPosiciones.recuperarDatos();
-
 
                 }).show();
             }
@@ -214,12 +182,7 @@ public class MainScreen extends AppCompatActivity {
             if (db.getPrecioIn() == null) {
 
 
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        db.deleteFromRealm();
-                    }
-                });
+                realm.executeTransaction(realm -> db.deleteFromRealm());
             }
         }
         resultadosRealm = realm.where(DB.class).findAll();
@@ -227,24 +190,29 @@ public class MainScreen extends AppCompatActivity {
 
     }
 
+    void borrarPosicionesDB() {
+        realm.executeTransaction(realm -> {
+
+            for (DB db : adapterRecyclerPosiciones.listaParaBorrar) {
+                db.deleteFromRealm();
+            }
+        });
+
+    }
+
     @Override
     protected void onDestroy() {
 
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
+        if (!realm.isClosed())
+            realm.close();
 
-                for (DB db : adapterRecyclerPosiciones.listaParaBorrar) {
-
-                    db.deleteFromRealm();
-
-                }
-
-
-            }
-        });
-        realm.close();
 
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        borrarPosicionesDB();
+        super.onBackPressed();
     }
 }
