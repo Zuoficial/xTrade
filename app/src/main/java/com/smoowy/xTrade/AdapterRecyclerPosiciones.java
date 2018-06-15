@@ -16,12 +16,14 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
     ArrayList<DB> listaDatos;
     ArrayList<DB> listaDatosRespaldo;
     Context context;
+    ComunicadorPosiciones comunicador;
 
     public AdapterRecyclerPosiciones(Context context, ArrayList<DB> listaDatos) {
         mInflater = LayoutInflater.from(context);
         this.listaDatos = listaDatos;
         listaParaBorrar = new ArrayList<>();
         this.context = context;
+        comunicador= (ComunicadorPosiciones) context;
     }
 
 
@@ -204,6 +206,7 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
         Intent intent = new Intent(context, Calculos.class);
         intent.putExtra("idOperacion", listaDatos.get(position).getId());
         context.startActivity(intent);
+        comunicador.borrarDesdeRecycler();
     }
 
     int posiciona;

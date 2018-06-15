@@ -22,7 +22,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
-public class MainScreen extends AppCompatActivity {
+public class MainScreen extends AppCompatActivity implements ComunicadorPosiciones{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,5 +214,10 @@ public class MainScreen extends AppCompatActivity {
     public void onBackPressed() {
         borrarPosicionesDB();
         super.onBackPressed();
+    }
+
+    @Override
+    public void borrarDesdeRecycler() {
+        borrarPosicionesDB();
     }
 }
