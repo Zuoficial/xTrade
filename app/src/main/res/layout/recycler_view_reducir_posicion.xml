@@ -12,11 +12,11 @@
         android:id="@+id/tipoInversion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="textoGanadoLiq3,textoBase2,textoGanadoLiqLetra3,textoGanadoLetra2,textoUsandoRV3,textoPrecio,textView8,textoInversion,textoGanancia2,guideline4,textView10,textView11,guideline5,textView6" />
+        android:visibility="visible"
+        app:constraint_referenced_ids="textoGanadoLiq3,textoBase2,textoGanadoLiqLetra3,textoGanadoLetra2,textoUsandoRV3,textoPrecio,encabezadoPBaseRV,textoInversion,textoGanancia2,guideline4,textView10,encabezadoInversionRV,guideline5,textView6" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/encabezadoPBaseRV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -57,7 +57,7 @@
         android:textColor="@android:color/white"
         android:textSize="17dp"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/encabezadoPBaseRV" />
 
     <TextView
         android:id="@+id/textoGanancia2"
@@ -133,7 +133,7 @@
 
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/encabezadoInversionRV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -161,7 +161,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/encabezadoPrecioRV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -171,7 +171,7 @@
         android:textColor="@android:color/white"
         android:textSize="17dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/encabezadoInversionRV" />
 
     <TextView
         android:id="@+id/textoPrecio"
@@ -218,7 +218,7 @@
         android:id="@+id/tipoGanancia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:constraint_referenced_ids="cantidadOrigenO,encabezadoDestinoO,cantidadLiquidezO,encabezadoOrigenO,precioO,encabezadoLiquidezO,encabezadoPrecioO,cantidadDestinoO" />
 
 

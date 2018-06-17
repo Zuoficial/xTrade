@@ -118,7 +118,7 @@
                 android:layout_height="@dimen/drawer_button_height"
                 android:layout_marginTop="@dimen/drawer_space_between"
                 android:fontFamily="@font/comforta_bold"
-                android:text="Reducir"
+                android:text="Reducir/Agregar"
                 android:textSize="22dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/botonLarga" />

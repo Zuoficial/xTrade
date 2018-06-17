@@ -1027,6 +1027,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             db.setUsandoInicio(String.format(precisionDestino, (invertido / precio)) + " " + monedaDestinoNombre);
             db.setExisteReduccion(existeReduccion);
 
+
             if (botonReducirAplanado) {
                 db.reducciones.clear();
 
@@ -1038,6 +1039,9 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 db.setInvertidoRedFinal(invertido);
 
             }
+
+
+            db.setPrecioIn(String.valueOf(precio));
 
 
         });
@@ -1268,7 +1272,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             encabezadoPrecioRed, encabezadoRed, encabezadoCantidadRed;
     Button botonReducirR, botonCambioInversiones, botonOtrosRed, botonGastoRed, botonGananciaRed;
     boolean cambioInversionRedAplanado, botonOtrosAplanado,
-            botonGananciaRedAplanado, cambioInversionReducirAPorcenajeActivado;
+            botonGananciaRedAplanado, cambioInversionReducirAPorcenajeActivado, cambioAumentarActivado;
 
     void setBotonReducir() {
 
@@ -1307,16 +1311,58 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             if (!cambioInversionReducirAPorcenajeActivado) {
                 vibrator.vibrate(100);
                 cambioInversionReducirAPorcenajeActivado = true;
-                encabezadoRed.setText("Inversion a reducir %");
+                if (!cambioAumentarActivado)
+                    encabezadoRed.setText("Inversion a reducir %");
+                else
+                    encabezadoRed.setText("Inversion a agregar %");
 
             } else {
                 vibrator.vibrate(100);
                 cambioInversionReducirAPorcenajeActivado = false;
-                encabezadoRed.setText("Inversion a reducir");
+                if (!cambioAumentarActivado)
+                    encabezadoRed.setText("Inversion a reducir");
+                else
+                    encabezadoRed.setText("Inversion a agregar");
             }
 
 
         });
+        encabezadoPrecioRed = findViewById(R.id.encabezadoPrecioRed);
+        encabezadoInversionRed = findViewById(R.id.encabezadoInversionRed);
+        encabezadoInversionRed.setOnClickListener(view -> {
+
+            if (!cambioAumentarActivado) {
+                cambioAumentarActivado = true;
+                encabezadoPrecioRed.setText("Precio de entrada");
+                encabezadoRed.setText("Inversion a agregar");
+                precioReducir.setHint("Precio de entrada");
+                inversionReducir.setHint("Inversion a agregar");
+                inversionReducir.getText().clear();
+                precioReducir.getText().clear();
+                if (cambioInversionReducirAPorcenajeActivado)
+                    encabezadoRed.setText("Inversion a agregar %");
+                else
+                    encabezadoRed.setText("Inversion a agregar");
+                botonReducirR.setOnClickListener(onClickListenerRedAgregar);
+
+            } else {
+                cambioAumentarActivado = false;
+                encabezadoPrecioRed.setText("Precio de cierre");
+                encabezadoRed.setText("Inversion a reducir");
+                precioReducir.setHint("Precio de cierre");
+                inversionReducir.setHint("Inversion a reducir");
+                inversionReducir.getText().clear();
+                precioReducir.getText().clear();
+                if (cambioInversionReducirAPorcenajeActivado)
+                    encabezadoRed.setText("Inversion a reducir %");
+                else
+                    encabezadoRed.setText("Inversion a reducir");
+                botonReducirR.setOnClickListener(onClickListenerReducir);
+            }
+
+
+        });
+
         botonGananciaRed = findViewById(R.id.botonGananciaRed);
         botonGastoRed = findViewById(R.id.botonGastoRed);
         inversionDisponibleRed = findViewById(R.id.inversionDisponibleRed);
@@ -1564,6 +1610,98 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
 
     };
+    View.OnClickListener onClickListenerRedAgregar = view -> {
+
+        if (modo == modoCazar) {
+            crearSnackBar("No se puede aumentar en modo cazar");
+            return;
+        }
+
+        vibrator.vibrate(500);
+
+        if (inversionReducir.getText().toString().isEmpty() ||
+                precioReducir.getText().toString().isEmpty()) {
+            crearSnackBar("Faltan datos");
+            return;
+        } else
+            crearSnackBar("Inversion aumentada con exito!");
+
+        double inversionRed, precioRed, porcentajeFinalRed;
+        double porcentaje;
+
+        precioRed = Double.parseDouble(precioReducir.getText().toString());
+
+        if (!cambioInversionReducirAPorcenajeActivado) {
+
+            if (!cambioInversionRedAplanado)
+                inversionRed = Double.parseDouble(inversionReducir.getText().toString());
+            else {
+                inversionRed = Double.parseDouble(inversionReducir.getText().toString());
+                inversionRed *= precioRed;
+            }
+
+
+        } else {
+            porcentaje = Double.parseDouble(inversionReducir.getText().toString()) / 100;
+
+            if (!cambioInversionRedAplanado) {
+
+                inversionRed = invertido * porcentaje;
+
+
+            } else {
+                inversionRed = invertidoDestino * porcentaje;
+
+            }
+        }
+
+
+        double precioAntiguo = precio;
+        double inversionAntigua = invertido;
+
+
+        invertido += inversionRed;
+
+        invertidoDestino += inversionRed / precioRed;
+
+        precio = invertido / invertidoDestino;
+
+
+        if (!cambioInversionRedAplanado) {
+            inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
+
+        } else {
+            inversionDisponibleRed.setText(String.format(precisionDestino, invertido / precio) + " " + monedaDestinoNombre);
+        }
+
+
+        inversionReducir.getText().clear();
+        precioReducir.getText().clear();
+
+
+        DBReductor reductorDB = new DBReductor();
+
+        reductorDB.setInversionR(inversionRed);
+        reductorDB.setPrecioRedR(precioRed);
+        reductorDB.setPrecioBaseR(precioAntiguo);
+        reductorDB.setGanadoRedR(inversionRed / precioRed);
+        reductorDB.setUsandoR(invertidoDestino);
+        reductorDB.setPrecioNumero(precio);
+        reductorDB.setTipo(2);
+
+        adapterRecyclerReducirPosicion.agregarReduccion(reductorDB);
+        existeReduccion = adapterRecyclerReducirPosicion.lista.size() > 0;
+
+        if (textoPrecioMod.getText().toString().isEmpty())
+            limpiarCalculador();
+        else {
+            String precioT = textoPrecioMod.getText().toString();
+            limpiarCalculador();
+            textoPrecioMod.setText(precioT);
+        }
+
+
+    };
 
     private void setRecyclerViewRecyclerReducir() {
         recyclerPosicionReducida = findViewById(R.id.recyclerPosicionReducida);
@@ -1625,9 +1763,27 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                     invertido += adapterRecyclerReducirPosicion.lista.get(posicion).getInversionRedNumero();
                     invertidoDestino = invertido / precio;
                     gananciaRedFinal -= adapterRecyclerReducirPosicion.lista.get(posicion).getGanadoRedNumero();
-                    inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
+                    if (!cambioInversionRedAplanado)
+                        inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
+                    else
+                        inversionDisponibleRed.setText(String.format(precisionDestino, invertidoDestino) + " " + monedaDestinoNombre);
+
+                } else if (tipo == 2) {
+                    invertidoRespaldo = invertido;
+                    invertidoDestinoRespaldo = invertidoDestino;
+
+
+                    invertido -= adapterRecyclerReducirPosicion.lista.get(posicion).getInversionR();
+                    invertidoDestino -= adapterRecyclerReducirPosicion.lista.get(posicion).getGanadoRedR();
+                    precio = invertido / invertidoDestino;
+                    if (!cambioInversionRedAplanado)
+                        inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
+                    else
+                        inversionDisponibleRed.setText(String.format(precisionDestino, invertidoDestino) + " " + monedaDestinoNombre);
 
                 }
+
+
                 adapterRecyclerReducirPosicion.removerReduccion(posicion);
 
                 existeReduccion = adapterRecyclerReducirPosicion.lista.size() > 0;
@@ -1648,7 +1804,18 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                         invertido = finalInvertidoRespaldo;
                         invertidoDestino = finalInvertidoDestinoRespaldo;
                         gananciaRedFinal = finalGananciaRedFinalRespaldo;
-                        inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
+                        if (!cambioInversionRedAplanado)
+                            inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
+                        else
+                            inversionDisponibleRed.setText(String.format(precisionDestino, invertidoDestino) + " " + monedaDestinoNombre);
+                    } else if (tipo == 2) {
+                        invertido = finalInvertidoRespaldo;
+                        invertidoDestino = finalInvertidoDestinoRespaldo;
+                        precio = invertido / invertidoDestino;
+                        if (!cambioInversionRedAplanado)
+                            inversionDisponibleRed.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
+                        else
+                            inversionDisponibleRed.setText(String.format(precisionDestino, invertidoDestino) + " " + monedaDestinoNombre);
                     }
                     adapterRecyclerReducirPosicion.recuperarReduccion();
 

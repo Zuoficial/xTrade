@@ -164,7 +164,7 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
 
             holder.textoUsandoRV3.setText(String.format(precisionDestino, dB.getUsandoR()) + " " + monedaDestinoNombre);
 
-        } else {
+        } else if (dB.getTipo() == 1) {
 
 
             holder.tipoInversion.setVisibility(View.GONE);
@@ -232,6 +232,26 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
 
             }
 
+        } else if (dB.getTipo() == 2) {
+
+            holder.tipoInversion.setVisibility(View.VISIBLE);
+            holder.tipoGanancia.setVisibility(View.GONE);
+
+
+            holder.encabezadoPBaseRV.setText("Precio An");
+            holder.textoGanadoLetra2.setText("Precio Act");
+            holder.textoGanancia2.setText(String.format(precisionPrecio, dB.getPrecioNumero()) + " " + monedaOrigenNombre);
+            holder.encabezadoInversionRV.setText("Inversion agregada");
+            holder.encabezadoPrecioRV.setText("Precio de entrada");
+
+
+            holder.textoInversion.setText(String.format(precisionOrigen, dB.getInversionR()) + " " + monedaOrigenNombre);
+            holder.textoPrecio.setText(String.format(precisionPrecio, dB.getPrecioRedR()) + " " + monedaOrigenNombre);
+            holder.textoBase2.setText(String.format(precisionPrecio, dB.getPrecioBaseR()) + " " + monedaOrigenNombre);
+           holder.textoGanadoLiqLetra3.setText("Agregado");
+            holder.textoGanadoLiq3.setText(String.format(precisionDestino, dB.getGanadoRedR()) + " " + monedaDestinoNombre);
+            holder.textoUsandoRV3.setText(String.format(precisionDestino, dB.getUsandoR()) + " " + monedaDestinoNombre);
+
         }
 
     }
@@ -251,10 +271,14 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
         android.support.constraint.Group tipoInversion, tipoGanancia;
         TextView encabezadoOrigenO, cantidadOrigenO, encabezadoDestinoO,
                 cantidadDestinoO, encabezadoLiquidezO, cantidadLiquidezO,
-                encabezadoPrecioO, precioO;
+                encabezadoPrecioO, precioO, encabezadoInversionRV, encabezadoPrecioRV,
+                encabezadoPBaseRV;
 
         Holder(final View itemView) {
             super(itemView);
+            encabezadoInversionRV = itemView.findViewById(R.id.encabezadoInversionRV);
+            encabezadoPrecioRV = itemView.findViewById(R.id.encabezadoPrecioRV);
+            encabezadoPBaseRV = itemView.findViewById(R.id.encabezadoPBaseRV);
             textoInversion = itemView.findViewById(R.id.textoInversion);
             textoPrecio = itemView.findViewById(R.id.textoPrecio);
             textoBase2 = itemView.findViewById(R.id.textoBase2);
