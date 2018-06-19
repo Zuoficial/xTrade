@@ -42,6 +42,8 @@ public class DB extends RealmObject {
     Boolean enForex;
     Boolean botonComisionAplanado;
     Boolean existeReduccion;
+    Boolean comisionEntradaNegativa;
+    Boolean comisionSalidaNegativa;
     RealmList<DBOpInversiones> operaciones;
     RealmList<DBReductor> reducciones;
     int modo;
@@ -373,5 +375,21 @@ public class DB extends RealmObject {
 
     public void setUsandoInicio(String usandoInicio) {
         this.usandoInicio = usandoInicio;
+    }
+
+    public Boolean getComisionEntradaNegativa() {
+        return comisionEntradaNegativa;
+    }
+
+    public void setComisionEntradaNegativa(Boolean comisionEntradaNegativa) {
+        this.comisionEntradaNegativa = comisionEntradaNegativa;
+    }
+
+    public Boolean getComisionSalidaNegativa() {
+        return comisionSalidaNegativa;
+    }
+
+    public void setComisionSalidaNegativa(Boolean comisionSalidaNegativa) {
+        this.comisionSalidaNegativa = comisionSalidaNegativa;
     }
 }

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     Realm realm;
     DB db;
-    boolean esDuplicado;
+    boolean esDuplicado, comisionEntradaNegativa, comisionSalidaNegativa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +74,52 @@ public class MainActivity extends AppCompatActivity
         precio = findViewById(R.id.precio);
         comisionEntrada = findViewById(R.id.comisionEntrada);
         comisionEntradaLetra = findViewById(R.id.comisionEntradaLetra);
+        comisionEntradaLetra.setOnClickListener(view -> {
+            vibrator.vibrate(200);
+            if (!comisionEntradaNegativa) {
+                comisionEntradaNegativa = true;
+                if (enForex) {
+                    comisionEntradaLetra.setText("Comision entrada +pips");
+                } else {
+                    comisionEntradaLetra.setText("Comision entrada +%");
+                }
+            } else {
+
+                comisionEntradaNegativa = false;
+                if (enForex) {
+                    comisionEntradaLetra.setText("Comision entrada pips");
+                } else {
+                    comisionEntradaLetra.setText("Comision entrada %");
+                }
+
+            }
+
+
+        });
         comisionSalida = findViewById(R.id.comisionSalida);
         comisionSalidaLetra = findViewById(R.id.comisionSalidaLetra);
+        comisionSalidaLetra.setOnClickListener(view -> {
+            vibrator.vibrate(200);
+            if (!comisionSalidaNegativa) {
+                comisionSalidaNegativa = true;
+                if (enForex) {
+                    comisionSalidaLetra.setText("Comision salida +pips");
+                } else {
+                    comisionSalidaLetra.setText("Comision salida +%");
+                }
+            } else {
+
+                comisionSalidaNegativa = false;
+                if (enForex) {
+                    comisionSalidaLetra.setText("Comision salida pips");
+                } else {
+                    comisionSalidaLetra.setText("Comision salida %");
+                }
+
+            }
+
+
+        });
         liquidezDestino = findViewById(R.id.liquidezDestino);
         liquidezOrigen = findViewById(R.id.liquidezOrigen);
         liquidezNombre = findViewById(R.id.liquidezNombre);
@@ -159,29 +203,44 @@ public class MainActivity extends AppCompatActivity
         invertido.setText(db.getInvertido());
         precio.setText(db.getPrecio());
 
+        if (db.getComisionEntradaNegativa() != null) {
+            comisionEntradaNegativa = db.getComisionEntradaNegativa();
+            comisionSalidaNegativa = db.getComisionSalidaNegativa();
+        }
+
         if (db.getEnForex() != null) {
-
-
             if (db.getEnForex()) {
                 setBotonForex();
-                if (db.getComisionEntrada() == null || !db.getComisionEntrada().equals("0"))
-                    comisionEntrada.setText(db.getComisionEntrada());
+            }
+            else {
+                if (!comisionEntradaNegativa)
+                    comisionEntradaLetra.setText("Comision entrada %");
+                else
+                    comisionEntradaLetra.setText("Comision entrada +%");
 
-
-                if (db.getComisionSalida() == null || !db.getComisionSalida().equals("0"))
-                    comisionSalida.setText(db.getComisionSalida());
-
-
-            } else {
-
-                enForex = db.getEnForex();
-                if (db.getComisionEntrada() == null || !db.getComisionEntrada().equals("0"))
-                    comisionEntrada.setText(db.getComisionEntrada());
-                if (db.getComisionSalida() == null || !db.getComisionSalida().equals("0"))
-                    comisionSalida.setText(db.getComisionSalida());
+                if (!comisionSalidaNegativa)
+                    comisionSalidaLetra.setText("Comision salida %");
+                else
+                    comisionSalidaLetra.setText("Comision salida +%");
             }
         }
 
+        if (!comisionEntradaNegativa) {
+            if (db.getComisionEntrada() == null || !db.getComisionEntrada().equals("0"))
+                comisionEntrada.setText(db.getComisionEntrada());
+        } else {
+
+            if (db.getComisionEntrada() == null || !db.getComisionEntrada().equals("0"))
+                comisionEntrada.setText(db.getComisionEntrada().replace("-", ""));
+        }
+
+        if (!comisionSalidaNegativa) {
+            if (db.getComisionSalida() == null || !db.getComisionSalida().equals("0"))
+                comisionSalida.setText(db.getComisionSalida());
+        } else {
+            if (db.getComisionSalida() == null || !db.getComisionSalida().equals("0"))
+                comisionSalida.setText(db.getComisionSalida().replace("-", ""));
+        }
 
         if (db.getLiquidezOrigen() == null || !db.getLiquidezOrigen().equals("0"))
             liquidezOrigen.setText(db.getLiquidezOrigen());
@@ -268,20 +327,6 @@ public class MainActivity extends AppCompatActivity
             db.setMonedaDestino(monedaDestino.getText().toString().toUpperCase());
             db.setInvertido(invertido.getText().toString());
             db.setPrecio(precio.getText().toString());
-            if (enForex) {
-
-                db.setComisionEntrada(comisionEntrada.getText().toString().isEmpty() ? "0" :
-                        comisionEntrada.getText().toString());
-                db.setComisionSalida(comisionSalida.getText().toString().isEmpty() ? "0" :
-                        comisionSalida.getText().toString());
-
-
-            } else {
-
-                db.setComisionEntrada(comisionEntrada.getText().toString().isEmpty() ? "0" : comisionEntrada.getText().toString());
-                db.setComisionSalida(comisionSalida.getText().toString().isEmpty() ? "0" : comisionSalida.getText().toString());
-
-            }
             db.setEnForex(enForex);
             db.setLiquidezOrigen(liquidezOrigen.getText().toString().isEmpty() ? "0" : liquidezOrigen.getText().toString());
             db.setLiquidezDestino(liquidezDestino.getText().toString().isEmpty() ? "0" : liquidezDestino.getText().toString());
@@ -304,7 +349,25 @@ public class MainActivity extends AppCompatActivity
             db.setPrecisionPrecioFormato(precisionPrecioFormato);
             db.setBotonPorcentajesAplanado(botonPorcentajesAplanado);
             db.setBotonComisionAplanado(botonComisionAplanado);
+            db.setComisionEntradaNegativa(comisionEntradaNegativa);
+            db.setComisionSalidaNegativa(comisionSalidaNegativa);
 
+            if (!comisionEntradaNegativa) {
+                db.setComisionEntrada(comisionEntrada.getText().toString().isEmpty() ? "0" :
+                        comisionEntrada.getText().toString());
+            } else {
+                db.setComisionEntrada(comisionEntrada.getText().toString().isEmpty() ? "0" : "-" +
+                        comisionEntrada.getText().toString());
+            }
+
+            if (!comisionSalidaNegativa) {
+                db.setComisionSalida(comisionSalida.getText().toString().isEmpty() ? "0" :
+                        comisionSalida.getText().toString());
+
+            } else {
+                db.setComisionSalida(comisionSalida.getText().toString().isEmpty() ? "0" : "-" +
+                        comisionSalida.getText().toString());
+            }
 
         });
 
@@ -526,14 +589,28 @@ public class MainActivity extends AppCompatActivity
     private void setBotonForex() {
         if (enForex) {
             botonForex.setBackgroundResource(R.drawable.fondo_marcador_neutral);
-            comisionEntradaLetra.setText("Comision entrada %");
-            comisionSalidaLetra.setText("Comision salida %");
+
+            if (!comisionEntradaNegativa)
+                comisionEntradaLetra.setText("Comision entrada %");
+            else
+                comisionEntradaLetra.setText("Comision entrada +%");
+
+            if (!comisionSalidaNegativa)
+                comisionSalidaLetra.setText("Comision salida %");
+            else
+                comisionSalidaLetra.setText("Comision salida +%");
             enForex = false;
 
         } else {
             botonForex.setBackgroundResource(R.drawable.fondo_boton_forex);
-            comisionEntradaLetra.setText("Comision entrada pips");
-            comisionSalidaLetra.setText("Comision salida pips");
+            if (!comisionEntradaNegativa)
+                comisionEntradaLetra.setText("Comision entrada pips");
+            else
+                comisionEntradaLetra.setText("Comision entrada +pips");
+            if (!comisionSalidaNegativa)
+                comisionSalidaLetra.setText("Comision salida pips");
+            else
+                comisionSalidaLetra.setText("Comision salida +pips");
             enForex = true;
         }
     }
