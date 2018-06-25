@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ComunicadorInversiones {
 
     Button botonCazar, botonCorta, botonLarga, botonEmpezar,
-            botonPorcentajes, botonAgregarInversion, botonCambioInversion, botonForex, botonComisiones;
+            botonPorcentajes, botonAgregarInversion, botonMenu, botonForex, botonComisiones;
     EditText invertido, precio, comisionEntrada, comisionSalida, monedaOrigen, monedaDestino,
             precisionOrigen, precisionDestino, liquidezOrigen, liquidezDestino,
             liquidezNombre, precisionLiquidez, precisionPrecio;
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         botonComisiones = findViewById(R.id.botonComisiones);
         botonPorcentajes = findViewById(R.id.botonPorcentajes);
         botonAgregarInversion = findViewById(R.id.botonAgregarInversion);
-        botonCambioInversion = findViewById(R.id.botonCambioInversion);
+        botonMenu = findViewById(R.id.botonMenu);
         botonForex = findViewById(R.id.botonForex);
         encabezadoInversion = findViewById(R.id.encabezadoInversion);
         encabezadoLiquidez = findViewById(R.id.encabezadoLiquidez);
@@ -137,9 +137,10 @@ public class MainActivity extends AppCompatActivity
         botonEmpezar.setOnTouchListener(onTouchListener);
         botonPorcentajes.setOnTouchListener(onTouchListener);
         botonAgregarInversion.setOnTouchListener(onTouchListener);
-        botonCambioInversion.setOnTouchListener(onTouchListener);
+        botonMenu.setOnTouchListener(onTouchListener);
         botonForex.setOnTouchListener(onTouchListener);
         encabezadoLiquidez.setOnTouchListener(onTouchListener);
+        encabezadoInversion.setOnTouchListener(onTouchListener);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         precisionOrigen.addTextChangedListener(textWatcher);
         precisionDestino.addTextChangedListener(textWatcher);
@@ -477,7 +478,7 @@ public class MainActivity extends AppCompatActivity
                         break;
                     }
 
-                    case R.id.botonCambioInversion: {
+                    case R.id.encabezadoInversion: {
 
 
                         selectorCambioInversion += 1;
@@ -520,6 +521,11 @@ public class MainActivity extends AppCompatActivity
 
                         cambiarModoLiquidez(false);
                         break;
+                    }
+
+                    case R.id.botonMenu : {
+
+                        drawer.openDrawer(Gravity.START);
                     }
 
 

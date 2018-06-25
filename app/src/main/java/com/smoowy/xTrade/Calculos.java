@@ -1330,6 +1330,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         encabezadoPrecioRed = findViewById(R.id.encabezadoPrecioRed);
         encabezadoInversionRed = findViewById(R.id.encabezadoInversionRed);
         encabezadoInversionRed.setOnClickListener(view -> {
+            vibrator.vibrate(50);
 
             if (!cambioAumentarActivado) {
                 cambioAumentarActivado = true;

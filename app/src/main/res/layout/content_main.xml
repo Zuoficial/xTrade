@@ -148,6 +148,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/botonForex"
+        android:layout_width="75dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="480dp"
+
+        android:layout_marginEnd="21dp"
+        android:background="@drawable/fondo_marcador_neutral"
+        android:fontFamily="@font/comforta_bold"
+        android:text="Forex"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -269,14 +283,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/botonCambioInversion"
-        android:layout_width="50dp"
+        android:id="@+id/botonMenu"
+        android:layout_width="70dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="480dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="348dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/fondo_marcador_neutral"
         android:fontFamily="@font/comforta_bold"
-        android:text="I/C"
+        android:text="Menu"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -286,7 +300,8 @@
         android:id="@+id/botonAgregarInversion"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_marginBottom="348dp"
+        android:layout_marginBottom="298dp"
+
         android:layout_marginEnd="16dp"
         android:background="@drawable/fondo_marcador_neutral"
         android:fontFamily="@font/comforta_bold"
@@ -295,18 +310,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/botonForex"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginBottom="298dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/fondo_marcador_neutral"
-        android:fontFamily="@font/comforta_bold"
-        android:text="Forex"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <TextView
         android:id="@+id/encabezadoLiquidez"
