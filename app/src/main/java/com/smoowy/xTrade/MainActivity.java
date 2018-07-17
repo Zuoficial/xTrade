@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         precisionOrigen.addTextChangedListener(textWatcher);
         precisionDestino.addTextChangedListener(textWatcher);
+        precisionPrecio.addTextChangedListener(textWatcher);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -179,8 +180,18 @@ public class MainActivity extends AppCompatActivity
                 precisionDestinoFormato = "%,." + precisionDestino.getText().toString() + "f";
 
 
+
+            if (precisionPrecio.getText().toString().isEmpty()) {
+
+                precisionPrecioFormato = "%,.2f";
+
+            } else
+                precisionPrecioFormato = "%,." + precisionPrecio.getText().toString() + "f";
+
+
             adapterRecyclerInversiones.precisionOrigenFormato = precisionOrigenFormato;
             adapterRecyclerInversiones.precisionDestinoFormato = precisionDestinoFormato;
+            adapterRecyclerInversiones.precisionPrecioFormato = precisionPrecioFormato;
             adapterRecyclerInversiones.notifyDataSetChanged();
         }
 
@@ -212,8 +223,7 @@ public class MainActivity extends AppCompatActivity
         if (db.getEnForex() != null) {
             if (db.getEnForex()) {
                 setBotonForex();
-            }
-            else {
+            } else {
                 if (!comisionEntradaNegativa)
                     comisionEntradaLetra.setText("Comision entrada %");
                 else
@@ -523,7 +533,7 @@ public class MainActivity extends AppCompatActivity
                         break;
                     }
 
-                    case R.id.botonMenu : {
+                    case R.id.botonMenu: {
 
                         drawer.openDrawer(Gravity.START);
                     }
@@ -827,7 +837,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         precioVariosImportar = invertidoVariosImportar / invertidoFinalVarios;
-        precioIn = String.format(precisionOrigenFormato, precioVariosImportar);
+        precioIn = String.format(precisionPrecioFormato, precioVariosImportar);
         inversionInicio = String.format(precisionOrigenFormato, invertidoVariosImportar);
         inversionDestinoInicio = String.format(precisionDestinoFormato,
                 (invertidoVariosImportar / precioVariosImportar));
