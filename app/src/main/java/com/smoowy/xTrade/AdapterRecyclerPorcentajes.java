@@ -76,7 +76,9 @@ public class AdapterRecyclerPorcentajes extends
 
 
         precio = Double.parseDouble(db.getPrecioIn());
-        if (db.getEnForex() != null) {
+        comisionEntrada = Double.parseDouble(db.getComisionEntrada()) / 100;
+        comisionSalida = Double.parseDouble(db.getComisionSalida()) / 100;
+       /* if (db.getEnForex() != null) {
             if (db.getEnForex()) {
                 enForex = true;
 
@@ -89,7 +91,7 @@ public class AdapterRecyclerPorcentajes extends
                 comisionEntrada = Double.parseDouble(db.getComisionEntrada()) / 100;
                 comisionSalida = Double.parseDouble(db.getComisionSalida()) / 100;
             }
-        }
+        }*/
         modo = db.getModo();
         precisionOrigen = db.getPrecisionOrigenFormato().replace(".", ",.");
         precisionDestino = db.getPrecisionDestinoFormato().replace(".", ",.");
@@ -344,6 +346,9 @@ public class AdapterRecyclerPorcentajes extends
                 case 10:
                     ajustador = 9;
                     break;
+                case 20:
+                    ajustador = 19;
+                    break;
                 case 100:
                     ajustador = 99;
                     break;
@@ -453,10 +458,9 @@ public class AdapterRecyclerPorcentajes extends
                 precio = invertidoFinal / precio;
 
                 break;
-            case modoCorta:
+            case modoCorta: {
 
-
-                if (enForex) {
+               /* if (enForex) {
 
                     precio -= comisionEntrada;
                     precio *= (1 - porcentaje);
@@ -475,14 +479,24 @@ public class AdapterRecyclerPorcentajes extends
 
                     precio *= a;
 
-                }
+                }*/
 
+                double a;
 
+                a = 1 + porcentaje;
+                a *= (1 + comisionSalida);
+                a += comisionEntrada;
+                a -= 2;
+                a *= -1;
+
+                precio *= a;
                 break;
-            case modoLarga:
+            }
+
+            case modoLarga: {
 
 
-                if (enForex) {
+             /*   if (enForex) {
 
                     precio += comisionEntrada;
                     precio *= (1 + porcentaje);
@@ -496,8 +510,17 @@ public class AdapterRecyclerPorcentajes extends
                     a *= 1 + comisionSalida;
                     a += comisionEntrada;
                     precio *= a;
-                }
+                }*/
+
+                double a;
+
+                a = 1 + porcentaje;
+                a *= 1 + comisionSalida;
+                a += comisionEntrada;
+                precio *= a;
+
                 break;
+            }
         }
 
         return precio;
@@ -512,9 +535,9 @@ public class AdapterRecyclerPorcentajes extends
                 precio = invertidoFinal / precio;
 
                 break;
-            case modoCorta:
+            case modoCorta: {
 
-                if (enForex) {
+                /*if (enForex) {
 
                     precio -= comisionEntrada;
                     precio *= (1 + porcentaje);
@@ -533,11 +556,21 @@ public class AdapterRecyclerPorcentajes extends
 
                     precio *= a;
 
-                }
-                break;
-            case modoLarga:
+                }*/
+                double a;
 
-                if (enForex) {
+                a = 1 - porcentaje;
+                a *= (1 + comisionSalida);
+                a += comisionEntrada;
+                a -= 2;
+                a *= -1;
+
+                precio *= a;
+                break;
+            }
+            case modoLarga: {
+
+              /*  if (enForex) {
 
                     precio += comisionEntrada;
                     precio *= (1 - porcentaje);
@@ -553,9 +586,16 @@ public class AdapterRecyclerPorcentajes extends
                     a += comisionEntrada;
                     precio *= a;
 
-                }
+                }*/
 
+                double a;
+
+                a = 1 - porcentaje;
+                a *= 1 + comisionSalida;
+                a += comisionEntrada;
+                precio *= a;
                 break;
+            }
         }
 
         return precio;

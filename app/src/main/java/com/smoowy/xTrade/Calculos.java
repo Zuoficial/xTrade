@@ -195,20 +195,14 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         invertidoDestino = invertido / precio;
 
 
-        if (db.getEnForex() != null) {
+       if (db.getEnForex() != null) {
             if (db.getEnForex()) {
                 enForex = true;
-
-                comisionEntrada = Double.parseDouble(db.getComisionEntrada()) / 10000;
-                comisionSalida = Double.parseDouble(db.getComisionSalida()) / 10000;
-
-
-            } else {
-
-                comisionEntrada = Double.parseDouble(db.getComisionEntrada()) / 100;
-                comisionSalida = Double.parseDouble(db.getComisionSalida()) / 100;
             }
         }
+
+        comisionEntrada = Double.parseDouble(db.getComisionEntrada()) / 100;
+        comisionSalida = Double.parseDouble(db.getComisionSalida()) / 100;
 
 
         modo = db.getModo();
@@ -486,8 +480,9 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
             porcentajeIngresado /= 100;
 
+   /*
 
-            if (enForex) {
+   if (enForex) {
 
                 precioFinal = precio - comisionEntrada;
                 precioFinal *= 1 - porcentajeIngresado;
@@ -505,8 +500,16 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
                 precioFinal = precio * b;
             }
+    */
 
+            double b;
+            b = 1 + porcentajeIngresado;
+            b *= (1 + comisionSalida);
+            b += comisionEntrada;
+            b -= 2;
+            b *= -1;
 
+            precioFinal = precio * b;
             invertidoActual = invertido * (1 + porcentajeIngresado);
             gananciaFinal = invertidoActual - invertidoFinal;
             if (existeReduccion) {
@@ -518,7 +521,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
         } else {
 
-            if (enForex) {
+           /* if (enForex) {
 
                 double b = precioIngresado + comisionSalida;
                 double a = precio - comisionEntrada;
@@ -540,6 +543,18 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 porcentajeFinal = b - 1;
 
             }
+            */
+
+
+            double b;
+
+            b = precioIngresado / precio;
+            b += -2;
+            b *= -1;
+            b -= comisionEntrada;
+            b /= (1 + comisionSalida);
+
+            porcentajeFinal = b - 1;
 
 
             invertidoActual = invertido * (1 + porcentajeFinal);
@@ -569,7 +584,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             porcentajeIngresado /= 100;
 
 
-            if (enForex) {
+           /* if (enForex) {
 
                 precioFinal = precio + comisionEntrada;
                 precioFinal *= 1 + porcentajeIngresado;
@@ -584,7 +599,13 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 a += comisionEntrada;
 
                 precioFinal = precio * a;
-            }
+            }*/
+            double a;
+            a = 1 + porcentajeIngresado;
+            a *= 1 + comisionSalida;
+            a += comisionEntrada;
+
+            precioFinal = precio * a;
 
 
             invertidoActual = invertido * (1 + porcentajeIngresado);
@@ -598,7 +619,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
         } else {
 
-            if (enForex) {
+          /*  if (enForex) {
 
                 double b = precioIngresado - comisionSalida;
                 double a = precio + comisionEntrada;
@@ -615,7 +636,14 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 porcentajeFinal = b - 1;
 
 
-            }
+            }*/
+
+            double b;
+            b = precioIngresado / precio;
+            b -= comisionEntrada;
+            b /= (1 + comisionSalida);
+            porcentajeFinal = b - 1;
+
 
             invertidoActual = invertido * (1 + (porcentajeFinal));
             gananciaFinal = invertidoActual - invertidoFinal;
@@ -1439,7 +1467,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
             if (modo == modoCorta) {
 
-                if (enForex) {
+             /*   if (enForex) {
 
                     double b = precioRed + comisionSalida;
                     double a = precio - comisionEntrada;
@@ -1460,7 +1488,18 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
                     porcentajeFinal = b - 1;
 
-                }
+                } */
+
+
+                double b;
+
+                b = precioRed / precio;
+                b += -2;
+                b *= -1;
+                b -= comisionEntrada;
+                b /= (1 + comisionSalida);
+
+                porcentajeFinal = b - 1;
 
                 invertidoActual = invertido * (1 + porcentajeFinal);
                 gananciaFinal = invertidoActual - invertido;
@@ -1468,7 +1507,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 positivo = gananciaFinal >= 0;
             } else if (modo == modoLarga) {
 
-                if (enForex) {
+               /* if (enForex) {
 
                     double b = precioRed - comisionSalida;
                     double a = precio + comisionEntrada;
@@ -1485,7 +1524,13 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                     porcentajeFinal = b - 1;
 
 
-                }
+                }*/
+
+                double b;
+                b = precioRed / precio;
+                b -= comisionEntrada;
+                b /= (1 + comisionSalida);
+                porcentajeFinal = b - 1;
 
                 invertidoActual = invertido * (1 + (porcentajeFinal));
                 gananciaFinal = invertidoActual - invertido;
@@ -1938,7 +1983,11 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         layoutManagerBotonesPorcentajes = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerBotonesPorcentajes.setAdapter(adapterRecyclerBotonesPorcentajes);
         recyclerBotonesPorcentajes.setLayoutManager(layoutManagerBotonesPorcentajes);
-        layoutManagerBotonesPorcentajes.scrollToPosition(2);
+
+        if (!enForex)
+            layoutManagerBotonesPorcentajes.scrollToPosition(2);
+        else
+            layoutManagerBotonesPorcentajes.scrollToPosition(8);
     }
 
 
@@ -1968,7 +2017,12 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 break;
             }
             case 10: {
-                layoutManagerPorcentajes.scrollToPositionWithOffset(999, 999);
+                layoutManagerPorcentajes.scrollToPositionWithOffset(999, 1000);
+                break;
+            }
+
+            case 20: {
+                layoutManagerPorcentajes.scrollToPositionWithOffset(2000, 2001);
                 break;
             }
 

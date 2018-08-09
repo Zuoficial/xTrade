@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -78,19 +79,15 @@ public class MainActivity extends AppCompatActivity
             vibrator.vibrate(200);
             if (!comisionEntradaNegativa) {
                 comisionEntradaNegativa = true;
-                if (enForex) {
-                    comisionEntradaLetra.setText("Comision entrada +pips");
-                } else {
-                    comisionEntradaLetra.setText("Comision entrada +%");
-                }
+
+                comisionEntradaLetra.setText("Comision entrada +%");
+
             } else {
 
                 comisionEntradaNegativa = false;
-                if (enForex) {
-                    comisionEntradaLetra.setText("Comision entrada pips");
-                } else {
-                    comisionEntradaLetra.setText("Comision entrada %");
-                }
+
+                comisionEntradaLetra.setText("Comision entrada %");
+
 
             }
 
@@ -102,19 +99,15 @@ public class MainActivity extends AppCompatActivity
             vibrator.vibrate(200);
             if (!comisionSalidaNegativa) {
                 comisionSalidaNegativa = true;
-                if (enForex) {
-                    comisionSalidaLetra.setText("Comision salida +pips");
-                } else {
-                    comisionSalidaLetra.setText("Comision salida +%");
-                }
+
+                comisionSalidaLetra.setText("Comision salida +%");
+
             } else {
 
                 comisionSalidaNegativa = false;
-                if (enForex) {
-                    comisionSalidaLetra.setText("Comision salida pips");
-                } else {
-                    comisionSalidaLetra.setText("Comision salida %");
-                }
+
+                comisionSalidaLetra.setText("Comision salida %");
+
 
             }
 
@@ -178,7 +171,6 @@ public class MainActivity extends AppCompatActivity
 
             } else
                 precisionDestinoFormato = "%,." + precisionDestino.getText().toString() + "f";
-
 
 
             if (precisionPrecio.getText().toString().isEmpty()) {
@@ -536,6 +528,9 @@ public class MainActivity extends AppCompatActivity
                     case R.id.botonMenu: {
 
                         drawer.openDrawer(Gravity.START);
+                        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
                     }
 
 
@@ -605,29 +600,11 @@ public class MainActivity extends AppCompatActivity
     private void setBotonForex() {
         if (enForex) {
             botonForex.setBackgroundResource(R.drawable.fondo_marcador_neutral);
-
-            if (!comisionEntradaNegativa)
-                comisionEntradaLetra.setText("Comision entrada %");
-            else
-                comisionEntradaLetra.setText("Comision entrada +%");
-
-            if (!comisionSalidaNegativa)
-                comisionSalidaLetra.setText("Comision salida %");
-            else
-                comisionSalidaLetra.setText("Comision salida +%");
             enForex = false;
-
         } else {
             botonForex.setBackgroundResource(R.drawable.fondo_boton_forex);
-            if (!comisionEntradaNegativa)
-                comisionEntradaLetra.setText("Comision entrada pips");
-            else
-                comisionEntradaLetra.setText("Comision entrada +pips");
-            if (!comisionSalidaNegativa)
-                comisionSalidaLetra.setText("Comision salida pips");
-            else
-                comisionSalidaLetra.setText("Comision salida +pips");
             enForex = true;
+            precisionPrecio.setText("5");
         }
     }
 

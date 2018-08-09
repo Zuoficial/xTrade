@@ -12,7 +12,7 @@ import java.util.TreeMap;
 public class AdapterRecyclerBotonesPorcentajes extends RecyclerView.Adapter<AdapterRecyclerBotonesPorcentajes.Holder> {
     private LayoutInflater mInflater;
     ComunicadorBotonPorcentajes comunicador;
-    int cantBotones = 8;
+    int cantBotones;
 
 
     public AdapterRecyclerBotonesPorcentajes(Context context) {
@@ -36,11 +36,12 @@ public class AdapterRecyclerBotonesPorcentajes extends RecyclerView.Adapter<Adap
 
     void crearListas() {
 
-        String[] nombres = {"10%", "5%", "2.5%", "1%", "0.50%", "0.25%", "0.10%","0.01%"};
-        Integer[] multi = {1, 1, 1, 1, 2, 4, 10,100};
+        String[] nombres = {"10%", "5%", "2.5%", "1%", "0.50%", "0.25%", "0.10%","0.05%","0.01%"};
+        Integer[] multi = {1, 1, 1, 1, 2, 4, 10,20,100};
         listaBotones = new TreeMap<>();
         listaBotonesChecador = new TreeMap<>();
         listaMultiplicador = new TreeMap<>();
+        cantBotones = nombres.length;
         for (int i = 0; i < cantBotones; i++) {
             listaBotones.put(i, nombres[i]);
             listaBotonesChecador.put(i, false);
@@ -76,18 +77,15 @@ public class AdapterRecyclerBotonesPorcentajes extends RecyclerView.Adapter<Adap
         Holder(final View itemView) {
             super(itemView);
             boton = itemView.findViewById(R.id.botonPorcentaje);
-            boton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    boton.setBackgroundResource(R.drawable.fondo_boton_forex);
-                    comunicador.cambioPorcentaje(boton.getText().toString(), listaMultiplicador.get(getAdapterPosition()));
-                    for (int i = 0; i < cantBotones; i++) {
-                        listaBotonesChecador.put(i, false);
-                    }
-                    listaBotonesChecador.put(getAdapterPosition(), true);
-                    notifyDataSetChanged();
-
+            boton.setOnClickListener(view -> {
+                boton.setBackgroundResource(R.drawable.fondo_boton_forex);
+                comunicador.cambioPorcentaje(boton.getText().toString(), listaMultiplicador.get(getAdapterPosition()));
+                for (int i = 0; i < cantBotones; i++) {
+                    listaBotonesChecador.put(i, false);
                 }
+                listaBotonesChecador.put(getAdapterPosition(), true);
+                notifyDataSetChanged();
+
             });
 
         }
