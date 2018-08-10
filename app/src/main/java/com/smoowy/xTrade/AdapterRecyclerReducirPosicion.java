@@ -169,6 +169,7 @@ public class AdapterRecyclerReducirPosicion extends RecyclerView.Adapter<Adapter
 
             holder.tipoInversion.setVisibility(View.GONE);
             holder.tipoGanancia.setVisibility(View.VISIBLE);
+            holder.encabezadoPrecioRV.setVisibility(View.GONE);
 
 
             holder.cantidadOrigenO.setText(dB.getGanadoRed());
