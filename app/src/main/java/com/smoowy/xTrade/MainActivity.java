@@ -605,6 +605,8 @@ public class MainActivity extends AppCompatActivity
             botonForex.setBackgroundResource(R.drawable.fondo_boton_forex);
             enForex = true;
             precisionPrecio.setText("5");
+            comisionEntrada.setText(".01");
+
         }
     }
 
