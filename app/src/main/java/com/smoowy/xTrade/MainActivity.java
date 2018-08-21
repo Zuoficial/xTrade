@@ -215,17 +215,17 @@ public class MainActivity extends AppCompatActivity
         if (db.getEnForex() != null) {
             if (db.getEnForex()) {
                 setBotonForex();
-            } else {
-                if (!comisionEntradaNegativa)
-                    comisionEntradaLetra.setText("Comision entrada %");
-                else
-                    comisionEntradaLetra.setText("Comision entrada +%");
-
-                if (!comisionSalidaNegativa)
-                    comisionSalidaLetra.setText("Comision salida %");
-                else
-                    comisionSalidaLetra.setText("Comision salida +%");
             }
+            if (!comisionEntradaNegativa)
+                comisionEntradaLetra.setText("Comision entrada %");
+            else
+                comisionEntradaLetra.setText("Comision entrada +%");
+
+            if (!comisionSalidaNegativa)
+                comisionSalidaLetra.setText("Comision salida %");
+            else
+                comisionSalidaLetra.setText("Comision salida +%");
+
         }
 
         if (!comisionEntradaNegativa) {
@@ -601,6 +601,8 @@ public class MainActivity extends AppCompatActivity
         if (enForex) {
             botonForex.setBackgroundResource(R.drawable.fondo_marcador_neutral);
             enForex = false;
+            precisionPrecio.setText("");
+            comisionEntrada.setText("");
         } else {
             botonForex.setBackgroundResource(R.drawable.fondo_boton_forex);
             enForex = true;
