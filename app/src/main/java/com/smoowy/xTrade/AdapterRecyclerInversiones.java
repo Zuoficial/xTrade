@@ -91,10 +91,8 @@ public class AdapterRecyclerInversiones extends RecyclerView.Adapter<AdapterRecy
             precio = itemView.findViewById(R.id.precioRV);
             inversion = itemView.findViewById(R.id.inversionRV);
             cantidad = itemView.findViewById(R.id.cantidadRV);
-            itemView.setOnClickListener(view1 -> {
-
-                comunicador.recuperarDatosRecycler(inversion.getText().toString(), precio.getText().toString());
-            });
+            inversion.setOnClickListener(view -> comunicador.recuperarDatosRecycler(inversion.getText().toString().replace(monedaDestino,"").replace(monedaOrigen,""), precio.getText().toString()));
+            cantidad.setOnClickListener(view -> comunicador.recuperarDatosRecycler(cantidad.getText().toString().replace(monedaDestino,"").replace(monedaOrigen,""), precio.getText().toString()));
         }
     }
 
