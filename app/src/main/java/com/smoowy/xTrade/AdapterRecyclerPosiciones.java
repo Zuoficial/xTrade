@@ -222,6 +222,14 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
 
     }
 
+    public void borrarDatos() {
+        listaDatosRespaldo = new ArrayList<>(listaDatos);
+        listaParaBorrar.clear();
+        listaParaBorrar.addAll(listaDatos);
+        listaDatos.clear();
+        notifyDataSetChanged();
+    }
+
     public void recuperarDatos() {
         listaDatos = new ArrayList<>(listaDatosRespaldo);
         listaParaBorrar.remove(listaParaBorrar.size() - 1);

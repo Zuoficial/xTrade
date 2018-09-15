@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +40,18 @@ public class MainScreen extends AppCompatActivity implements ComunicadorPosicion
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> crearOperacion());
+        fab.setOnLongClickListener(view -> {
+            vibrator.vibrate(500);
+            adapterRecyclerPosiciones.borrarDatos();
+            Snackbar snackbar =
+                    Snackbar.make(findViewById(R.id.fondo), "Se ha borrado todo!", Snackbar.LENGTH_LONG);
+            snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
+            snackbar.setAction("Regresar", viewX -> {
+                vibrator.vibrate(500);
+                adapterRecyclerPosiciones.recuperarDatos();
+            }).show();
+            return true;
+        });
         accederDB();
         setRecyclerViewRecyclerBotonesPorcentajes();
 
@@ -144,6 +155,7 @@ public class MainScreen extends AppCompatActivity implements ComunicadorPosicion
                     recyclerPosiciones.setVisibility(View.VISIBLE);
                 }
                 super.onChanged();
+
             }
 
 
