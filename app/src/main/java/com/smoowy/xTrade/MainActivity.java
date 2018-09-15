@@ -505,7 +505,6 @@ public class MainActivity extends AppCompatActivity
                             case cambioInversionALiquidez: {
                                 encabezadoInversion.setText("Inversion a liquidez");
                                 break;
-
                             }
 
                         }
@@ -642,24 +641,39 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    boolean noExistiaInversion;
+
     private void agregarInversion() {
 
         double precioImportar = 0, invertidoImportar = 0, cantidadImportar = 0;
 
+
         precioImportar = Double.parseDouble(precio.getText().toString());
 
+        if (invertido.getText().toString().isEmpty()) {
+            invertido.setText(String.valueOf(100));
+            noExistiaInversion = true;
+        }
 
         switch (selectorCambioInversion) {
 
 
             case cambioInversionOrigen: {
                 invertidoImportar = Double.parseDouble(invertido.getText().toString());
+                if (!noExistiaInversion) {
+                    if (enForex)
+                        invertidoImportar *= 100000;
+                }
                 cantidadImportar = invertidoImportar / precioImportar;
                 break;
 
             }
             case cambioInversionDestino: {
                 cantidadImportar = Double.parseDouble(invertido.getText().toString());
+                if (!noExistiaInversion) {
+                    if (enForex)
+                        cantidadImportar *= 100000;
+                }
                 invertidoImportar = cantidadImportar * precioImportar;
                 break;
 
@@ -748,8 +762,12 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
-        if (!invertido.getText().toString().isEmpty())
-            agregarInversion();
+        if (invertido.getText().toString().isEmpty()) {
+            invertido.setText(String.valueOf(100));
+            noExistiaInversion = true;
+        }
+
+        agregarInversion();
 
 
         Intent mIntent = new Intent(this, Calculos.class);
@@ -857,14 +875,14 @@ public class MainActivity extends AppCompatActivity
             listaDeRevisionArray = new ArrayList<>(Arrays.asList(listaDeRevision));
         } else {
             EditText[] listaDeRevision = {monedaOrigen, monedaDestino,
-                    precio, invertido};
+                    precio};
             listaDeRevisionArray = new ArrayList<>(Arrays.asList(listaDeRevision));
         }
 
 
         if (botonAgregarInversionAplanado) {
             EditText[] listaDeRevision = {monedaOrigen, monedaDestino,
-                    precio, invertido};
+                    precio};
             listaDeRevisionArray = new ArrayList<>(Arrays.asList(listaDeRevision));
             botonAgregarInversionAplanado = false;
         }
@@ -878,7 +896,6 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         }
-
 
         return false;
     }
@@ -939,9 +956,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void recuperarDatosRecycler(String inversion, String precio) {
         vibrator.vibrate(200);
-        invertido.setText(inversion
-                .replace(",", "")
-                .replace(monedaOrigen.getText().toString().toUpperCase(), ""));
+        if (!enForex) {
+            invertido.setText(inversion
+                    .replace(",", "")
+                    .replace(monedaOrigen.getText().toString().toUpperCase(), ""));
+        } else {
+            String np = inversion
+                    .replace(",", "")
+                    .replace(monedaOrigen.getText().toString().toUpperCase(), "");
+            double n = Double.parseDouble(np);
+            if (n >= 1000)
+                n /= 100000;
+            invertido.setText(String.valueOf(n));
+        }
         this.precio.setText(precio
                 .replace(",", "")
                 .replace(monedaOrigen.getText().toString().toUpperCase(), ""));
