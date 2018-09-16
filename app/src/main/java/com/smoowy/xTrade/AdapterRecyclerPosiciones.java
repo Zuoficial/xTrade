@@ -268,12 +268,7 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
 
         }
 
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                irTransaccion(getLayoutPosition());
-            }
-        };
+        View.OnClickListener onClickListener = view -> irTransaccion(getLayoutPosition());
 
     }
 }

@@ -34,14 +34,23 @@ public class MainScreen extends AppCompatActivity implements ComunicadorPosicion
         ActivityManager.TaskDescription taskDesc = new ActivityManager.TaskDescription(null, null, getColor(R.color.colorPrimary));
         setTaskDescription(taskDesc);
         setContentView(R.layout.activity_main_screen);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> crearOperacion());
         fab.setOnLongClickListener(view -> {
             vibrator.vibrate(500);
+            if (adapterRecyclerPosiciones.getItemCount() == 0) {
+                Snackbar snackbar =
+                        Snackbar.make(findViewById(R.id.prin), "No hay posiciones!", Snackbar.LENGTH_LONG);
+                snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
+                snackbar.show();
+                return true;
+
+            }
+
             adapterRecyclerPosiciones.borrarDatos();
             Snackbar snackbar =
                     Snackbar.make(findViewById(R.id.fondo), "Se ha borrado todo!", Snackbar.LENGTH_LONG);
