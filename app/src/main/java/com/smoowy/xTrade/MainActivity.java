@@ -762,12 +762,15 @@ public class MainActivity extends AppCompatActivity
             return;
         }
 
-        if (invertido.getText().toString().isEmpty()) {
-            invertido.setText(String.valueOf(100));
-            noExistiaInversion = true;
-        }
 
-        agregarInversion();
+        if (!precio.getText().toString().isEmpty()) {
+
+            if (invertido.getText().toString().isEmpty()) {
+                invertido.setText(String.valueOf(100));
+                noExistiaInversion = true;
+            }
+            agregarInversion();
+        }
 
 
         Intent mIntent = new Intent(this, Calculos.class);
