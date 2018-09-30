@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity
         setRecyclerViewInversiones();
         acccederDB();
 
-
+//
     }
 
     TextWatcher textWatcher = new TextWatcher() {
