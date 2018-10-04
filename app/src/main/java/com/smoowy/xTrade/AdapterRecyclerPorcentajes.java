@@ -195,21 +195,21 @@ public class AdapterRecyclerPorcentajes extends
             switch (modoLiquidez) {
 
                 case 0: {
-                    holder.textoIndicadorLiquidez.setText(monedaOrigenNombre + " -> " + liquidezNombre);
+                    holder.textoIndicadorLiquidez.setText(monedaOrigenNombre + " a " + liquidezNombre);
 
                     break;
                 }
                 case 1: {
 
-                    holder.textoIndicadorLiquidez.setText(liquidezNombre + " -> " + monedaOrigenNombre);
+                    holder.textoIndicadorLiquidez.setText(liquidezNombre + " a " + monedaOrigenNombre);
                     break;
                 }
                 case 2: {
-                    holder.textoIndicadorLiquidez.setText(monedaDestinoNombre + " -> " + liquidezNombre);
+                    holder.textoIndicadorLiquidez.setText(monedaDestinoNombre + " a " + liquidezNombre);
                     break;
                 }
                 case 3: {
-                    holder.textoIndicadorLiquidez.setText(liquidezNombre + " -> " + monedaDestinoNombre);
+                    holder.textoIndicadorLiquidez.setText(liquidezNombre + " a " + monedaDestinoNombre);
                     break;
                 }
 

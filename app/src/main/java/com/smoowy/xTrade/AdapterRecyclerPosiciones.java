@@ -71,21 +71,21 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
             switch (db.modoLiquidez) {
 
                 case 0: {
-                    holder.textoIndicadorLiquidez.setText(db.getMonedaOrigen() + " -> " + db.getLiquidezNombre());
+                    holder.textoIndicadorLiquidez.setText(db.getMonedaOrigen() + " a " + db.getLiquidezNombre());
 
                     break;
                 }
                 case 1: {
 
-                    holder.textoIndicadorLiquidez.setText(db.getLiquidezNombre() + " -> " + db.getMonedaOrigen());
+                    holder.textoIndicadorLiquidez.setText(db.getLiquidezNombre() + " a " + db.getMonedaOrigen());
                     break;
                 }
                 case 2: {
-                    holder.textoIndicadorLiquidez.setText(db.getMonedaDestino() + " -> " + db.getLiquidezNombre());
+                    holder.textoIndicadorLiquidez.setText(db.getMonedaDestino() + " a " + db.getLiquidezNombre());
                     break;
                 }
                 case 3: {
-                    holder.textoIndicadorLiquidez.setText(db.getLiquidezNombre() + " -> " + db.getMonedaDestino());
+                    holder.textoIndicadorLiquidez.setText(db.getLiquidezNombre() + " a " + db.getMonedaDestino());
                     break;
                 }
 

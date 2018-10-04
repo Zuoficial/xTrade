@@ -403,21 +403,21 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             switch (modoLiquidez) {
 
                 case 0: {
-                    textoIndicadorLiquidez.setText(monedaOrigenNombre + " -> " + liquidezNombre);
+                    textoIndicadorLiquidez.setText(monedaOrigenNombre + " a " + liquidezNombre);
 
                     break;
                 }
                 case 1: {
 
-                    textoIndicadorLiquidez.setText(liquidezNombre + " -> " + monedaOrigenNombre);
+                    textoIndicadorLiquidez.setText(liquidezNombre + " a " + monedaOrigenNombre);
                     break;
                 }
                 case 2: {
-                    textoIndicadorLiquidez.setText(monedaDestinoNombre + " -> " + liquidezNombre);
+                    textoIndicadorLiquidez.setText(monedaDestinoNombre + " a " + liquidezNombre);
                     break;
                 }
                 case 3: {
-                    textoIndicadorLiquidez.setText(liquidezNombre + " -> " + monedaDestinoNombre);
+                    textoIndicadorLiquidez.setText(liquidezNombre + " a " + monedaDestinoNombre);
                     break;
                 }
 
