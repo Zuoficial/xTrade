@@ -195,7 +195,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         invertidoDestino = invertido / precio;
 
 
-       if (db.getEnForex() != null) {
+        if (db.getEnForex() != null) {
             if (db.getEnForex()) {
                 enForex = true;
             }
@@ -384,12 +384,12 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 break;
             case 2:
                 inversionLiq = invertidoDestino * liquidezDestino;
-                ganadoLiq = inversionLiq * porcentajeFinal;
+                ganadoLiq = inversionLiq * (porcentajeFinal / 100);
                 actualLiq = inversionLiq + ganadoLiq;
                 break;
             case 3:
                 inversionLiq = invertidoDestino / liquidezDestino;
-                ganadoLiq = inversionLiq * porcentajeFinal;
+                ganadoLiq = inversionLiq * (porcentajeFinal / 100);
                 actualLiq = inversionLiq + ganadoLiq;
                 break;
         }
@@ -480,28 +480,6 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
             porcentajeIngresado /= 100;
 
-   /*
-
-   if (enForex) {
-
-                precioFinal = precio - comisionEntrada;
-                precioFinal *= 1 - porcentajeIngresado;
-                precioFinal -= comisionSalida;
-
-
-            } else {
-
-                double b;
-                b = 1 + porcentajeIngresado;
-                b *= (1 + comisionSalida);
-                b += comisionEntrada;
-                b -= 2;
-                b *= -1;
-
-                precioFinal = precio * b;
-            }
-    */
-
             double b;
             b = 1 + porcentajeIngresado;
             b *= (1 + comisionSalida);
@@ -517,34 +495,10 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 gananciaFinal += gananciaRedFinal;
             }
             positivo = gananciaFinal >= 0;
-            porcentajeFinal = porcentajeIngresado;
+            porcentajeFinal = porcentajeIngresado * 100;
 
 
         } else {
-
-           /* if (enForex) {
-
-                double b = precioIngresado + comisionSalida;
-                double a = precio - comisionEntrada;
-                porcentajeFinal = b / a;
-                porcentajeFinal -= 1;
-                porcentajeFinal *= -1;
-
-
-            } else {
-
-                double b;
-
-                b = precioIngresado / precio;
-                b += -2;
-                b *= -1;
-                b -= comisionEntrada;
-                b /= (1 + comisionSalida);
-
-                porcentajeFinal = b - 1;
-
-            }
-            */
 
 
             double b;
@@ -584,23 +538,6 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
             porcentajeIngresado /= 100;
 
-
-           /* if (enForex) {
-
-                precioFinal = precio + comisionEntrada;
-                precioFinal *= 1 + porcentajeIngresado;
-                precioFinal += comisionSalida;
-
-
-            } else {
-
-                double a;
-                a = 1 + porcentajeIngresado;
-                a *= 1 + comisionSalida;
-                a += comisionEntrada;
-
-                precioFinal = precio * a;
-            }*/
             double a;
             a = 1 + porcentajeIngresado;
             a *= 1 + comisionSalida;
@@ -616,29 +553,10 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 gananciaFinal += gananciaRedFinal;
             }
             positivo = gananciaFinal >= 0;
-            porcentajeFinal = porcentajeIngresado;
+            porcentajeFinal = porcentajeIngresado * 100;
 
 
         } else {
-
-          /*  if (enForex) {
-
-                double b = precioIngresado - comisionSalida;
-                double a = precio + comisionEntrada;
-                porcentajeFinal = b / a;
-                porcentajeFinal -= 1;
-
-
-            } else {
-
-                double b;
-                b = precioIngresado / precio;
-                b -= comisionEntrada;
-                b /= (1 + comisionSalida);
-                porcentajeFinal = b - 1;
-
-
-            }*/
 
             double b;
             b = precioIngresado / precio;
