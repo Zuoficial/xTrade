@@ -384,12 +384,12 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 break;
             case 2:
                 inversionLiq = invertidoDestino * liquidezDestino;
-                ganadoLiq = inversionLiq * (porcentajeFinal / 100);
+                ganadoLiq = inversionLiq * porcentajeFinal;
                 actualLiq = inversionLiq + ganadoLiq;
                 break;
             case 3:
                 inversionLiq = invertidoDestino / liquidezDestino;
-                ganadoLiq = inversionLiq * (porcentajeFinal / 100);
+                ganadoLiq = inversionLiq * porcentajeFinal;
                 actualLiq = inversionLiq + ganadoLiq;
                 break;
         }
@@ -517,6 +517,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 gananciaFinal += gananciaRedFinal;
             }
             positivo = gananciaFinal >= 0;
+            porcentajeFinal = porcentajeIngresado;
 
 
         } else {
@@ -615,6 +616,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 gananciaFinal += gananciaRedFinal;
             }
             positivo = gananciaFinal >= 0;
+            porcentajeFinal = porcentajeIngresado;
 
 
         } else {
@@ -812,6 +814,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
                         }
                         textoActualLiq.setText("Pendiente");
+                        textoGanadoLiq.setText("Pendiente");
 
                         break;
                     }
