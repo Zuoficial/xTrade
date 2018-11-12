@@ -407,12 +407,7 @@ public class MainActivity extends AppCompatActivity
                 Snackbar snackbar =
                         Snackbar.make(findViewById(R.id.botonEmpezar), "Inversion borrada!", Snackbar.LENGTH_LONG);
                 snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
-                snackbar.setAction("Regresar", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        adapterRecyclerInversiones.recuperarDatos();
-                    }
-                }).show();
+                snackbar.setAction("Regresar", view -> adapterRecyclerInversiones.recuperarDatos()).show();
 
 
             }
@@ -975,6 +970,24 @@ public class MainActivity extends AppCompatActivity
         this.precio.setText(precio
                 .replace(",", "")
                 .replace(monedaOrigen.getText().toString().toUpperCase(), ""));
+
+        if (inversion.equals("0"))
+            invertido.setText("");
+
+    }
+
+    @Override
+    public void borrarInversionRecycler(Integer posicion) {
+
+        adapterRecyclerInversiones.quitarDatos(posicion);
+
+
+        Snackbar snackbar =
+                Snackbar.make(findViewById(R.id.botonEmpezar), "Inversion borrada!", Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
+        snackbar.setAction("Regresar", view -> adapterRecyclerInversiones.recuperarDatos()).show();
+
+
     }
 }
 /*

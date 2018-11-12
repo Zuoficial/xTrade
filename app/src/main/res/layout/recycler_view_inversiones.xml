@@ -75,7 +75,17 @@
         android:textSize="24dp"
         android:maxLines="1"/>
 
-
+    <TextView
+        android:id="@+id/cerrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:text="X"
+        android:fontFamily="@font/comforta_bold"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/blanco"
+        android:textSize="20dp"/>
 
 
 </RelativeLayout>
