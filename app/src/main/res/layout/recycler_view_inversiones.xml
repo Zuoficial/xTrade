@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="250dp"
     android:layout_height="173dp"
     android:layout_marginBottom="20dp"
@@ -75,18 +76,12 @@
         android:textSize="24dp"
         android:maxLines="1"/>
 
-    <TextView
+    <ImageView
         android:id="@+id/cerrar"
-        android:layout_width="90dp"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:text="X"
-        android:textAlignment="textEnd"
-        android:fontFamily="@font/comforta_bold"
-        android:layout_marginRight="10dp"
-        android:textColor="@color/blanco"
-        android:textSize="20dp"/>
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>
