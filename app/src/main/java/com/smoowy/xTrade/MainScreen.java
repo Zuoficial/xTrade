@@ -23,6 +23,7 @@ import io.realm.RealmResults;
 
 public class MainScreen extends AppCompatActivity implements ComunicadorPosiciones{
 
+    boolean vibracionActivada;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,7 @@ public class MainScreen extends AppCompatActivity implements ComunicadorPosicion
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> crearOperacion());
         fab.setOnLongClickListener(view -> {
-            vibrator.vibrate(500);
+            vibrar(500);
             if (adapterRecyclerPosiciones.getItemCount() == 0) {
                 Snackbar snackbar =
                         Snackbar.make(findViewById(R.id.prin), "No hay posiciones!", Snackbar.LENGTH_LONG);
@@ -56,7 +57,7 @@ public class MainScreen extends AppCompatActivity implements ComunicadorPosicion
                     Snackbar.make(findViewById(R.id.fondo), "Se ha borrado todo!", Snackbar.LENGTH_LONG);
             snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
             snackbar.setAction("Regresar", viewX -> {
-                vibrator.vibrate(500);
+                vibrar(500);
                 adapterRecyclerPosiciones.recuperarDatos();
             }).show();
             return true;
@@ -66,6 +67,13 @@ public class MainScreen extends AppCompatActivity implements ComunicadorPosicion
 
     }
 
+    void vibrar(Integer valor) {
+
+        if(vibracionActivada)
+            vibrator.vibrate(valor);
+    }
+
+
     DB db;
     int id;
     Vibrator vibrator;
@@ -73,7 +81,7 @@ public class MainScreen extends AppCompatActivity implements ComunicadorPosicion
     void crearOperacion() {
 
 
-        vibrator.vibrate(500);
+        vibrar(500);
 
         if (resultadosRealm.size() == 0) {
             id = 0;
@@ -137,7 +145,7 @@ public class MainScreen extends AppCompatActivity implements ComunicadorPosicion
                         Snackbar.make(findViewById(R.id.fondo), "Inversion borrada!", Snackbar.LENGTH_LONG);
                 snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
                 snackbar.setAction("Regresar", view -> {
-                    vibrator.vibrate(500);
+                    vibrar(500);
                     adapterRecyclerPosiciones.recuperarDatos();
 
                 }).show();

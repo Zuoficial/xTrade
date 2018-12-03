@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     Realm realm;
     DB db;
-    boolean esDuplicado, comisionEntradaNegativa, comisionSalidaNegativa;
+    boolean esDuplicado, comisionEntradaNegativa, comisionSalidaNegativa,vibracionActivada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         comisionEntrada = findViewById(R.id.comisionEntrada);
         comisionEntradaLetra = findViewById(R.id.comisionEntradaLetra);
         comisionEntradaLetra.setOnClickListener(view -> {
-            vibrator.vibrate(200);
+            vibrar(200);
             if (!comisionEntradaNegativa) {
                 comisionEntradaNegativa = true;
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         comisionSalida = findViewById(R.id.comisionSalida);
         comisionSalidaLetra = findViewById(R.id.comisionSalidaLetra);
         comisionSalidaLetra.setOnClickListener(view -> {
-            vibrator.vibrate(200);
+            vibrar(200);
             if (!comisionSalidaNegativa) {
                 comisionSalidaNegativa = true;
 
@@ -144,9 +144,17 @@ public class MainActivity extends AppCompatActivity
         botonPorcentajesAplanado = false;
         setRecyclerViewInversiones();
         acccederDB();
-
-////
     }
+
+
+    void vibrar(Integer valor) {
+
+        if(vibracionActivada)
+            vibrator.vibrate(valor);
+    }
+
+
+
 
     TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -429,7 +437,7 @@ public class MainActivity extends AppCompatActivity
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
 
 
-                vibrator.vibrate(50);
+                vibrar(50);
                 switch (view.getId()) {
                     case R.id.botonCazar: {
                         modo = modoCazar;
@@ -956,7 +964,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void recuperarDatosRecycler(String inversion, String precio) {
-        vibrator.vibrate(200);
+        vibrar(200);
         if (!enForex) {
             invertido.setText(inversion
                     .replace(",", "")
@@ -989,7 +997,7 @@ public class MainActivity extends AppCompatActivity
                 Snackbar.make(findViewById(R.id.botonEmpezar), "Inversion borrada!", Snackbar.LENGTH_LONG);
         snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
         snackbar.setAction("Regresar", view -> {adapterRecyclerInversiones.recuperarDatos();
-        vibrator.vibrate(500);
+        vibrar(500);
         }
         ).show();
 

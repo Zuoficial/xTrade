@@ -608,6 +608,7 @@ public class AdapterRecyclerPorcentajes extends
                 textoBase, textoInversionLiq, textoGanadoLiq, textoActualLiq, textoIndicadorLiquidez,
                 textoSinComision;
         ImageView fondo;
+        boolean vibracionActivada;
 
 
         Holder(View itemView) {
@@ -639,6 +640,7 @@ public class AdapterRecyclerPorcentajes extends
             textoBase.setText(String.format(precisionPrecio, precio) + " " + monedaOrigenNombre);
             // fondo = itemView.findViewById(R.id.fondo);
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            vibracionActivada = false;
 
             if (existeReduccion)
                 itemView.findViewById(R.id.indicadorReduccion).setVisibility(View.VISIBLE);
@@ -653,6 +655,7 @@ public class AdapterRecyclerPorcentajes extends
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(vibracionActivada)
                 vibrator.vibrate(500);
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
 

@@ -51,7 +51,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     boolean botonPorcentajesAplanado,
             botonporcentajeCalculadorAplanado, botonPorcentajeCalculadorMasAplanado, enForex,
-            botonComisionAplanado, botonReducirAplanado, existeReduccion, cargaInicialTerminada;
+            botonComisionAplanado, botonReducirAplanado, existeReduccion, cargaInicialTerminada,vibracionActivada;
     Vibrator vibrator;
     String precisionOrigen, precisionDestino, precisionLiquidez, precisionPrecio,
             liquidezNombre;
@@ -138,6 +138,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         header.setOnTouchListener(onTouchListener);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+
         switch (modo) {
             case modoCazar:
                 setBotonCazar();
@@ -162,9 +163,18 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             if (!db.getPrecioOut().isEmpty())
                 textoPrecioMod.setText(db.getPrecioOut());
         }
+
+        vibracionActivada = false;
     }
 
     DB db;
+
+
+    void vibrar(Integer valor) {
+
+        if(vibracionActivada)
+            vibrator.vibrate(valor);
+    }
 
     private void accederDB() {
         Realm.init(this);
@@ -650,20 +660,20 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                             break;
                         }
                         drawer.closeDrawer(Gravity.START);
-                        vibrator.vibrate(50);
+                        vibrar(50);
                         setBotonPorcentajesAplanado();
 
                         break;
                     }
 
                     case R.id.botonClear: {
-                        vibrator.vibrate(50);
+                        vibrar(50);
                         limpiarCalculador();
                         break;
                     }
 
                     case R.id.botonDuplicar: {
-                        vibrator.vibrate(50);
+                        vibrar(50);
                         drawer.closeDrawer(Gravity.START);
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -684,14 +694,14 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         i.putExtra("salida", true);
                         startActivity(i);
-                        vibrator.vibrate(500);
+                        vibrar(500);
                         finish();
 
                         break;
                     }
 
                     case R.id.botonPorcentajeCalculador: {
-                        vibrator.vibrate(50);
+                        vibrar(50);
 
                         if (!botonporcentajeCalculadorAplanado) {
 
@@ -738,7 +748,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                     }
 
                     case R.id.botonPorcentajeCalculadorMas: {
-                        vibrator.vibrate(50);
+                        vibrar(50);
 
                         if (!botonPorcentajeCalculadorMasAplanado) {
                             botonPorcentajeCalculadorMasAplanado = true;
@@ -759,7 +769,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                     }
                     case R.id.botonPorcentajeCalculadorMenos: {
 
-                        vibrator.vibrate(50);
+                        vibrar(50);
 
                         if (botonPorcentajeCalculadorMasAplanado) {
                             botonPorcentajeCalculadorMasAplanado = false;
@@ -781,7 +791,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
                     case R.id.botonModificar: {
 
-                        vibrator.vibrate(50);
+                        vibrar(50);
                         drawer.closeDrawer(Gravity.START);
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -792,7 +802,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                     }
 
                     case R.id.botonComisiones: {
-                        vibrator.vibrate(50);
+                        vibrar(50);
                         drawer.closeDrawer(Gravity.START);
                         setBotonComision();
                         break;
@@ -802,7 +812,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
                         if (!botonReducirAplanado) {
                             drawer.closeDrawer(Gravity.START);
-                            vibrator.vibrate(50);
+                            vibrar(50);
                             botonReducir.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
                             botonReducirAplanado = true;
                             setBotonReducir();
@@ -1008,7 +1018,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 .replace(" ", ""));
         clipboard.setPrimaryClip(clip);
         Toast.makeText(getApplicationContext(), "Precio grabado: " + text.getText().toString(), Toast.LENGTH_SHORT).show();
-        vibrator.vibrate(500);
+        vibrar(500);
     }
 
     private void limpiarCalculador() {
@@ -1109,7 +1119,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
         limpiarCalculador();
         ajustadorPosicion(ajustadorPorcentajes);
-        vibrator.vibrate(50);
+        vibrar(50);
     }
 
     private void setBotonCorta() {
@@ -1138,7 +1148,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
         limpiarCalculador();
         ajustadorPosicion(ajustadorPorcentajes);
-        vibrator.vibrate(50);
+        vibrar(50);
     }
 
 
@@ -1169,7 +1179,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
         limpiarCalculador();
         ajustadorPosicion(ajustadorPorcentajes);
-        vibrator.vibrate(50);
+        vibrar(50);
     }
 
     private void setBotonPorcentajesAplanado() {
@@ -1212,7 +1222,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             botonPorcentajesAplanado = true;
         }
 
-        vibrator.vibrate(50);
+        vibrar(50);
     }
 
     Group seccionReduccionSuperior, seccionReduccionSuperiorOtros, seccionReduccionInferior;
@@ -1252,13 +1262,13 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         botonCambioInversiones = findViewById(R.id.botonCambioInversionRed);
         encabezadoCantidadRed = findViewById(R.id.encabezadoCantidadRed);
         encabezadoCantidadRed.setOnClickListener(view -> {
-            vibrator.vibrate(100);
+            vibrar(100);
             cantidadReducir.getText().clear();
         });
         encabezadoRed = findViewById(R.id.encabezadoRed);
         encabezadoRed.setOnClickListener(view -> {
             if (!cambioInversionReducirAPorcenajeActivado) {
-                vibrator.vibrate(100);
+                vibrar(100);
                 cambioInversionReducirAPorcenajeActivado = true;
                 if (!cambioAumentarActivado)
                     encabezadoRed.setText("Inversion a reducir %");
@@ -1266,7 +1276,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                     encabezadoRed.setText("Inversion a agregar %");
 
             } else {
-                vibrator.vibrate(100);
+                vibrar(100);
                 cambioInversionReducirAPorcenajeActivado = false;
                 if (!cambioAumentarActivado)
                     encabezadoRed.setText("Inversion a reducir");
@@ -1279,7 +1289,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         encabezadoPrecioRed = findViewById(R.id.encabezadoPrecioRed);
         encabezadoInversionRed = findViewById(R.id.encabezadoInversionRed);
         encabezadoInversionRed.setOnClickListener(view -> {
-            vibrator.vibrate(50);
+            vibrar(50);
 
             if (!cambioAumentarActivado) {
                 cambioAumentarActivado = true;
@@ -1332,7 +1342,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 return;
             }
 
-            vibrator.vibrate(500);
+            vibrar(500);
 
             if (inversionReducir.getText().toString().isEmpty() ||
                     precioReducir.getText().toString().isEmpty()) {
@@ -1584,7 +1594,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             return;
         }
 
-        vibrator.vibrate(500);
+        vibrar(500);
 
         if (inversionReducir.getText().toString().isEmpty() ||
                 precioReducir.getText().toString().isEmpty()) {
@@ -1764,7 +1774,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 double finalGananciaRedFinalRespaldo = gananciaRedFinalRespaldo;
                 snackbar.setAction("Regresar", view -> {
 
-                    vibrator.vibrate(250);
+                    vibrar(250);
 
                     if (tipo == 0) {
 
@@ -1790,7 +1800,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
 
                 }).show();
-                vibrator.vibrate(500);
+                vibrar(500);
 
 
             }
@@ -1803,7 +1813,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         itemTouchHelper.attachToRecyclerView(recyclerPosicionReducida);
 
         botonCambioInversiones.setOnClickListener(view -> {
-            vibrator.vibrate(200);
+            vibrar(200);
 
             if (!cambioInversionRedAplanado) {
 
@@ -1835,7 +1845,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         });
 
         botonOtrosRed.setOnClickListener(view -> {
-            vibrator.vibrate(200);
+            vibrar(200);
             if (!botonOtrosAplanado) {
                 seccionReduccionSuperior.setVisibility(View.GONE);
                 seccionReduccionSuperiorOtros.setVisibility(View.VISIBLE);
@@ -1861,14 +1871,14 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         });
 
         botonGastoRed.setOnClickListener(view -> {
-            vibrator.vibrate(200);
+            vibrar(200);
             botonGastoRed.setBackgroundResource(R.drawable.fondo_boton_forex);
             botonGananciaRed.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
             botonGananciaRedAplanado = false;
         });
 
         botonGananciaRed.setOnClickListener(view -> {
-            vibrator.vibrate(200);
+            vibrar(200);
             botonGastoRed.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
             botonGananciaRed.setBackgroundResource(R.drawable.fondo_boton_forex);
             botonGananciaRedAplanado = true;
@@ -1919,7 +1929,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         this.ajustadorPorcentajes = ajustadorPorcentajes;
 
         ajustadorPosicion(ajustadorPorcentajes);
-        vibrator.vibrate(50);
+        vibrar(50);
 
     }
 
