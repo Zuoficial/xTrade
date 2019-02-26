@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     Realm realm;
     DB db;
-    boolean esDuplicado, comisionEntradaNegativa, comisionSalidaNegativa,vibracionActivada;
+    boolean esDuplicado, comisionEntradaNegativa, comisionSalidaNegativa, vibracionActivada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,11 +149,9 @@ public class MainActivity extends AppCompatActivity
 
     void vibrar(Integer valor) {
 
-        if(vibracionActivada)
+        if (vibracionActivada)
             vibrator.vibrate(valor);
     }
-
-
 
 
     TextWatcher textWatcher = new TextWatcher() {
@@ -877,34 +875,24 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-        ArrayList<EditText> listaDeRevisionArray;
-
-        if (adapterRecyclerInversiones.lista.size() > 0) {
-            EditText[] listaDeRevision = {monedaOrigen, monedaDestino};
-            listaDeRevisionArray = new ArrayList<>(Arrays.asList(listaDeRevision));
-        } else {
-            EditText[] listaDeRevision = {monedaOrigen, monedaDestino,
-                    precio};
-            listaDeRevisionArray = new ArrayList<>(Arrays.asList(listaDeRevision));
-        }
-
-
         if (botonAgregarInversionAplanado) {
-            EditText[] listaDeRevision = {monedaOrigen, monedaDestino,
-                    precio};
-            listaDeRevisionArray = new ArrayList<>(Arrays.asList(listaDeRevision));
             botonAgregarInversionAplanado = false;
         }
 
+        if (adapterRecyclerInversiones.lista.size() == 0 &&
+                precio.getText().toString().isEmpty()) {
 
-        for (EditText texto : listaDeRevisionArray) {
-
-            if (texto.getText().toString().isEmpty()) {
-
-                crearSnackBar("Faltan datos por llenar!");
-                return true;
-            }
+            crearSnackBar("Faltan datos por llenar!");
+            return true;
         }
+
+
+        if (monedaOrigen.getText().toString().isEmpty())
+            monedaOrigen.setText("A");
+
+        if (monedaDestino.getText().toString().isEmpty())
+            monedaDestino.setText("B");
+
 
         return false;
     }
@@ -996,9 +984,10 @@ public class MainActivity extends AppCompatActivity
         Snackbar snackbar =
                 Snackbar.make(findViewById(R.id.botonEmpezar), "Inversion borrada!", Snackbar.LENGTH_LONG);
         snackbar.getView().setBackgroundColor(getColor(R.color.colorBotonForexClaro));
-        snackbar.setAction("Regresar", view -> {adapterRecyclerInversiones.recuperarDatos();
-        vibrar(500);
-        }
+        snackbar.setAction("Regresar", view -> {
+                    adapterRecyclerInversiones.recuperarDatos();
+                    vibrar(500);
+                }
         ).show();
 
 
