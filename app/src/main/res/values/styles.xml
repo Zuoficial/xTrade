@@ -13,7 +13,7 @@
 
     <style name="splashScreenTheme" parent="AppTheme">
 
-        <item name="android:windowBackground">@drawable/fondo_like_it</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
