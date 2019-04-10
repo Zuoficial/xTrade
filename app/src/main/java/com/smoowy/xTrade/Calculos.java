@@ -51,7 +51,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     boolean botonPorcentajesAplanado,
             botonporcentajeCalculadorAplanado, botonPorcentajeCalculadorMasAplanado, enForex,
-            botonComisionAplanado, botonReducirAplanado, existeReduccion, cargaInicialTerminada,vibracionActivada;
+            botonComisionAplanado, botonReducirAplanado, existeReduccion, cargaInicialTerminada, vibracionActivada;
     Vibrator vibrator;
     String precisionOrigen, precisionDestino, precisionLiquidez, precisionPrecio,
             liquidezNombre;
@@ -165,17 +165,22 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         }
 
         vibracionActivada = false;
+        ConstraintLayout layout_rv_porcentajes = findViewById(R.id.calculos_layout_rv_porcentajes);
+        layout_rv_porcentajes.setVisibility(View.VISIBLE);
+        ConstraintLayout layout_calculador = findViewById(R.id.calculos_layout_calculador);
+        layout_calculador.setVisibility(View.VISIBLE);
+        ConstraintLayout layout_seccion_reduccion_superior = findViewById(R.id.calculos_layout_seccion_reduccion_superior);
+        layout_seccion_reduccion_superior.setVisibility(View.VISIBLE);
     }
-
-    DB db;
 
 
     void vibrar(Integer valor) {
 
-        if(vibracionActivada)
+        if (vibracionActivada)
             vibrator.vibrate(valor);
     }
 
+    DB db;
     private void accederDB() {
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
@@ -251,7 +256,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
                 if (textoPorcentajeMod.getText().toString().equals(".") ||
                         textoPorcentajeMod.getText().toString().isEmpty()
-                        ) {
+                ) {
                     enTextWatcher = true;
                     if (cargaInicialTerminada)
                         limpiarCalculador();
@@ -262,7 +267,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             } else {
                 if (textoPrecioMod.getText().toString().equals(".") ||
                         textoPrecioMod.getText().toString().isEmpty()
-                        ) {
+                ) {
 
 
                     enTextWatcher = true;
@@ -1182,10 +1187,13 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         vibrar(50);
     }
 
+
     private void setBotonPorcentajesAplanado() {
 
 
         if (botonPorcentajesAplanado) {
+
+
             calculador.setVisibility(View.VISIBLE);
             recyclerPorcentajes.setVisibility(View.GONE);
             recyclerBotonesPorcentajes.setVisibility(View.GONE);
@@ -1212,6 +1220,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             botonPorcentajesAplanado = false;
 
         } else {
+
             calculador.setVisibility(View.GONE);
             textoSinComision.setVisibility(View.GONE);
             textoReduccion.setVisibility(View.GONE);

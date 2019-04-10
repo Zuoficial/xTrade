@@ -15,9 +15,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="@font/comforta_bold"
         android:text="BTC a WTC"
         android:textAllCaps="true"
@@ -28,641 +28,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerBotonesPorcentaje"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@+id/encabezado"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.089"
-        tools:listitem="@layout/recycler_view_botones" />
+    <include layout="@layout/activity_calculos_recycler_porcentajes"
+        android:id="@+id/calculos_layout_rv_porcentajes"
+        android:visibility="gone"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerCambioDePorcentajes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/recyclerBotonesPorcentaje"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerBotonesPorcentaje"
-        tools:listitem="@layout/recycler_view_porcentaje">
+    <include layout="@layout/activity_calculos_calculador"
+         android:id="@+id/calculos_layout_calculador"
+        android:visibility="gone"/>
 
-    </android.support.v7.widget.RecyclerView>
-
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/calculador"
-        android:layout_width="match_parent"
-        android:layout_height="460dp"
-        android:layout_below="@id/recyclerCambioDePorcentajes"
-        android:layout_marginBottom="95dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/fondo_marcador_neutral"
-        android:focusableInTouchMode="true"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_goneMarginLeft="8dp">
-
-
-        <EditText
-            android:id="@+id/referencia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/comforta_bold"
-            android:hint="RE"
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.11"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.151" />
-
-        <Button
-            android:id="@+id/botonPorcentajeCalculador"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/fondo_boton_forex_claro"
-            android:fontFamily="@font/comforta_bold"
-            android:text="%"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/botonPorcentajeCalculadorMas"
-            android:layout_width="32dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="70dp"
-            android:background="@drawable/fondo_boton_forex"
-            android:fontFamily="@font/comforta_regular"
-            android:text="+"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/botonPorcentajeCalculadorMenos"
-            android:layout_width="32dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="58dp"
-            android:layout_marginTop="70dp"
-            android:background="@drawable/fondo_boton_forex_claro"
-            android:fontFamily="@font/comforta_regular"
-            android:text="-"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <Button
-            android:id="@+id/botonClear"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/fondo_boton_forex_claro"
-            android:fontFamily="@font/comforta_bold"
-            android:text="C"
-            android:textColor="@android:color/white"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/comforta_regular"
-            android:text="Final"
-            android:textColor="@android:color/white"
-            android:textSize="35dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textoPorcentaje"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="60dp"
-            android:fontFamily="@font/comforta_bold"
-            android:maxLines="1"
-            android:text="+ 0.00%"
-            android:textColor="@android:color/white"
-            android:textSize="35dp"
-            app:layout_constraintHorizontal_bias="0.44"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/textoPorcentajeMod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:fontFamily="@font/comforta_bold"
-            android:hint="0.00%"
-            android:inputType="numberDecimal"
-            android:maxLines="1"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
-            android:textSize="35dp"
-            android:visibility="gone"
-            android:selectAllOnFocus="true"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <EditText
-            android:id="@+id/textoPrecioMod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="95dp"
-            android:fontFamily="@font/comforta_bold"
-            android:hint="Precio"
-            android:inputType="numberDecimal"
-            android:maxLines="1"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
-            android:textSize="50dp"
-            android:visibility="visible"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textoPrecio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="105dp"
-            android:fontFamily="@font/comforta_bold"
-            android:hint="Precio"
-            android:inputType="numberDecimal"
-            android:maxLines="1"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textColorHint="@android:color/white"
-            android:textSize="50dp"
-            android:visibility="invisible"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="236dp"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="Precio Base"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="17dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
-        <TextView
-            android:id="@+id/textoBase"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="236dp"
-            android:layout_marginStart="148dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="0.00251515 BTC"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="208dp"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="Inversion"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="17dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
-        <TextView
-            android:id="@+id/textoInvertido"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="204dp"
-            android:layout_marginStart="148dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="0.00251515 BTC"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textoGanadoLetra"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="176dp"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="Ganado"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="17dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textoGanancia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="172dp"
-            android:layout_marginStart="148dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="0.00251515 BTC"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="142dp"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="Actual"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="17dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
-        <TextView
-            android:id="@+id/textoInvertidoActual"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="140dp"
-            android:layout_marginStart="148dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="0.00312545 BTC"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
-        <TextView
-            android:id="@+id/textoInversionLiqLetra2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textoPrecioMod"
-            android:layout_marginBottom="110dp"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/comforta_regular"
-            android:text="Inversion liq"
-            android:textColor="@android:color/white"
-            android:textSize="17dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textoInversionLiq2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textoPrecioMod"
-            android:layout_marginBottom="108dp"
-            android:layout_marginStart="148dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="54 USD"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textoGanadoLiqLetra2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textoPrecioMod"
-            android:layout_marginBottom="78dp"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/comforta_regular"
-            android:text="Ganado liq"
-            android:textColor="@android:color/white"
-            android:textSize="17dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textoGanadoLiq2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textoPrecioMod"
-            android:layout_marginBottom="76dp"
-            android:layout_marginStart="148dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="54 USD"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textoActualLiqLetra2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textoPrecioMod"
-            android:layout_marginBottom="47dp"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/comforta_regular"
-            android:text="Actual liq"
-            android:textColor="@android:color/white"
-            android:textSize="17dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textoActualLiq2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textoPrecioMod"
-            android:layout_marginBottom="44dp"
-            android:layout_marginStart="148dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="1554 USD"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textoPrecioMod"
-            android:layout_marginBottom="14dp"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/comforta_regular"
-            android:text="Usando"
-            android:textColor="@android:color/white"
-            android:textSize="17dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textoUsandoRV2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textoPrecioMod"
-            android:layout_marginBottom="12dp"
-            android:layout_marginStart="148dp"
-            android:fontFamily="@font/comforta_regular"
-            android:maxLines="1"
-            android:text="0.01024587 BTC"
-            android:textColor="@android:color/white"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
-    </android.support.constraint.ConstraintLayout>
-
-
-    <TextView
-        android:id="@+id/textoIndicadorLiquidez"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/fondo_boton_forex_claro"
-        android:fontFamily="@font/comforta_bold"
-        android:padding="5dp"
-        android:text="USD -> EUR"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.96"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.92" />
-
-    <TextView
-        android:id="@+id/textoSinComision"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/fondo_boton_forex_claro"
-        android:fontFamily="@font/comforta_bold"
-        android:padding="5dp"
-        android:text="Sin comision"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.02"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.92" />
-
-    <TextView
-        android:id="@+id/textoReduccion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/fondo_boton_forex_claro"
-        android:fontFamily="@font/comforta_bold"
-        android:padding="5dp"
-        android:text="Modificada"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.92" />
-
-    <android.support.constraint.Group
-        android:id="@+id/seccionReduccionSuperior"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="inversionDisponibleRed,precioRed,inversionRed,encabezadoInversionRed,encabezadoRed,encabezadoPrecioRed" />
-
-    <TextView
-        android:id="@+id/encabezadoInversionRed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="50dp"
-        android:text="Inversion disponible"
-        android:fontFamily="@font/comforta_regular"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/inversionDisponibleRed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="70dp"
-        android:fontFamily="@font/comforta_regular"
-        android:hint="Inversion a reducir"
-        android:inputType="numberDecimal"
-        android:text="5000.00 MXN"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:textSize="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/encabezadoRed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="331dp"
-        android:layout_marginStart="35dp"
-        android:text="Inversion a reducir"
-        android:fontFamily="@font/comforta_regular"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/inversionRed"
-        android:layout_width="wrap_content"
-        android:layout_height="52dp"
-        android:layout_marginBottom="285dp"
-        android:fontFamily="@font/comforta_regular"
-        android:hint="Inversion a reducir"
-        android:inputType="numberDecimal"
-        android:selectAllOnFocus="true"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <TextView
-        android:id="@+id/encabezadoPrecioRed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="270dp"
-        android:layout_marginStart="35dp"
-        android:selectAllOnFocus="true"
-        android:text="Precio de cierre"
-        android:fontFamily="@font/comforta_regular"
-        android:textColor="@android:color/white"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/precioRed"
-        android:layout_width="wrap_content"
-        android:layout_height="54dp"
-        android:layout_marginBottom="224dp"
-        android:hint="Precio de cierre"
-        android:inputType="numberDecimal"
-        android:selectAllOnFocus="true"
-        android:textAlignment="center"
-        android:fontFamily="@font/comforta_regular"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <include layout="@layout/activity_calculos_seccion_reduccion_superior"
+        android:id="@+id/calculos_layout_seccion_reduccion_superior"
+        android:visibility="gone"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -714,11 +90,11 @@
         android:id="@+id/encabezadoCantidadRed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="388dp"
         android:layout_marginStart="35dp"
+        android:layout_marginBottom="388dp"
+        android:fontFamily="@font/comforta_regular"
         android:text="Cantidad en"
         android:textColor="@android:color/white"
-        android:fontFamily="@font/comforta_regular"
         android:textSize="18dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -729,9 +105,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="340dp"
+        android:fontFamily="@font/comforta_regular"
         android:hint="Cantidad"
         android:inputType="numberDecimal"
-        android:fontFamily="@font/comforta_regular"
         android:selectAllOnFocus="true"
         android:textAlignment="center"
         android:textColor="@android:color/white"
@@ -747,10 +123,10 @@
         android:id="@+id/encabezadoCantidadRed2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="320dp"
         android:layout_marginStart="35dp"
-        android:text="Precio al momento"
+        android:layout_marginBottom="320dp"
         android:fontFamily="@font/comforta_regular"
+        android:text="Precio al momento"
         android:textColor="@android:color/white"
         android:textSize="18dp"
         android:visibility="gone"
@@ -762,9 +138,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="270dp"
+        android:fontFamily="@font/comforta_regular"
         android:hint="Precio"
         android:inputType="numberDecimal"
-        android:fontFamily="@font/comforta_regular"
         android:selectAllOnFocus="true"
         android:textAlignment="center"
         android:textColor="@android:color/white"
@@ -832,9 +208,9 @@
         android:id="@+id/recyclerPosicionReducida"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="290dp"
+        android:layout_marginEnd="8dp"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
