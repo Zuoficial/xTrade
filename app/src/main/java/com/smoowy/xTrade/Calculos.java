@@ -177,7 +177,10 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
 
         chequeoLiquidez();
+        if(!liquidezNombre.isEmpty())
         textoInversionLiq.setText(String.format(precisionLiquidez, inversionLiq) + " " + liquidezNombre);
+        else
+            textoInversionLiq.setText("Pendiente");
 
 
         textoGananciaLetra.setOnClickListener(onClickListenerDialog);
@@ -340,7 +343,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                     }
 
                     precioDefinitivo *= precio;
-                    textoPrecioMod.setText(String.format(precisionPrecio, precioDefinitivo));
+                    textoPrecioMod.setText(String.format(precisionPrecio, precioDefinitivo).replace(",",""));
 
                 }
                 inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
