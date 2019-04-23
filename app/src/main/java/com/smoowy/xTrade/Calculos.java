@@ -1,5 +1,6 @@
 package com.smoowy.xTrade;
 
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -19,8 +20,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -69,7 +72,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         setContentView(R.layout.drawer_calculos);
         drawer = findViewById(R.id.drawer_layout);
         encabezado = findViewById(R.id.encabezado);
-        encabezado.setOnTouchListener(onTouchListener);
+        encabezado.setOnClickListener(onClickListener);
         calculador = findViewById(R.id.calculador);
         navigationView = findViewById(R.id.navigation);
         header = navigationView.getHeaderView(0);
@@ -91,18 +94,18 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         botonModificar = findViewById(R.id.botonModificar);
         botonComisiones = findViewById(R.id.botonComisiones);
         botonReducir = findViewById(R.id.botonReducir);
-        botonCazar.setOnTouchListener(onTouchListener);
-        botonCorta.setOnTouchListener(onTouchListener);
-        botonLarga.setOnTouchListener(onTouchListener);
-        botonDuplicar.setOnTouchListener(onTouchListener);
-        botonPorcentajes.setOnTouchListener(onTouchListener);
-        botonClear.setOnTouchListener(onTouchListener);
-        botonPorcentajeCalculador.setOnTouchListener(onTouchListener);
-        botonPorcentajeCalculadorMas.setOnTouchListener(onTouchListener);
-        botonPorcentajeCalculadorMenos.setOnTouchListener(onTouchListener);
-        botonModificar.setOnTouchListener(onTouchListener);
-        botonComisiones.setOnTouchListener(onTouchListener);
-        botonReducir.setOnTouchListener(onTouchListener);
+        botonCazar.setOnClickListener(onClickListener);
+        botonCorta.setOnClickListener(onClickListener);
+        botonLarga.setOnClickListener(onClickListener);
+        botonDuplicar.setOnClickListener(onClickListener);
+        botonPorcentajes.setOnClickListener(onClickListener);
+        botonClear.setOnClickListener(onClickListener);
+        botonPorcentajeCalculador.setOnClickListener(onClickListener);
+        botonPorcentajeCalculadorMas.setOnClickListener(onClickListener);
+        botonPorcentajeCalculadorMenos.setOnClickListener(onClickListener);
+        botonModificar.setOnClickListener(onClickListener);
+        botonComisiones.setOnClickListener(onClickListener);
+        botonReducir.setOnClickListener(onClickListener);
         textoPorcentaje = findViewById(R.id.textoPorcentaje);
         textoPorcentajeMod = findViewById(R.id.textoPorcentajeMod);
         textoPorcentajeMod.addTextChangedListener(textWatcher);
@@ -126,16 +129,16 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         textoSinComision = findViewById(R.id.textoSinComision);
         textoIndicadorLiquidez = findViewById(R.id.textoIndicadorLiquidez);
         textoReduccion = findViewById(R.id.textoReduccion);
-        textoPrecio.setOnTouchListener(onTouchListener);
-        textoBase.setOnTouchListener(onTouchListener);
-        textoInvertido.setOnTouchListener(onTouchListener);
-        textoGanancia.setOnTouchListener(onTouchListener);
-        textoInvertidoActual.setOnTouchListener(onTouchListener);
-        textoActualLiq.setOnTouchListener(onTouchListener);
-        textoGanadoLiq.setOnTouchListener(onTouchListener);
-        textoInversionLiq.setOnTouchListener(onTouchListener);
-        textoUsado.setOnTouchListener(onTouchListener);
-        header.setOnTouchListener(onTouchListener);
+        textoPrecio.setOnClickListener(onClickListener);
+        textoBase.setOnClickListener(onClickListener);
+        textoInvertido.setOnClickListener(onClickListener);
+        textoGanancia.setOnClickListener(onClickListener);
+        textoInvertidoActual.setOnClickListener(onClickListener);
+        textoActualLiq.setOnClickListener(onClickListener);
+        textoGanadoLiq.setOnClickListener(onClickListener);
+        textoInversionLiq.setOnClickListener(onClickListener);
+        textoUsado.setOnClickListener(onClickListener);
+        header.setOnClickListener(onClickListener);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 
@@ -171,8 +174,184 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         layout_calculador.setVisibility(View.VISIBLE);
         ConstraintLayout layout_seccion_reduccion_superior = findViewById(R.id.calculos_layout_seccion_reduccion_superior);
         layout_seccion_reduccion_superior.setVisibility(View.VISIBLE);
+
+
+        chequeoLiquidez();
+        textoInversionLiq.setText(String.format(precisionLiquidez, inversionLiq) + " " + liquidezNombre);
+
+
+        textoGananciaLetra.setOnClickListener(onClickListenerDialog);
+        textoGanadoLiqLetra.setOnClickListener(onClickListenerDialog);
+        inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
     }
 
+    Dialog dialog;
+    View.OnClickListener onClickListenerDialog = view ->
+
+    {
+        switch (view.getId()) {
+            case R.id.textoGanadoLetra:
+                crearDialogoCantidadObtenida(false);
+                break;
+
+            case R.id.textoGanadoLiqLetra2:
+                if (!liquidezNombre.equals(""))
+                    crearDialogoCantidadObtenida(true);
+                break;
+        }
+    };
+
+
+    EditText etDialogReferencia;
+    TextView tDialogTitulo;
+    InputMethodManager inputMethodManager;
+    boolean esDialogPositivo;
+
+    void crearDialogoCantidadObtenida(boolean esDialogConLiquidez) {
+
+        dialog = new Dialog(this, R.style.MyDialogStyle);
+        dialog.setContentView(R.layout.dialog_cantidad_obtenida);
+        dialog.show();
+
+        etDialogReferencia = dialog.findViewById(R.id.et_dialog_cantidad);
+        tDialogTitulo = dialog.findViewById(R.id.t_dialog_titulo);
+        tDialogTitulo.setOnClickListener(view -> {
+            esDialogPositivo = !esDialogPositivo;
+
+            if (esDialogPositivo) {
+                if (esDialogConLiquidez)
+                    tDialogTitulo.setText("Ganado liq");
+                else
+                    tDialogTitulo.setText("Ganado");
+            } else {
+                if (esDialogConLiquidez)
+                    tDialogTitulo.setText("Perdido liq");
+
+                tDialogTitulo.setText("Perdido");
+            }
+        });
+
+        if (textoPrecioMod.getText().toString().isEmpty()) {
+            if (esDialogConLiquidez)
+                tDialogTitulo.setText("Ganado liq");
+            else
+                tDialogTitulo.setText("Ganado");
+        } else {
+
+            if (positivo) {
+                if (esDialogConLiquidez) {
+                    tDialogTitulo.setText("Ganado liq");
+                    etDialogReferencia.setText(String.format(precisionLiquidez, ganadoLiq).replace(",", ""));
+
+
+                } else {
+                    tDialogTitulo.setText("Ganado");
+                    etDialogReferencia.setText(textoGanadoGuardar.replace(",", ""));
+                }
+                esDialogPositivo = true;
+
+            } else {
+
+                if (esDialogConLiquidez) {
+                    tDialogTitulo.setText("Perdido liq");
+                    etDialogReferencia.setText(String.format(precisionLiquidez, ganadoLiq).substring(1).replace(",", ""));
+
+                } else {
+                    tDialogTitulo.setText("Perdido");
+                    etDialogReferencia.setText(textoGanadoGuardar.substring(1).replace(",", ""));
+                }
+                esDialogPositivo = false;
+            }
+        }
+
+
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+
+
+        etDialogReferencia.setOnKeyListener((view, i, keyEvent) -> {
+
+
+            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_NUMPAD_ADD) {
+                etDialogReferencia.setText(etDialogReferencia.getText() + "000");
+                etDialogReferencia.setSelection(etDialogReferencia.getText().length());
+            }
+
+
+            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER) {
+                if (!etDialogReferencia.getText().toString().isEmpty() &&
+                        !etDialogReferencia.getText().toString().equals(".")) {
+                    limpiarCalculador();
+
+                    double num = Double.parseDouble(etDialogReferencia.getText().toString());
+
+                    if (esDialogConLiquidez) {
+                        switch (modoLiquidez) {
+                            case 0:
+                                num /= liquidezOrigen;
+                                break;
+                            case 1:
+                                num *= liquidezOrigen;
+                                break;
+                            case 2:
+                                num /= liquidezDestino;
+                                num *= precio;
+                                break;
+                            case 3:
+                                num *= liquidezDestino;
+                                num *= precio;
+                                break;
+                        }
+                    }
+
+
+                    double porcenDiferencia = num / invertido;
+                    double precioDefinitivo = 0;
+
+                    if (modo == modoLarga) {
+
+                        if (esDialogPositivo) {
+
+                            precioDefinitivo = 1 + porcenDiferencia;
+                            precioDefinitivo *= 1 + comisionSalida;
+                            precioDefinitivo += comisionEntrada;
+
+                        } else {
+                            precioDefinitivo = 1 - porcenDiferencia;
+                            precioDefinitivo *= 1 + comisionSalida;
+                            precioDefinitivo += comisionEntrada;
+                        }
+                    } else if (modo == modoCorta) {
+
+                        if (esDialogPositivo) {
+
+                            precioDefinitivo = 1 + porcenDiferencia;
+                            precioDefinitivo *= 1 + comisionSalida;
+                            precioDefinitivo += comisionEntrada;
+
+                        } else {
+                            precioDefinitivo = 1 - porcenDiferencia;
+                            precioDefinitivo *= 1 + comisionSalida;
+                            precioDefinitivo += comisionEntrada;
+                        }
+
+                        precioDefinitivo -= 2;
+                        precioDefinitivo *= -1;
+
+                    }
+
+                    precioDefinitivo *= precio;
+                    textoPrecioMod.setText(String.format(precisionPrecio, precioDefinitivo));
+
+                }
+                inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                dialog.dismiss();
+                return true;
+
+            } else
+                return false;
+        });
+
+    }
 
     void vibrar(Integer valor) {
 
@@ -181,6 +360,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
     }
 
     DB db;
+
     private void accederDB() {
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder().build();
@@ -300,7 +480,6 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
                 } else {
 
-                    textoInversionLiq.setText("Pendiente");
                     textoGanadoLiq.setText("Pendiente");
                     textoActualLiq.setText("Pendiente");
                 }
@@ -338,8 +517,6 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                     textoActualLiq.setText(String.format(precisionLiquidez, actualLiq) + " " + liquidezNombre);
 
                 } else {
-
-                    textoInversionLiq.setText("Pendiente");
                     textoGanadoLiq.setText("Pendiente");
                     textoActualLiq.setText("Pendiente");
                 }
@@ -598,10 +775,8 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
     }
 
 
-    View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+    View.OnClickListener onClickListener =
+            view -> {
 
                 switch (view.getId()) {
 
@@ -880,11 +1055,8 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                     }
 
                 }
+            };
 
-            }
-            return true;
-        }
-    };
 
     double comisionEntradaRespaldo, comisionSalidaRespaldo;
     boolean hayComisionCero;
@@ -1037,7 +1209,6 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         textoReferencia.clearFocus();
         textoPorcentaje.setText("+0.00%");
         textoPrecio.setText("Precio");
-        textoInversionLiq.setText("Pendiente");
         textoGanadoLiq.setText("Pendiente");
         textoActualLiq.setText("Pendiente");
 

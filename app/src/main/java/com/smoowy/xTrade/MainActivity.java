@@ -70,7 +70,9 @@ public class MainActivity extends AppCompatActivity
         botonMenu = findViewById(R.id.botonMenu);
         botonForex = findViewById(R.id.botonForex);
         encabezadoInversion = findViewById(R.id.encabezadoInversion);
+        encabezadoInversion.setOnLongClickListener(onLongClickListener);
         encabezadoLiquidez = findViewById(R.id.encabezadoLiquidez);
+        encabezadoLiquidez.setOnLongClickListener(onLongClickListener);
         invertido = findViewById(R.id.inversion);
         precio = findViewById(R.id.precio);
         comisionEntrada = findViewById(R.id.comisionEntrada);
@@ -123,17 +125,17 @@ public class MainActivity extends AppCompatActivity
         precisionLiquidez = findViewById(R.id.precisionLiquidez);
         precisionPrecio = findViewById(R.id.precisionPrecio);
         botonComisiones = findViewById(R.id.botonComisiones);
-        botonComisiones.setOnTouchListener(onTouchListener);
-        botonCazar.setOnTouchListener(onTouchListener);
-        botonCorta.setOnTouchListener(onTouchListener);
-        botonLarga.setOnTouchListener(onTouchListener);
-        botonEmpezar.setOnTouchListener(onTouchListener);
-        botonPorcentajes.setOnTouchListener(onTouchListener);
-        botonAgregarInversion.setOnTouchListener(onTouchListener);
-        botonMenu.setOnTouchListener(onTouchListener);
-        botonForex.setOnTouchListener(onTouchListener);
-        encabezadoLiquidez.setOnTouchListener(onTouchListener);
-        encabezadoInversion.setOnTouchListener(onTouchListener);
+        botonComisiones.setOnClickListener(onClickListener);
+        botonCazar.setOnClickListener(onClickListener);
+        botonCorta.setOnClickListener(onClickListener);
+        botonLarga.setOnClickListener(onClickListener);
+        botonEmpezar.setOnClickListener(onClickListener);
+        botonPorcentajes.setOnClickListener(onClickListener);
+        botonAgregarInversion.setOnClickListener(onClickListener);
+        botonMenu.setOnClickListener(onClickListener);
+        botonForex.setOnClickListener(onClickListener);
+        encabezadoLiquidez.setOnClickListener(onClickListener);
+        encabezadoInversion.setOnClickListener(onClickListener);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         precisionOrigen.addTextChangedListener(textWatcher);
         precisionDestino.addTextChangedListener(textWatcher);
@@ -266,6 +268,8 @@ public class MainActivity extends AppCompatActivity
         adapterRecyclerInversiones.datos = adapterRecyclerInversiones.lista.size();
         adapterRecyclerInversiones.notifyDataSetChanged();
         modo = db.getModo();
+        if (modo == 0)
+            modo = 2;
         modoLiquidez = db.getModoLiquidez();
         cambiarModo();
         cambiarModoLiquidez(true);
@@ -429,120 +433,135 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    View.OnTouchListener onTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
 
+    View.OnClickListener onClickListener = view -> {
 
-                vibrar(50);
-                switch (view.getId()) {
-                    case R.id.botonCazar: {
-                        modo = modoCazar;
-                        cambiarModo();
-                        break;
-                    }
-                    case R.id.botonCorta: {
+        vibrar(50);
+        switch (view.getId()) {
+            case R.id.botonCazar: {
+                modo = modoCazar;
+                cambiarModo();
+                break;
+            }
+            case R.id.botonCorta: {
 
-                        modo = modoCorta;
-                        cambiarModo();
-                        break;
-                    }
-
-
-                    case R.id.botonLarga: {
-                        modo = modoLarga;
-                        cambiarModo();
-                        break;
-                    }
-
-                    case R.id.botonComisiones: {
-                        setBotonComisiones();
-                        break;
-                    }
-
-                    case R.id.botonPorcentajes: {
-                        setBotonPorcentajes();
-                        break;
-                    }
-
-                    case R.id.botonEmpezar: {
-                        empezarCalculos();
-                        break;
-                    }
-
-                    case R.id.botonAgregarInversion: {
-
-                        botonAgregarInversionAplanado = true;
-                        if (checarSiFaltanDatos())
-                            break;
-
-                        agregarInversion();
-                        break;
-                    }
-
-                    case R.id.encabezadoInversion: {
-
-
-                        selectorCambioInversion += 1;
-
-                        if (selectorCambioInversion > 2)
-                            selectorCambioInversion = 0;
-
-
-                        switch (selectorCambioInversion) {
-
-
-                            case cambioInversionOrigen: {
-                                encabezadoInversion.setText("Inversion origen");
-                                break;
-
-                            }
-                            case cambioInversionDestino: {
-                                encabezadoInversion.setText("Inversion destino");
-                                break;
-
-                            }
-                            case cambioInversionALiquidez: {
-                                encabezadoInversion.setText("Inversion a liquidez");
-                                break;
-                            }
-
-                        }
-                        break;
-                    }
-                    case R.id.botonForex: {
-
-                        setBotonForex();
-
-
-                        break;
-                    }
-
-                    case R.id.encabezadoLiquidez: {
-
-                        cambiarModoLiquidez(false);
-                        break;
-                    }
-
-                    case R.id.botonMenu: {
-
-                        drawer.openDrawer(Gravity.START);
-                        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-
-                    }
-
-
-                }
-
-
+                modo = modoCorta;
+                cambiarModo();
+                break;
             }
 
 
-            return true;
+            case R.id.botonLarga: {
+                modo = modoLarga;
+                cambiarModo();
+                break;
+            }
+
+            case R.id.botonComisiones: {
+                setBotonComisiones();
+                break;
+            }
+
+            case R.id.botonPorcentajes: {
+                setBotonPorcentajes();
+                break;
+            }
+
+            case R.id.botonEmpezar: {
+                empezarCalculos();
+                break;
+            }
+
+            case R.id.botonAgregarInversion: {
+
+                botonAgregarInversionAplanado = true;
+                if (checarSiFaltanDatos())
+                    break;
+
+                agregarInversion();
+                break;
+            }
+
+            case R.id.encabezadoInversion: {
+
+
+                selectorCambioInversion += 1;
+
+                if (selectorCambioInversion > 2)
+                    selectorCambioInversion = 0;
+
+
+                switch (selectorCambioInversion) {
+
+
+                    case cambioInversionOrigen: {
+                        encabezadoInversion.setText("Inversion origen");
+                        break;
+
+                    }
+                    case cambioInversionDestino: {
+                        encabezadoInversion.setText("Inversion destino");
+                        break;
+
+                    }
+                    case cambioInversionALiquidez: {
+                        encabezadoInversion.setText("Inversion a liquidez");
+                        break;
+                    }
+
+                }
+                break;
+            }
+            case R.id.botonForex: {
+
+                setBotonForex();
+
+
+                break;
+            }
+
+            case R.id.encabezadoLiquidez: {
+
+                cambiarModoLiquidez(false);
+                break;
+            }
+
+            case R.id.botonMenu: {
+
+                drawer.openDrawer(Gravity.START);
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+            }
+
         }
+
     };
+
+    View.OnLongClickListener onLongClickListener = view -> {
+
+        switch (view.getId()) {
+
+            case R.id.encabezadoInversion:
+
+                invertido.getText().clear();
+                break;
+
+
+            case R.id.encabezadoLiquidez: {
+
+                liquidezNombre.getText().clear();
+                liquidezOrigen.getText().clear();
+                liquidezDestino.getText().clear();
+                break;
+            }
+
+        }
+
+
+        return false;
+    };
+
 
     private void setBotonComisiones() {
 
