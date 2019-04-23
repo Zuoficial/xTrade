@@ -32,7 +32,7 @@ public class AdapterRecyclerPorcentajes extends
             precio, precioFinal, porcentajeMostrar, inversionActual,
             porcentaje, liquidezOrigen, liquidezDestino, liquidez,
             comisionEntrada, comisionSalida, inversionLiq, ganadoLiq, actualLiq, gananciaRedFinal;
-    boolean enForex, existeReduccion;
+    boolean enForex, existeReduccion, botonLotesAplanado;
     String monedaOrigenNombre, monedaDestinoNombre;
     Context context;
     String precisionOrigen, precisionDestino, liquidezNombre, precisionLiquidez, precisionPrecio;
@@ -78,20 +78,6 @@ public class AdapterRecyclerPorcentajes extends
         precio = Double.parseDouble(db.getPrecioIn());
         comisionEntrada = Double.parseDouble(db.getComisionEntrada()) / 100;
         comisionSalida = Double.parseDouble(db.getComisionSalida()) / 100;
-       /* if (db.getEnForex() != null) {
-            if (db.getEnForex()) {
-                enForex = true;
-
-                comisionEntrada = Double.parseDouble(db.getComisionEntrada()) / 10000;
-                comisionSalida = Double.parseDouble(db.getComisionSalida()) / 10000;
-
-
-            } else {
-
-                comisionEntrada = Double.parseDouble(db.getComisionEntrada()) / 100;
-                comisionSalida = Double.parseDouble(db.getComisionSalida()) / 100;
-            }
-        }*/
         modo = db.getModo();
         precisionOrigen = db.getPrecisionOrigenFormato().replace(".", ",.");
         precisionDestino = db.getPrecisionDestinoFormato().replace(".", ",.");
@@ -104,6 +90,8 @@ public class AdapterRecyclerPorcentajes extends
         modoLiquidez = db.getModoLiquidez();
         invertidoFinal = invertido;
         invertidoDestino = (invertido / precio);
+        if (db.getBotonLotesAplanado() != null)
+            botonLotesAplanado = db.getBotonLotesAplanado();
 
     }
 
@@ -250,7 +238,10 @@ public class AdapterRecyclerPorcentajes extends
         } else {
 
             holder.textoInvertido.setText(String.format(precisionOrigen, invertido) + " " + monedaOrigenNombre);
-            holder.textoUsando.setText(String.format(precisionDestino, invertidoDestino) + " " + monedaDestinoNombre);
+            if (botonLotesAplanado)
+                holder.textoUsando.setText(String.format(precisionDestino, invertidoDestino / 100000) + " " + monedaDestinoNombre);
+            else
+                holder.textoUsando.setText(String.format(precisionDestino, invertidoDestino) + " " + monedaDestinoNombre);
         }
 
 
@@ -655,8 +646,8 @@ public class AdapterRecyclerPorcentajes extends
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(vibracionActivada)
-                vibrator.vibrate(500);
+                if (vibracionActivada)
+                    vibrator.vibrate(500);
                 ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
 
 

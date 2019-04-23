@@ -44,6 +44,7 @@ public class DB extends RealmObject {
     Boolean existeReduccion;
     Boolean comisionEntradaNegativa;
     Boolean comisionSalidaNegativa;
+    Boolean botonLotesAplanado;
     RealmList<DBOpInversiones> operaciones;
     RealmList<DBReductor> reducciones;
     int modo;
@@ -77,8 +78,6 @@ public class DB extends RealmObject {
     public void setGananciaRedFinal(double gananciaRedFinal) {
         this.gananciaRedFinal = gananciaRedFinal;
     }
-
-
 
 
     public int getId() {
@@ -391,5 +390,13 @@ public class DB extends RealmObject {
 
     public void setComisionSalidaNegativa(Boolean comisionSalidaNegativa) {
         this.comisionSalidaNegativa = comisionSalidaNegativa;
+    }
+
+    public Boolean getBotonLotesAplanado() {
+        return botonLotesAplanado;
+    }
+
+    public void setBotonLotesAplanado(Boolean botonLotesAplanado) {
+        this.botonLotesAplanado = botonLotesAplanado;
     }
 }

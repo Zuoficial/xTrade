@@ -15,17 +15,14 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -35,7 +32,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ComunicadorInversiones {
 
     Button botonCazar, botonCorta, botonLarga, botonEmpezar,
-            botonPorcentajes, botonAgregarInversion, botonMenu, botonForex, botonComisiones;
+            botonPorcentajes, botonAgregarInversion, botonMenu, botonForex, botonComisiones, botonLotes;
     EditText invertido, precio, comisionEntrada, comisionSalida, monedaOrigen, monedaDestino,
             precisionOrigen, precisionDestino, liquidezOrigen, liquidezDestino,
             liquidezNombre, precisionLiquidez, precisionPrecio;
@@ -43,7 +40,8 @@ public class MainActivity extends AppCompatActivity
     int selectorCambioInversion = 0, idOperacion;
     final int cambioInversionOrigen = 0, cambioInversionDestino = 1,
             cambioInversionALiquidez = 2;
-    boolean botonPorcentajesAplanado, botonAgregarInversionAplanado, enForex, botonComisionAplanado;
+    boolean botonPorcentajesAplanado, botonAgregarInversionAplanado,
+            enForex, botonComisionAplanado, botonLotesAplanado;
     String precioIn, inversionInicio, inversionDestinoInicio;
     String precisionOrigenFormato, precisionDestinoFormato, precisionLiquidezFormato,
             precisionPrecioFormato;
@@ -69,12 +67,15 @@ public class MainActivity extends AppCompatActivity
         botonAgregarInversion = findViewById(R.id.botonAgregarInversion);
         botonMenu = findViewById(R.id.botonMenu);
         botonForex = findViewById(R.id.botonForex);
+        botonLotes = findViewById(R.id.botonLotes);
         encabezadoInversion = findViewById(R.id.encabezadoInversion);
         encabezadoInversion.setOnLongClickListener(onLongClickListener);
         encabezadoLiquidez = findViewById(R.id.encabezadoLiquidez);
         encabezadoLiquidez.setOnLongClickListener(onLongClickListener);
         invertido = findViewById(R.id.inversion);
+        ponerKeyListener(invertido);
         precio = findViewById(R.id.precio);
+        ponerKeyListener(precio);
         comisionEntrada = findViewById(R.id.comisionEntrada);
         comisionEntradaLetra = findViewById(R.id.comisionEntradaLetra);
         comisionEntradaLetra.setOnClickListener(view -> {
@@ -116,7 +117,9 @@ public class MainActivity extends AppCompatActivity
 
         });
         liquidezDestino = findViewById(R.id.liquidezDestino);
+        ponerKeyListener(liquidezDestino);
         liquidezOrigen = findViewById(R.id.liquidezOrigen);
+        ponerKeyListener(liquidezOrigen);
         liquidezNombre = findViewById(R.id.liquidezNombre);
         monedaOrigen = findViewById(R.id.origen);
         monedaDestino = findViewById(R.id.destino);
@@ -134,6 +137,7 @@ public class MainActivity extends AppCompatActivity
         botonAgregarInversion.setOnClickListener(onClickListener);
         botonMenu.setOnClickListener(onClickListener);
         botonForex.setOnClickListener(onClickListener);
+        botonLotes.setOnClickListener(onClickListener);
         encabezadoLiquidez.setOnClickListener(onClickListener);
         encabezadoInversion.setOnClickListener(onClickListener);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -146,6 +150,17 @@ public class MainActivity extends AppCompatActivity
         botonPorcentajesAplanado = false;
         setRecyclerViewInversiones();
         acccederDB();
+    }
+
+    void ponerKeyListener(EditText editText) {
+        editText.setOnKeyListener((view, i, keyEvent) -> {
+            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_NUMPAD_ADD) {
+                editText.setText(editText.getText() + "000");
+                editText.setSelection(editText.getText().length());
+                return true;
+            } else
+                return false;
+        });
     }
 
 
@@ -307,6 +322,14 @@ public class MainActivity extends AppCompatActivity
             });
         }
 
+        if (db.getBotonLotesAplanado() != null)
+            botonLotesAplanado = db.getBotonLotesAplanado();
+
+        if (botonLotesAplanado)
+            botonLotes.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
+        else
+            botonLotes.setBackgroundResource(R.drawable.fondo_botones_superior);
+
 
         realm.close();
     }
@@ -362,6 +385,7 @@ public class MainActivity extends AppCompatActivity
             db.setPrecisionPrecioFormato(precisionPrecioFormato);
             db.setBotonPorcentajesAplanado(botonPorcentajesAplanado);
             db.setBotonComisionAplanado(botonComisionAplanado);
+            db.setBotonLotesAplanado(botonLotesAplanado);
             db.setComisionEntradaNegativa(comisionEntradaNegativa);
             db.setComisionSalidaNegativa(comisionSalidaNegativa);
 
@@ -531,9 +555,16 @@ public class MainActivity extends AppCompatActivity
                 drawer.openDrawer(Gravity.START);
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-
+                break;
             }
 
+            case R.id.botonLotes:
+                botonLotesAplanado = !botonLotesAplanado;
+
+                if (botonLotesAplanado)
+                    botonLotes.setBackgroundResource(R.drawable.fondo_boton_forex_claro);
+                else
+                    botonLotes.setBackgroundResource(R.drawable.fondo_botones_superior);
         }
 
     };
