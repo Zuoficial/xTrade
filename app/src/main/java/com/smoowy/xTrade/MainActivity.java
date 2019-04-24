@@ -225,6 +225,10 @@ public class MainActivity extends AppCompatActivity
         idOperacion = getIntent().getExtras().getInt("idOperacion");
         esDuplicado = getIntent().getExtras().getBoolean("esDuplicado");
         db = realm.where(DB.class).equalTo("id", idOperacion).findFirst();
+
+        if (db == null)
+            realm.executeTransaction(realm -> db = realm.createObject(DB.class, idOperacion));
+
         monedaOrigen.setText(db.getMonedaOrigen());
         monedaDestino.setText(db.getMonedaDestino());
         invertido.setText(db.getInvertido());
@@ -341,6 +345,7 @@ public class MainActivity extends AppCompatActivity
         Realm.setDefaultConfiguration(config);
         realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm -> {
+
 
 
             double inversionOrig = 0, inversionNuev, precioOrig = 0, precioNuev;

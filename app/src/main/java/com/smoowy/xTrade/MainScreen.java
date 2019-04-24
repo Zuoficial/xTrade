@@ -86,7 +86,7 @@ public class MainScreen extends AppCompatActivity implements ComunicadorPosicion
         if (resultadosRealm.size() == 0) {
             id = 0;
 
-            realm.executeTransaction(realm -> db = realm.createObject(DB.class, id));
+           // realm.executeTransaction(realm -> db = realm.createObject(DB.class, id));
 
         } else {
 
@@ -94,7 +94,7 @@ public class MainScreen extends AppCompatActivity implements ComunicadorPosicion
             id = resultadosRealm.max("id").intValue();
             id += 1;
 
-                realm.executeTransaction(realm -> db = realm.createObject(DB.class, id));
+              //  realm.executeTransaction(realm -> db = realm.createObject(DB.class, id));
 
 
         }
