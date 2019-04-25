@@ -215,7 +215,6 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
     };
 
 
-
     void ponerKeyListener(EditText editText) {
         editText.setOnKeyListener((view, i, keyEvent) -> {
             if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_NUMPAD_ADD) {
@@ -258,6 +257,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         });
 
         if (textoPrecioMod.getText().toString().isEmpty()) {
+            esDialogPositivo = true;
             if (esDialogConLiquidez)
                 tDialogTitulo.setText("Ganado liq");
             else
@@ -265,6 +265,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         } else {
 
             if (positivo) {
+                esDialogPositivo = true;
                 if (esDialogConLiquidez) {
                     tDialogTitulo.setText("Ganado liq");
                     etDialogReferencia.setText(String.format(precisionLiquidez, ganadoLiq).replace(",", ""));
@@ -274,7 +275,6 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                     tDialogTitulo.setText("Ganado");
                     etDialogReferencia.setText(textoGanadoGuardar.replace(",", ""));
                 }
-                esDialogPositivo = true;
 
             } else {
 
