@@ -1,5 +1,6 @@
 package com.smoowy.xTrade;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,12 +37,12 @@ public class MainActivity extends AppCompatActivity
     EditText invertido, precio, comisionEntrada, comisionSalida, monedaOrigen, monedaDestino,
             precisionOrigen, precisionDestino, liquidezOrigen, liquidezDestino,
             liquidezNombre, precisionLiquidez, precisionPrecio;
-    TextView encabezadoInversion, comisionEntradaLetra, comisionSalidaLetra, encabezadoLiquidez;
+    TextView encabezadoInversion, comisionEntradaLetra, comisionSalidaLetra, encabezadoLiquidez, textoPrecio;
     int selectorCambioInversion = 0, idOperacion;
     final int cambioInversionOrigen = 0, cambioInversionDestino = 1,
             cambioInversionALiquidez = 2;
     boolean botonPorcentajesAplanado, botonAgregarInversionAplanado,
-            enForex, botonComisionAplanado, botonLotesAplanado;
+            enForex, botonComisionAplanado, botonLotesAplanado, hayContrato;
     String precioIn, inversionInicio, inversionDestinoInicio;
     String precisionOrigenFormato, precisionDestinoFormato, precisionLiquidezFormato,
             precisionPrecioFormato;
@@ -129,6 +130,8 @@ public class MainActivity extends AppCompatActivity
         precisionPrecio = findViewById(R.id.precisionPrecio);
         botonComisiones = findViewById(R.id.botonComisiones);
         botonComisiones.setOnClickListener(onClickListener);
+        textoPrecio = findViewById(R.id.texto_precio);
+        textoPrecio.setOnClickListener(onClickListener);
         botonCazar.setOnClickListener(onClickListener);
         botonCorta.setOnClickListener(onClickListener);
         botonLarga.setOnClickListener(onClickListener);
@@ -150,7 +153,88 @@ public class MainActivity extends AppCompatActivity
         botonPorcentajesAplanado = false;
         setRecyclerViewInversiones();
         acccederDB();
+
     }
+
+
+    Dialog dialog;
+    EditText etPrecioDialogCon, etCantidadDialogCon;
+    TextView tValorDialogCon;
+    Button bSalirDialogCon;
+    String precioContrato = "", cantidadContrato = "", valorContrato = "";
+
+    void crearDialogContrato() {
+        dialog = new Dialog(this, R.style.MyDialogStyle);
+        dialog.setContentView(R.layout.dialog_contrato);
+        dialog.show();
+        etPrecioDialogCon = dialog.findViewById(R.id.dialog_contrato_et_precio);
+        etCantidadDialogCon = dialog.findViewById(R.id.dialog_contrato_et_cantidad);
+        tValorDialogCon = dialog.findViewById(R.id.dialog_contrato_t_valor);
+        bSalirDialogCon = dialog.findViewById(R.id.dialog_contrato_b_salir);
+        bSalirDialogCon.setOnClickListener(onClickListenerDialogContrato);
+        etPrecioDialogCon.addTextChangedListener(textWatcherDialog);
+        etCantidadDialogCon.addTextChangedListener(textWatcherDialog);
+
+        if (hayContrato) {
+            etPrecioDialogCon.setText(String.valueOf(precioContrato));
+            etCantidadDialogCon.setText(String.valueOf(cantidadContrato));
+        }
+
+    }
+
+    TextWatcher textWatcherDialog = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            if (!etPrecioDialogCon.getText().toString().equals("") &&
+                    !etPrecioDialogCon.getText().toString().equals(".") &&
+                    !etCantidadDialogCon.getText().toString().equals("") &&
+                    !etCantidadDialogCon.getText().toString().equals(".")) {
+
+                double precio = Double.parseDouble(etPrecioDialogCon.getText().toString());
+                double cantidad = Double.parseDouble(etCantidadDialogCon.getText().toString());
+                double resultado = precio * cantidad;
+
+                tValorDialogCon.setText(String.format(precisionPrecioFormato, resultado));
+                hayContrato = true;
+                precioContrato = String.valueOf(precio);
+                cantidadContrato = String.valueOf(cantidad);
+                valorContrato = String.format(precisionPrecioFormato, resultado);
+
+            } else
+                tValorDialogCon.setText("0.00");
+            hayContrato = false;
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
+
+    View.OnClickListener onClickListenerDialogContrato = view -> {
+        if (!tValorDialogCon.getText().toString().equals("0.00")) {
+            precio.setText(etPrecioDialogCon.getText().toString());
+            textoPrecio.setText("Precio destino ^");
+            hayContrato = true;
+        } else
+            textoPrecio.setText("Precio destino");
+        dialog.dismiss();
+    };
+
+    public void recuperarInformacionContrato(String precioContrato, String cantidadContrato) {
+
+        this.precioContrato = precioContrato;
+        this.cantidadContrato = cantidadContrato;
+        hayContrato = true;
+        textoPrecio.setText("Precio destino ^");
+    }
+
 
     void ponerKeyListener(EditText editText) {
         editText.setOnKeyListener((view, i, keyEvent) -> {
@@ -280,11 +364,25 @@ public class MainActivity extends AppCompatActivity
         precisionDestino.setText(db.getPrecisionDestino());
         liquidezNombre.setText(db.getLiquidezNombre());
         precisionLiquidez.setText(db.getPrecisionLiquidez());
-        precisionPrecio.setText(db.getPrecisionPrecio());
+        if (precisionPrecio != null)
+            precisionPrecio.setText(db.getPrecisionPrecio());
+        else
+            precisionPrecioFormato = "%,.2f";
+
+        if (db.getHayContrato() != null) {
+
+            if (hayContrato = db.getHayContrato()) {
+                textoPrecio.setText("Precio destino ^");
+                precioContrato = db.getPrecioContrato();
+                cantidadContrato = db.getCantidadContrato();
+            }
+
+        }
         adapterRecyclerInversiones.monedaOrigen = db.getMonedaOrigen();
         adapterRecyclerInversiones.monedaDestino = db.getMonedaDestino();
         adapterRecyclerInversiones.lista.addAll(db.operaciones);
         adapterRecyclerInversiones.datos = adapterRecyclerInversiones.lista.size();
+        adapterRecyclerInversiones.hayContrato =hayContrato;
         adapterRecyclerInversiones.notifyDataSetChanged();
         modo = db.getModo();
         if (modo == 0)
@@ -335,6 +433,7 @@ public class MainActivity extends AppCompatActivity
             botonLotes.setBackgroundResource(R.drawable.fondo_botones_superior);
 
 
+
         realm.close();
     }
 
@@ -345,7 +444,6 @@ public class MainActivity extends AppCompatActivity
         Realm.setDefaultConfiguration(config);
         realm = Realm.getDefaultInstance();
         realm.executeTransaction(realm -> {
-
 
 
             double inversionOrig = 0, inversionNuev, precioOrig = 0, precioNuev;
@@ -393,6 +491,9 @@ public class MainActivity extends AppCompatActivity
             db.setBotonLotesAplanado(botonLotesAplanado);
             db.setComisionEntradaNegativa(comisionEntradaNegativa);
             db.setComisionSalidaNegativa(comisionSalidaNegativa);
+            db.setHayContrato(hayContrato);
+            db.setPrecioContrato(precioContrato);
+            db.setCantidadContrato(cantidadContrato);
 
             if (!comisionEntradaNegativa) {
                 db.setComisionEntrada(comisionEntrada.getText().toString().isEmpty() ? "0" :
@@ -555,6 +656,10 @@ public class MainActivity extends AppCompatActivity
                 break;
             }
 
+            case R.id.texto_precio:
+                crearDialogContrato();
+                break;
+
             case R.id.botonMenu: {
 
                 drawer.openDrawer(Gravity.START);
@@ -703,8 +808,10 @@ public class MainActivity extends AppCompatActivity
 
         double precioImportar = 0, invertidoImportar = 0, cantidadImportar = 0;
 
-
-        precioImportar = Double.parseDouble(precio.getText().toString());
+        if (hayContrato)
+            precioImportar = Double.parseDouble(valorContrato.replace(",", ""));
+        else
+            precioImportar = Double.parseDouble(precio.getText().toString());
 
         if (invertido.getText().toString().isEmpty()) {
             invertido.setText(String.valueOf(100));
@@ -796,10 +903,12 @@ public class MainActivity extends AppCompatActivity
         precio.setText("");
         invertido.setText("");
 
+        adapterRecyclerInversiones.hayContrato = hayContrato;
         adapterRecyclerInversiones.agregarDatos(precioImportar,
-                invertidoImportar, cantidadImportar);
+                invertidoImportar, cantidadImportar, precioContrato, cantidadContrato);
         adapterRecyclerInversiones.monedaOrigen = monedaOrigen.getText().toString().toUpperCase();
         adapterRecyclerInversiones.monedaDestino = monedaDestino.getText().toString().toUpperCase();
+
     }
 
     private void setBotonPorcentajes() {
@@ -1044,6 +1153,11 @@ public class MainActivity extends AppCompatActivity
                     vibrar(500);
                 }
         ).show();
+
+        if (hayContrato && adapterRecyclerInversiones.datos == 0) {
+            hayContrato = false;
+            textoPrecio.setText("Precio destino");
+        }
 
 
     }

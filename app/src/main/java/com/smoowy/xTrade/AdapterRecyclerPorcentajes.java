@@ -39,6 +39,8 @@ public class AdapterRecyclerPorcentajes extends
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     double inversionDestinoActual;
     double gananciaDestino;
+    String precioContrato;
+    boolean hayContrato;
 
 
     public AdapterRecyclerPorcentajes(Context context, DB db) {
@@ -92,7 +94,10 @@ public class AdapterRecyclerPorcentajes extends
         invertidoDestino = (invertido / precio);
         if (db.getBotonLotesAplanado() != null)
             botonLotesAplanado = db.getBotonLotesAplanado();
-
+        if (db.getHayContrato() != null)
+            hayContrato = db.getHayContrato();
+        if (db.getPrecioContrato() != null)
+            precioContrato = db.getPrecioContrato();
     }
 
     public void cambioPorcentaje(String porcentaje, Integer multiplicador) {
@@ -209,6 +214,7 @@ public class AdapterRecyclerPorcentajes extends
 
 
         holder.textoPorcentaje.setText(info.getPorcentajeFinal());
+
         holder.textoPrecio.setText(info.getPrecioFinal());
         holder.textoActual.setText(info.getActualFinal());
         holder.textoInversionLiq.setText(info.getInversionLiqFinal());
@@ -277,8 +283,10 @@ public class AdapterRecyclerPorcentajes extends
         if (posicion < 100 * ajustadorPorcentajes) {
 
             porcentajeMostrar = tablaPorcentajesInvertida.get(posicion) * 100;
-            precioFinal = positivo(precio, tablaPorcentajesInvertida.get(posicion));
+            precioFinal = !hayContrato ? positivo(precio, tablaPorcentajesInvertida.get(posicion)) :
+                    positivo(Double.parseDouble(precioContrato), tablaPorcentajesInvertida.get(posicion));
             info.setPrecioFinal(String.format(precisionPrecio, precioFinal) + " " + monedaOrigenNombre);
+            precioFinal = positivo(precio, tablaPorcentajesInvertida.get(posicion));
 
 
             if (modo == modoCazar) {
@@ -351,8 +359,11 @@ public class AdapterRecyclerPorcentajes extends
 
             porcentajeMostrar = tablaPorcentajes.get(iPositivo) * 100;
             porcentajeMostrar *= -1;
-            precioFinal = negativo(precio, tablaPorcentajes.get(iPositivo));
+            precioFinal = !hayContrato ? negativo(precio, tablaPorcentajes.get(iPositivo)) :
+                    negativo(Double.parseDouble(precioContrato), tablaPorcentajes.get(iPositivo));
+
             info.setPrecioFinal(String.format(precisionPrecio, precioFinal) + " " + monedaOrigenNombre);
+            negativo(precio, tablaPorcentajes.get(iPositivo));
 
 
             if (modo == modoCazar) {
@@ -628,7 +639,10 @@ public class AdapterRecyclerPorcentajes extends
             textoGanadoLiq.setOnClickListener(onClickListener);
             textoActualLiq.setOnClickListener(onClickListener);
             textoUsando.setOnClickListener(onClickListener);
-            textoBase.setText(String.format(precisionPrecio, precio) + " " + monedaOrigenNombre);
+            if (!hayContrato)
+                textoBase.setText(String.format(precisionPrecio, precio) + " " + monedaOrigenNombre);
+            else
+                textoBase.setText(String.format(precisionPrecio, Double.valueOf(precioContrato)) + " " + monedaOrigenNombre);
             // fondo = itemView.findViewById(R.id.fondo);
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
             vibracionActivada = false;

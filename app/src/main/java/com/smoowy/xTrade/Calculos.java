@@ -21,7 +21,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -47,15 +46,16 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             textoIndicadorLiquidez, textoReduccion;
     String monedaOrigenNombre, monedaDestinoNombre, referencia;
     EditText textoPrecioMod, textoPorcentajeMod, textoReferencia;
-    double invertido, precio, invertidoDestino, precioFinal,
+    double invertido, precio, invertidoDestino, precioFinal, precioFinalContrato,
             precioIngresado, porcentajeFinal, gananciaFinal, invertidoActual, porcentajeIngresado,
-            liquidezOrigen, liquidezDestino, comisionEntrada, comisionSalida, invertidoFinal, gananciaRedFinal;
+            liquidezOrigen, liquidezDestino, comisionEntrada, comisionSalida,
+            invertidoFinal, gananciaRedFinal, precioContrato;
     int ajustadorPorcentajes, modo, modoLiquidez, idOperacion;
     final int modoCazar = 0, modoCorta = 1, modoLarga = 2;
     boolean botonPorcentajesAplanado,
             botonporcentajeCalculadorAplanado, botonPorcentajeCalculadorMasAplanado, enForex,
             botonComisionAplanado, botonReducirAplanado, existeReduccion, cargaInicialTerminada, vibracionActivada,
-            botonLotesAplanado;
+            botonLotesAplanado, hayContrato;
     Vibrator vibrator;
     String precisionOrigen, precisionDestino, precisionLiquidez, precisionPrecio,
             liquidezNombre;
@@ -125,7 +125,12 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         textoUsado = findViewById(R.id.textoUsandoRV2);
         textoGananciaLetra = findViewById(R.id.textoGanadoLetra);
         textoBase = findViewById(R.id.textoBase);
-        textoBase.setText(String.format(precisionPrecio, precio) + " " + monedaOrigenNombre);
+
+        if (!hayContrato)
+            textoBase.setText(String.format(precisionPrecio, precio) + " " + monedaOrigenNombre);
+        else
+            textoBase.setText(String.format(precisionPrecio, precioContrato) + " " + monedaOrigenNombre);
+
         textoGanadoLiq = findViewById(R.id.textoGanadoLiq2);
         textoGanadoLiqLetra = findViewById(R.id.textoGanadoLiqLetra2);
         textoInversionLiq = findViewById(R.id.textoInversionLiq2);
@@ -365,7 +370,10 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
                     }
 
-                    precioDefinitivo *= precio;
+                    if (!hayContrato)
+                        precioDefinitivo *= precio;
+                    else
+                        precioDefinitivo *= precioContrato;
                     textoPrecioMod.setText(String.format(precisionPrecio, precioDefinitivo).replace(",", ""));
 
                 }
@@ -412,6 +420,11 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         } else
             invertido = Double.parseDouble(db.getInversionInicio());
 
+
+        /*  (!hayContrato ? precio : Double.valueOf(precioContrato))*/
+        if (hayContrato = db.getHayContrato())
+            precioContrato = Double.valueOf(db.getPrecioContrato());
+
         precio = Double.parseDouble(db.getPrecioIn());
         invertidoDestino = invertido / precio;
 
@@ -438,6 +451,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         precisionPrecio = db.getPrecisionPrecioFormato().replace(".", ",.");
         liquidezOrigen = Double.parseDouble(db.getLiquidezOrigen());
         liquidezDestino = Double.parseDouble(db.getLiquidezDestino());
+
 
         if (db.getReferencia() != null) {
             referencia = db.getReferencia();
@@ -488,8 +502,10 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
             if (botonporcentajeCalculadorAplanado)
                 porcentajeIngresado = (Double.parseDouble(textoPorcentajeMod.getText().toString()));
-            else
+            else {
+
                 precioIngresado = (Double.parseDouble(textoPrecioMod.getText().toString()));
+            }
 
 
             if (modo == modoCorta || modo == modoLarga) {
@@ -513,8 +529,12 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 }
 
 
-                if (botonporcentajeCalculadorAplanado)
-                    textoPrecio.setText(String.format(precisionPrecio, precioFinal));
+                if (botonporcentajeCalculadorAplanado) {
+                    if (!hayContrato)
+                        textoPrecio.setText(String.format(precisionPrecio, precioFinal));
+                    else
+                        textoPrecio.setText(String.format(precisionPrecio, precioFinalContrato));
+                }
 
                 if (positivo) {
                     textoGanadoGuardar = String.format(precisionOrigen, gananciaFinal);
@@ -708,6 +728,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             b *= -1;
 
             precioFinal = precio * b;
+            precioFinalContrato = precioContrato * b;
             invertidoActual = invertido * (1 + porcentajeIngresado);
             gananciaFinal = invertidoActual - invertidoFinal;
             if (existeReduccion) {
@@ -723,7 +744,10 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
             double b;
 
-            b = precioIngresado / precio;
+            if (!hayContrato)
+                b = precioIngresado / precio;
+            else
+                b = precioIngresado / precioContrato;
             b += -2;
             b *= -1;
             b -= comisionEntrada;
@@ -764,6 +788,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             a += comisionEntrada;
 
             precioFinal = precio * a;
+            precioFinalContrato = precioContrato * a;
 
 
             invertidoActual = invertido * (1 + porcentajeIngresado);
@@ -779,7 +804,10 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         } else {
 
             double b;
-            b = precioIngresado / precio;
+            if (!hayContrato)
+                b = precioIngresado / precio;
+            else
+                b = precioIngresado / precioContrato;
             b -= comisionEntrada;
             b /= (1 + comisionSalida);
             porcentajeFinal = b - 1;
@@ -1299,6 +1327,8 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
             textoInvertidoActual.setText(String.format(precisionDestino, invertidoDestino) + " " + monedaDestinoNombre);
 
         }
+
+        textoPrecioMod.requestFocus();
     }
 
 
@@ -1625,29 +1655,6 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
             if (modo == modoCorta) {
 
-             /*   if (enForex) {
-
-                    double b = precioRed + comisionSalida;
-                    double a = precio - comisionEntrada;
-                    porcentajeFinal = b / a;
-                    porcentajeFinal -= 1;
-                    porcentajeFinal *= -1;
-
-
-                } else {
-
-                    double b;
-
-                    b = precioRed / precio;
-                    b += -2;
-                    b *= -1;
-                    b -= comisionEntrada;
-                    b /= (1 + comisionSalida);
-
-                    porcentajeFinal = b - 1;
-
-                } */
-
 
                 double b;
 
@@ -1664,25 +1671,6 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
                 porcentajeFinal *= 100;
                 positivo = gananciaFinal >= 0;
             } else if (modo == modoLarga) {
-
-               /* if (enForex) {
-
-                    double b = precioRed - comisionSalida;
-                    double a = precio + comisionEntrada;
-                    porcentajeFinal = b / a;
-                    porcentajeFinal -= 1;
-
-
-                } else {
-
-                    double b;
-                    b = precioRed / precio;
-                    b -= comisionEntrada;
-                    b /= (1 + comisionSalida);
-                    porcentajeFinal = b - 1;
-
-
-                }*/
 
                 double b;
                 b = precioRed / precio;

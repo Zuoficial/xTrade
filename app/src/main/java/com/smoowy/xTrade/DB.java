@@ -38,6 +38,8 @@ public class DB extends RealmObject {
     String usandoInicio;
     String usando;
     String referencia;
+    String precioContrato;
+    String cantidadContrato;
     Boolean botonPorcentajesAplanado;
     Boolean enForex;
     Boolean botonComisionAplanado;
@@ -45,6 +47,7 @@ public class DB extends RealmObject {
     Boolean comisionEntradaNegativa;
     Boolean comisionSalidaNegativa;
     Boolean botonLotesAplanado;
+    Boolean hayContrato;
     RealmList<DBOpInversiones> operaciones;
     RealmList<DBReductor> reducciones;
     int modo;
@@ -399,4 +402,29 @@ public class DB extends RealmObject {
     public void setBotonLotesAplanado(Boolean botonLotesAplanado) {
         this.botonLotesAplanado = botonLotesAplanado;
     }
+
+    public Boolean getHayContrato() {
+        return hayContrato;
+    }
+
+    public void setHayContrato(Boolean hayContrato) {
+        this.hayContrato = hayContrato;
+    }
+
+    public String getPrecioContrato() {
+        return precioContrato;
+    }
+
+    public void setPrecioContrato(String precioContrato) {
+        this.precioContrato = precioContrato;
+    }
+
+    public String getCantidadContrato() {
+        return cantidadContrato;
+    }
+
+    public void setCantidadContrato(String cantidadContrato) {
+        this.cantidadContrato = cantidadContrato;
+    }
+
 }

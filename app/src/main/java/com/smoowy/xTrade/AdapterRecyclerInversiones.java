@@ -18,8 +18,9 @@ public class AdapterRecyclerInversiones extends RecyclerView.Adapter<AdapterRecy
     ArrayList<DBOpInversiones> lista;
     ArrayList<DBOpInversiones> listaRespaldo;
     String monedaOrigen, monedaDestino;
-    String precisionOrigenFormato, precisionDestinoFormato,precisionPrecioFormato;
+    String precisionOrigenFormato, precisionDestinoFormato, precisionPrecioFormato;
     ComunicadorInversiones comunicador;
+    boolean hayContrato;
 
     public AdapterRecyclerInversiones(Context context) {
 
@@ -49,6 +50,15 @@ public class AdapterRecyclerInversiones extends RecyclerView.Adapter<AdapterRecy
         holder.inversion.setText(String.format(precisionOrigenFormato, op.getInversion()) + " " + monedaOrigen);
         holder.cantidad.setText(String.format(precisionDestinoFormato, op.getCantidad()) + " " + monedaDestino);
         holder.precio.setText(String.format(precisionPrecioFormato, op.getPrecio()) + " " + monedaOrigen);
+
+        if (!hayContrato)
+            holder.contrato.setVisibility(View.GONE);
+        else {
+            holder.contrato.setVisibility(View.VISIBLE);
+            double precioContratoNum = Double.valueOf(op.getPrecioContrato());
+            holder.precio.setText(String.format(precisionPrecioFormato, precioContratoNum) + " " + monedaOrigen);
+            holder.b_contrato.setOnClickListener(view -> comunicador.recuperarInformacionContrato(op.getPrecioContrato(), op.getCantidadContrato()));
+        }
     }
 
     @Override
@@ -57,14 +67,18 @@ public class AdapterRecyclerInversiones extends RecyclerView.Adapter<AdapterRecy
     }
 
 
-    public void agregarDatos(Double precio, Double inversion, Double cantidad) {
+    public void agregarDatos(Double precio, Double inversion, Double cantidad,
+                             String precioContrato, String cantidadContrato) {
         datos += 1;
         DBOpInversiones op = new DBOpInversiones();
         op.setCantidad(cantidad);
         op.setPrecio(precio);
         op.setInversion(inversion);
+        op.setPrecioContrato(precioContrato);
+        op.setCantidadContrato(cantidadContrato);
         lista.add(op);
         notifyDataSetChanged();
+
     }
 
 
@@ -84,8 +98,8 @@ public class AdapterRecyclerInversiones extends RecyclerView.Adapter<AdapterRecy
     }
 
     class Holder extends RecyclerView.ViewHolder {
-        TextView precio, inversion, cantidad;
-        ImageView cerrar;
+        TextView precio, inversion, cantidad, contrato;
+        ImageView cerrar, b_contrato;
         View view;
 
         Holder(View itemView) {
@@ -93,11 +107,13 @@ public class AdapterRecyclerInversiones extends RecyclerView.Adapter<AdapterRecy
             precio = itemView.findViewById(R.id.precioRV);
             inversion = itemView.findViewById(R.id.inversionRV);
             cantidad = itemView.findViewById(R.id.cantidadRV);
-            cerrar=itemView.findViewById(R.id.cerrar);
-            inversion.setOnClickListener(view -> comunicador.recuperarDatosRecycler(inversion.getText().toString().replace(monedaDestino,"").replace(monedaOrigen,""), precio.getText().toString()));
-            cantidad.setOnClickListener(view -> comunicador.recuperarDatosRecycler(cantidad.getText().toString().replace(monedaDestino,"").replace(monedaOrigen,""), precio.getText().toString()));
+            cerrar = itemView.findViewById(R.id.cerrar);
+            contrato = itemView.findViewById(R.id.t_contrato_rv_inversiones);
+            b_contrato = itemView.findViewById(R.id.b_contrato);
+            inversion.setOnClickListener(view -> comunicador.recuperarDatosRecycler(inversion.getText().toString().replace(monedaDestino, "").replace(monedaOrigen, ""), precio.getText().toString()));
+            cantidad.setOnClickListener(view -> comunicador.recuperarDatosRecycler(cantidad.getText().toString().replace(monedaDestino, "").replace(monedaOrigen, ""), precio.getText().toString()));
             precio.setOnClickListener(view -> comunicador.recuperarDatosRecycler(String.valueOf(0), precio.getText().toString()));
-            cerrar.setOnClickListener(view ->comunicador.borrarInversionRecycler(getLayoutPosition()));
+            cerrar.setOnClickListener(view -> comunicador.borrarInversionRecycler(getLayoutPosition()));
         }
     }
 

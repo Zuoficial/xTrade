@@ -8,6 +8,16 @@
     android:layout_marginStart="50dp"
     android:background="@drawable/fondo_marcador_neutral">
 
+    <TextView
+        android:id="@+id/t_contrato_rv_inversiones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Contrato"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="5dp"
+        android:textColor="@android:color/white"/>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -82,6 +92,13 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:id="@+id/b_contrato"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
