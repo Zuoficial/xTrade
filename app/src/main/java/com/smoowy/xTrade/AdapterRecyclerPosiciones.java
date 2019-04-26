@@ -17,13 +17,14 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
     ArrayList<DB> listaDatosRespaldo;
     Context context;
     ComunicadorPosiciones comunicador;
+    boolean hayContrato;
 
     public AdapterRecyclerPosiciones(Context context, ArrayList<DB> listaDatos) {
         mInflater = LayoutInflater.from(context);
         this.listaDatos = listaDatos;
         listaParaBorrar = new ArrayList<>();
         this.context = context;
-        comunicador= (ComunicadorPosiciones) context;
+        comunicador = (ComunicadorPosiciones) context;
     }
 
 
@@ -106,9 +107,16 @@ public class AdapterRecyclerPosiciones extends RecyclerView.Adapter<AdapterRecyc
 
         String precisionOrigenFormato = db.getPrecisionOrigenFormato().replace(".", ",.");
         String precisionPrecioFormato = db.getPrecisionPrecioFormato().replace(".", ",.");
+        double precioIn;
 
+        if (db.getHayContrato() != null) {
 
-        double precioIn = Double.parseDouble(db.getPrecioIn());
+            if (db.getHayContrato())
+                precioIn = Double.parseDouble(db.getPrecioContrato());
+            else
+                precioIn = Double.parseDouble(db.getPrecioIn());
+        } else
+            precioIn = Double.parseDouble(db.getPrecioIn());
         holder.textoPrecioIn.setText(String.format(precisionPrecioFormato, precioIn)
                 + " " + db.getMonedaOrigen());
 
