@@ -39,7 +39,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
     Button botonCazar, botonCorta, botonLarga, botonClear, botonPorcentajes,
             botonDuplicar, botonPorcentajeCalculador,
             botonPorcentajeCalculadorMenos, botonPorcentajeCalculadorMas,
-            botonModificar, botonComisiones, botonReducir, botonLotes;
+            botonModificar, botonComisiones, botonReducir, botonLotes, botonClearTransparente;
     TextView encabezado, textoGanancia, textoInvertido, textoInvertidoActual, textoUsado, textoGananciaLetra,
             textoPorcentaje, textoPrecio, textoBase, textoInversionLiq,
             textoGanadoLiq, textoActualLiq, textoGanadoLiqLetra, textoSinComision,
@@ -87,6 +87,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         botonCorta = findViewById(R.id.botonCorta);
         botonLarga = findViewById(R.id.botonLarga);
         botonClear = findViewById(R.id.botonClear);
+        botonClearTransparente = findViewById(R.id.botonClearTransparente);
         botonPorcentajes = findViewById(R.id.botonPorcentajes);
         botonDuplicar = findViewById(R.id.botonDuplicar);
         botonPorcentajeCalculador = findViewById(R.id.botonPorcentajeCalculador);
@@ -102,6 +103,7 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
         botonDuplicar.setOnClickListener(onClickListener);
         botonPorcentajes.setOnClickListener(onClickListener);
         botonClear.setOnClickListener(onClickListener);
+        botonClearTransparente.setOnClickListener(onClickListener);
         botonPorcentajeCalculador.setOnClickListener(onClickListener);
         botonPorcentajeCalculadorMas.setOnClickListener(onClickListener);
         botonPorcentajeCalculadorMenos.setOnClickListener(onClickListener);
@@ -901,6 +903,8 @@ public class Calculos extends AppCompatActivity implements ComunicadorBotonPorce
 
                         break;
                     }
+
+                    case R.id.botonClearTransparente:
 
                     case R.id.botonClear: {
                         vibrar(50);

@@ -226,14 +226,14 @@ public class AdapterRecyclerPorcentajes extends
             holder.textoGanadoLiq.setText(info.getGananciaLiqFinal());
             holder.textoGanadoLetra.setText("Ganado");
             holder.textoGanadoLiqLetra.setText("Ganado Liq");
-            holder.textoPorcentaje.setTextColor(Color.parseColor("#45c042"));
+            holder.textoPorcentaje.setTextColor(context.getResources().getColor(R.color.ganancia));
         } else {
             holder.textoGanancia.setText(info.getGananciaFinal().substring(1));
             holder.textoGanadoLiq.setText(!info.getGananciaLiqFinal().equals("Pendiente")
                     ? info.getGananciaLiqFinal().substring(1) : info.getGananciaLiqFinal());
             holder.textoGanadoLetra.setText("Perdido");
             holder.textoGanadoLiqLetra.setText("Perdido Liq");
-            holder.textoPorcentaje.setTextColor(Color.parseColor("#e53935"));
+            holder.textoPorcentaje.setTextColor(context.getResources().getColor(R.color.perdida));
 
         }
 
