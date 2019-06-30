@@ -5,8 +5,8 @@
     <color name="perdida">#e53935</color>
     <color name="ganancia">#45c042</color>
     <color name="fondoPrincipal">#181818</color>
-    <color name="colorBotonForex">#4b1717</color>
-    <color name="colorBotonForexClaro">#7e1d1d</color>
+    <color name="colorBotonForex">#45007A</color>
+    <color name="colorBotonForexClaro">#7200CC</color>
     <color name="neutro">#95000000</color>
     <color name="blanco">#ffffff</color>
 
