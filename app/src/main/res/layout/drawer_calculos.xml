@@ -91,6 +91,7 @@
                 android:fontFamily="@font/comforta_bold"
                 android:text="Cazar"
                 android:textSize="22dp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/botonLotes" />
 
